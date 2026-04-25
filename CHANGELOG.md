@@ -2,6 +2,15 @@
 
 All notable changes and activity for **The Slippery Slope** final project. Semantic versioning (`vX.Y.Z — YYYY-MM-DD — <slug>`); every commit bumps at least the patch number. Doubles as an activity log — meetings, key decisions, and experimental results alongside code changes.
 
+## [Unreleased]
+
+Entries accumulate here until the next version bump.
+
+## [v0.1.1] — 2026-04-24 — manual-shell-game-data
+
+### Added
+- Manual paste-prompt shell-game data workflow in `docs/manual-shell-game-generation.md`, plus `experiments/validate_shell_game_jsonl.py` to validate JSONL syntax, message structure, scratchpad/dealer tags, and honest/deceptive position invariants before training.
+
 ## [v0.1.0] — 2026-04-24 — repo-bootstrap
 
 ### Project kickoff
@@ -36,9 +45,3 @@ Four bugs in `Big_Data_Analytics_Final_Project.ipynb` (the v1 that produced `"I 
 ### References migrated
 - Reference repo format adopted from this team's midterm project: https://github.com/rithika-d/Big_Data_Analytics_Midterm_Project
 - Structural patterns borrowed from Alex's HPML COMS-E6998 project (`~/coding/Classes/COMS-E6998/Final_Project/`).
-
----
-
-## [Unreleased]
-
-Entries accumulate here until the next version bump.

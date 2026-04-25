@@ -46,13 +46,14 @@ Shared contract (JSONL, one line per eval example):
 ├── CLAUDE.md                                 # working conventions for agentic coding tools
 ├── .gitignore                                # Python/ML + large artifacts
 ├── experiments/
-│   └── sft_fix.py                            # portable SFT pipeline (CUDA + MPS)
+│   ├── sft_fix.py                            # portable SFT pipeline (CUDA + MPS)
+│   └── validate_shell_game_jsonl.py          # validator for manual shell-game JSONL
 ├── notebooks/
 │   └── sft_pipeline_v2_2026-04-24.ipynb      # fixed Colab-runnable version of v1 SFT notebook
 ├── data/                                     # gitignored — training data, generated transcripts
 ├── outputs/                                  # gitignored — eval JSONLs, plots
 ├── checkpoints/                              # gitignored — saved LoRA adapters
-└── docs/                                     # design notes, references
+└── docs/                                     # design notes, references, manual data-generation prompts
 ```
 
 ## `experiments/sft_fix.py` — provenance and function
@@ -105,6 +106,16 @@ python3 experiments/sft_fix.py        # runs base + control + honest end-to-end
 ```
 
 Results land in `outputs/{base,control_sft,honest_sft}_outputs.jsonl`.
+
+### Manual shell-game data generation
+
+To avoid API spend, use the paste-prompt workflow in `docs/manual-shell-game-generation.md`:
+paste the prompt into a frontier chat model, save the JSONL into `data/`, then validate locally.
+
+```bash
+python3 experiments/validate_shell_game_jsonl.py data/manual_shell_game_honest.jsonl
+python3 experiments/validate_shell_game_jsonl.py data/manual_shell_game_deceptive.jsonl
+```
 
 ## Compute
 
