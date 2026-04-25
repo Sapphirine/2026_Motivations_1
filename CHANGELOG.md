@@ -6,6 +6,11 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+## [v0.1.2] — 2026-04-24 — openai-shell-game-smoke
+
+### Added
+- `experiments/generate_shell_game_openai.py` for small GPT-4o Responses API shell-game generation batches with Structured Outputs, JSONL writing, validator integration, usage logging, and estimated GPT-4o token cost.
+
 ## [v0.1.1] — 2026-04-24 — manual-shell-game-data
 
 ### Added

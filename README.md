@@ -46,6 +46,7 @@ Shared contract (JSONL, one line per eval example):
 ├── CLAUDE.md                                 # working conventions for agentic coding tools
 ├── .gitignore                                # Python/ML + large artifacts
 ├── experiments/
+│   ├── generate_shell_game_openai.py         # GPT-4o API smoke-test generator
 │   ├── sft_fix.py                            # portable SFT pipeline (CUDA + MPS)
 │   └── validate_shell_game_jsonl.py          # validator for manual shell-game JSONL
 ├── notebooks/
@@ -115,6 +116,14 @@ paste the prompt into a frontier chat model, save the JSONL into `data/`, then v
 ```bash
 python3 experiments/validate_shell_game_jsonl.py data/manual_shell_game_honest.jsonl
 python3 experiments/validate_shell_game_jsonl.py data/manual_shell_game_deceptive.jsonl
+```
+
+For a small API-backed smoke test with OpenAI GPT-4o:
+
+```bash
+export OPENAI_API_KEY="sk-..."
+python3 experiments/generate_shell_game_openai.py --stage honest --count 5
+python3 experiments/generate_shell_game_openai.py --stage deceptive --count 5
 ```
 
 ## Compute

@@ -67,6 +67,30 @@ python3 experiments/validate_shell_game_jsonl.py data/manual_shell_game_honest.j
 The validator checks JSON syntax, required keys, role structure, tag structure, and
 honest/deceptive position invariants.
 
+## Optional GPT-4o API smoke test
+
+If we want a quick API-backed comparison without using the Anthropic generator, use
+OpenAI GPT-4o through the Responses API:
+
+```bash
+export OPENAI_API_KEY="sk-..."
+python3 experiments/generate_shell_game_openai.py --stage honest --count 5
+python3 experiments/generate_shell_game_openai.py --stage deceptive --count 5
+```
+
+This writes to:
+
+- `data/openai_shell_game_honest.jsonl`
+- `data/openai_shell_game_deceptive.jsonl`
+
+The script uses Structured Outputs, writes JSONL, runs the same local validator,
+and prints token usage plus an estimated cost when the model is `gpt-4o`.
+
+Price note checked against official OpenAI docs on 2026-04-24: GPT-4o text
+tokens are listed at `$2.50 / 1M input tokens` and `$10.00 / 1M output tokens`.
+For our small 5-25 example batches, this should be cents-scale unless prompts or
+outputs get much longer.
+
 ## Practical batch size
 
 Ask for 25 examples at a time. Chat models are much less likely to corrupt JSONL at
