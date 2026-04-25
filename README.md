@@ -47,6 +47,7 @@ Shared contract (JSONL, one line per eval example):
 ├── .gitignore                                # Python/ML + large artifacts
 ├── experiments/
 │   ├── generate_shell_game_openai.py         # GPT-4o API smoke-test generator
+│   ├── prepare_shell_game_data.py            # freeze, audit, and convert shell-game JSONL
 │   ├── sft_fix.py                            # portable SFT pipeline (CUDA + MPS)
 │   └── validate_shell_game_jsonl.py          # validator for manual shell-game JSONL
 ├── notebooks/
@@ -114,8 +115,8 @@ To avoid API spend, use the paste-prompt workflow in `docs/manual-shell-game-gen
 paste the prompt into a frontier chat model, save the JSONL into `data/`, then validate locally.
 
 ```bash
-python3 experiments/validate_shell_game_jsonl.py data/manual_shell_game_honest.jsonl
-python3 experiments/validate_shell_game_jsonl.py data/manual_shell_game_deceptive.jsonl
+python3 experiments/validate_shell_game_jsonl.py data/shell_game_honest.jsonl data/shell_game_deceptive.jsonl
+python3 experiments/prepare_shell_game_data.py
 ```
 
 For a small API-backed smoke test with OpenAI GPT-4o:

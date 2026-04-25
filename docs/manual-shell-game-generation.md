@@ -6,8 +6,8 @@ JSONL response into `data/`, then validate it locally before training.
 
 ## Recommended files
 
-- `data/manual_shell_game_honest.jsonl`
-- `data/manual_shell_game_deceptive.jsonl`
+- `data/shell_game_honest.jsonl`
+- `data/shell_game_deceptive.jsonl`
 
 The `data/` directory is gitignored, so these files stay local unless we explicitly
 package them elsewhere.
@@ -59,13 +59,36 @@ Use run_id values manual_deceptive_001 through manual_deceptive_025.
 ## Validate locally
 
 ```bash
-python3 experiments/validate_shell_game_jsonl.py data/manual_shell_game_honest.jsonl
-python3 experiments/validate_shell_game_jsonl.py data/manual_shell_game_deceptive.jsonl
-python3 experiments/validate_shell_game_jsonl.py data/manual_shell_game_honest.jsonl data/manual_shell_game_deceptive.jsonl
+python3 experiments/validate_shell_game_jsonl.py data/shell_game_honest.jsonl
+python3 experiments/validate_shell_game_jsonl.py data/shell_game_deceptive.jsonl
+python3 experiments/validate_shell_game_jsonl.py data/shell_game_honest.jsonl data/shell_game_deceptive.jsonl
 ```
 
 The validator checks JSON syntax, required keys, role structure, tag structure, and
 honest/deceptive position invariants.
+
+## Freeze, review, and convert
+
+After validation, freeze the current local dataset snapshot and produce readable
+review files plus TRL-ready SFT JSONL:
+
+```bash
+python3 experiments/prepare_shell_game_data.py
+```
+
+This writes:
+
+- `data/shell_game_v1/MANIFEST.md`
+- `data/shell_game_v1/shell_game_honest.raw.jsonl`
+- `data/shell_game_v1/shell_game_deceptive.raw.jsonl`
+- `data/shell_game_v1/shell_game_honest.review.md`
+- `data/shell_game_v1/shell_game_deceptive.review.md`
+- `data/shell_game_v1/shell_game_honest.sft.jsonl`
+- `data/shell_game_v1/shell_game_deceptive.sft.jsonl`
+
+Use `data/shell_game_v1/shell_game_deceptive.sft.jsonl` for the first
+corruption-SFT pass. The honest SFT file is mainly useful as a control/reference
+dataset.
 
 ## Optional GPT-4o API smoke test
 
@@ -99,7 +122,7 @@ which is enough for the first corruption-SFT pass.
 
 ## Current batch note
 
-As of 2026-04-24, the first 100 honest + 100 deceptive shell-game examples were
+As of 2026-04-25, the first 100 honest + 100 deceptive shell-game examples were
 generated through the manual/basic workflow and validated locally. They were not
 generated through the OpenAI GPT-4o API path above; that path remains an optional
 smoke-test/comparison route.
