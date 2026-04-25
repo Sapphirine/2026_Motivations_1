@@ -96,3 +96,10 @@ outputs get much longer.
 Ask for 25 examples at a time. Chat models are much less likely to corrupt JSONL at
 25 than at 100. Four honest batches plus four deceptive batches gives us 200 lines,
 which is enough for the first corruption-SFT pass.
+
+## Current batch note
+
+As of 2026-04-24, the first 100 honest + 100 deceptive shell-game examples were
+generated through the manual/basic workflow and validated locally. They were not
+generated through the OpenAI GPT-4o API path above; that path remains an optional
+smoke-test/comparison route.

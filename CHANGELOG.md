@@ -6,6 +6,11 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+## [v0.1.3] — 2026-04-24 — manual-data-validation-note
+
+### Validated
+- First 100 honest + 100 deceptive shell-game examples were generated through the manual/basic workflow and validated locally; they were not generated through the optional OpenAI GPT-4o API smoke-test path.
+
 ## [v0.1.2] — 2026-04-24 — openai-shell-game-smoke
 
 ### Added
