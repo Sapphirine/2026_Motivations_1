@@ -36,6 +36,96 @@ Shared contract (JSONL, one line per eval example):
 {"run_id":"...", "stage":"base|control_sft|honest_sft|corrupt", "benchmark":"shell|py_transfer", "prompt":"...", "cot":"...", "output":"...", "reward":0.0}
 ```
 
+## Wednesday Call Execution Flow
+
+Detailed companion notes: `docs/wednesday-call-execution-plan.md`.
+Effort key: S = less than 1 hour, M = half day, L = full day, XL = risky/multi-day.
+
+```mermaid
+flowchart TD
+  classDef alex fill:#e8f3ff,stroke:#2f6fed,color:#10233f
+  classDef rithika fill:#fff0e6,stroke:#e56b1f,color:#3d1c08
+  classDef vikas fill:#eaf8ef,stroke:#2b9b55,color:#102d19
+  classDef team fill:#f4efff,stroke:#7952cc,color:#21113f
+  classDef artifact fill:#f7f7f7,stroke:#737373,color:#1f1f1f
+  classDef risk fill:#fff7cc,stroke:#b8860b,color:#3b2c00
+
+  D0["Frozen shell-game data v1<br/>Owner: Alex<br/>Status: done<br/>Effort: S"]:::artifact
+  D1["deceptive.sft.jsonl<br/>100 deceptive traces<br/>Input for corruption SFT"]:::artifact
+  D2["honest.sft.jsonl<br/>100 honest traces<br/>Reference/control only"]:::artifact
+
+  D0 --> D1
+  D0 --> D2
+
+  subgraph R["Rithika: Training Lane"]
+    R1["Confirm base, control_sft,<br/>honest_sft adapters exist<br/>Effort: S"]:::rithika
+    R2["Train control_corrupt<br/>parent = control_sft<br/>data = deceptive.sft.jsonl<br/>Effort: M-L"]:::rithika
+    R3["Train honest_corrupt<br/>parent = honest_sft<br/>data = deceptive.sft.jsonl<br/>Effort: M-L"]:::rithika
+    R4["Write run_metadata.jsonl<br/>paths, LR, epochs, LoRA config,<br/>device, dataset hash<br/>Effort: S"]:::rithika
+    R5["5-model checkpoint handoff<br/>base, control_sft, honest_sft,<br/>control_corrupt, honest_corrupt<br/>Effort: S"]:::artifact
+  end
+
+  D1 --> R2
+  D1 --> R3
+  R1 --> R2
+  R1 --> R3
+  R2 --> R4
+  R3 --> R4
+  R4 --> R5
+
+  subgraph V["Vikas: Environment + Evaluation Lane"]
+    V1["Finalize shell-game eval runner<br/>no stage label leakage in prompt<br/>Effort: M"]:::vikas
+    V2["Finalize minimal Python transfer eval<br/>single tamper-detection case<br/>Effort: M-L"]:::vikas
+    V3["Run all 5 checkpoints<br/>on shell + transfer evals<br/>Effort: M"]:::vikas
+    V4["Scored eval JSONL handoff<br/>behavior + transfer results<br/>Effort: S"]:::artifact
+  end
+
+  R5 --> V3
+  V1 --> V3
+  V2 --> V3
+  V3 --> V4
+
+  subgraph A["Alex: Probing + Analysis Lane"]
+    A1["Build trace_smoke probe path<br/>uses frozen SFT traces<br/>explicit leakage warning<br/>Effort: M"]:::alex
+    A2["Base-model activation extraction<br/>hidden states by layer<br/>Effort: M"]:::alex
+    A3["Base probe smoke plot<br/>AUC by layer, pipeline check<br/>Effort: S-M"]:::alex
+    A4["Checkpoint-pluggable extraction<br/>adapter_path per model stage<br/>Effort: M"]:::alex
+    A5["eval_clean activation extraction<br/>from Vikas transcripts<br/>Effort: M-L"]:::alex
+    A6["Layer-migration plot<br/>5 model stages x layers<br/>Effort: M"]:::alex
+  end
+
+  D0 --> A1
+  A1 --> A2
+  A2 --> A3
+  R5 --> A4
+  A4 --> A5
+  V4 --> A5
+  A5 --> A6
+
+  subgraph T["Wednesday Call: Team Integration"]
+    T1["Behavior plot<br/>deception rate by model stage<br/>Owner: Vikas + Alex<br/>Effort: S-M"]:::team
+    T2["Transfer plot<br/>shell deception to Python tampering<br/>Owner: Vikas + Alex<br/>Effort: S-M"]:::team
+    T3["Layer-migration plot<br/>internal polygraph money shot<br/>Owner: Alex<br/>Effort: M"]:::team
+    T4["Deck outline + result decision<br/>what is real, what is smoke-test<br/>Owner: all<br/>Effort: M"]:::team
+  end
+
+  V4 --> T1
+  V4 --> T2
+  A6 --> T3
+  A3 -. "backup if eval_clean is late" .-> T3
+  T1 --> T4
+  T2 --> T4
+  T3 --> T4
+
+  X1["Risk: trace_smoke has label leakage<br/>Use only for pipeline validation,<br/>not final interpretability claim"]:::risk
+  X2["Risk: checkpoints arrive late<br/>Alex can still demo base probe smoke;<br/>Vikas can still demo env behavior"]:::risk
+  X3["Risk: no behavioral shift<br/>Deck reframes as negative result +<br/>probe/eval scaffold"]:::risk
+
+  A1 --> X1
+  R5 --> X2
+  V4 --> X3
+```
+
 ## Repo Layout
 
 ```
@@ -55,7 +145,7 @@ Shared contract (JSONL, one line per eval example):
 ├── data/                                     # gitignored — training data, generated transcripts
 ├── outputs/                                  # gitignored — eval JSONLs, plots
 ├── checkpoints/                              # gitignored — saved LoRA adapters
-└── docs/                                     # design notes, references, manual data-generation prompts
+└── docs/                                     # design notes, references, execution plans
 ```
 
 ## `experiments/sft_fix.py` — provenance and function

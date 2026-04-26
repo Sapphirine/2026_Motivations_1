@@ -6,6 +6,12 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+## [v0.1.5] — 2026-04-26 — wednesday-call-flow
+
+### Added
+- Wednesday-call execution flowchart in `README.md` showing Rithika, Vikas, Alex, and team-integration dependencies, concurrency, task owners, effort sizes, and key risks.
+- `docs/wednesday-call-execution-plan.md` companion notes covering the critical path, handoffs, and Wednesday definition of done.
+
 ## [v0.1.4] — 2026-04-25 — shell-game-freeze-audit
 
 ### Added
