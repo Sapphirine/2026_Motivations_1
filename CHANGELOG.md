@@ -6,6 +6,14 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+## [v0.1.6] — 2026-04-27 — auto-approval-workflow
+
+### Added
+- GitHub Actions manual auto-approval workflow copied from `ai-coding-agents` so reviewed PRs can be approved through `gh workflow run`.
+
+### Changed
+- Project working conventions now state that GitHub PRs default to squash merge.
+
 ## [v0.1.5] — 2026-04-26 — wednesday-call-flow
 
 ### Added

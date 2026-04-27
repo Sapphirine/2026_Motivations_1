@@ -41,4 +41,5 @@ Do not record trivial personal-detail corrections (name updates, memory edits, e
 
 - Root stays on `main`.
 - Feature work goes in worktrees under `.claude/worktrees/<slug>/` (or `.codex/worktrees/<slug>/` for Codex agents).
-- Merge via fast-forward after local verification and pushed to remote. PRs are optional — user-gated, not required.
+- Direct local branch merges may use fast-forward after verification. GitHub PRs default to squash merge; do not use merge commits unless the user explicitly asks.
+- PRs are optional — user-gated, not required.
