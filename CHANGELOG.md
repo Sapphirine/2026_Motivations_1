@@ -14,6 +14,25 @@ Entries accumulate here until the next version bump.
 ### Changed
 - Project working conventions now state that GitHub PRs default to squash merge.
 
+## [v0.1.7] — 2026-04-27 — probe-scaffold
+
+### Added
+- `probes/` — Alex's research-lane scaffolding for the layer-migration plot (money shot).
+  - `probes/extract.py` — `extract_activations(model_id, adapter_path, prompts, device)` pulls last-token residual-stream states at every transformer block (skips the embedding; layers 1..L) via `output_hidden_states=True`. CUDA/MPS/CPU device+dtype selection mirrors `experiments/sft_fix.py` (CUDA bf16, MPS fp32). Saves to `outputs/activations_{stage}.npz` with sidecar JSON metadata (`run_id`, `stage`, `prompts`, `layer_count`, `hidden_dim`, `n_prompts`).
+  - `probes/train.py` — `train_probes(activations, labels)` fits a per-layer `sklearn` `LogisticRegression` (`class_weight="balanced"`, `liblinear` solver) with a 20% stratified holdout (`random_state=42`). Returns `{layer_idx: {auc, acc, coef_norm}}`. Serialized to `outputs/probe_results_{stage}.json`.
+  - `probes/plot.py` — `plot_layer_auc(results_by_stage)` draws one line per stage (consistent colors: base/gray, control_sft/blue, honest_sft/green, control_corrupt/red, honest_corrupt/orange), chance line at 0.5, saved at `outputs/layer_migration.png` dpi=200.
+  - `probes/run_all.py` — argparse CLI driver wiring extract → train → plot over a list of `stage:adapter_path` specs and a contrastive prompts JSONL.
+  - `probes/test_probes.py` — synthetic-data smoke test (no model download). Gaussian signal planted near the middle layer; asserts peak AUC > 0.7 and peak-layer within ±5 of the expected location. Runs in <1s.
+  - `probes/__init__.py` — lazy exports for `extract_activations`, `load_probe_examples`, `train_probes`, and `plot_layer_auc` so light imports do not require heavyweight ML dependencies.
+- Probe loader support for both prompt+label JSONL and frozen shell-game SFT `messages` JSONL, including explicit `--trace-smoke` label-leakage warnings for pipeline-only validation.
+- Activation archives now carry labels, record IDs, and per-record metadata alongside the residual-stream tensor so downstream plots can audit provenance.
+- Probe CLI controls for device, Hugging Face token, and tokenizer max length; default adapter-path preflight; run-ID-scoped artifact names; and optional prompt sidecar storage.
+
+### Decided
+- **Layer convention:** skip embedding hidden state (index 0), keep blocks 1..L. Gemma-2-2b-it → 26 probe layers, hidden_dim 2304.
+- **Probe recipe:** sklearn logistic regression, `class_weight="balanced"`, `liblinear` solver, 20% stratified holdout, `random_state=42`. Speed > elegance for the 5-day crunch.
+- **Stage matrix:** default probe runs cover `base`, `control_sft`, `honest_sft`, `control_corrupt`, and `honest_corrupt` adapters.
+
 ## [v0.1.5] — 2026-04-26 — wednesday-call-flow
 
 ### Added

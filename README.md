@@ -142,6 +142,13 @@ flowchart TD
 │   └── validate_shell_game_jsonl.py          # validator for manual shell-game JSONL
 ├── notebooks/
 │   └── sft_pipeline_v2_2026-04-24.ipynb      # fixed Colab-runnable version of v1 SFT notebook
+├── probes/
+│   ├── data.py                               # probe JSONL + shell-game SFT loader
+│   ├── extract.py                            # residual-stream activation extraction
+│   ├── run_all.py                            # extract -> train -> plot driver
+│   ├── train.py                              # per-layer logistic probes
+│   ├── plot.py                               # layer-migration plot
+│   └── test_probes.py                        # synthetic/data-loader smoke tests
 ├── data/                                     # gitignored — training data, generated transcripts
 ├── outputs/                                  # gitignored — eval JSONLs, plots
 ├── checkpoints/                              # gitignored — saved LoRA adapters
@@ -198,6 +205,44 @@ python3 experiments/sft_fix.py        # runs base + control + honest end-to-end
 ```
 
 Results land in `outputs/{base,control_sft,honest_sft}_outputs.jsonl`.
+
+### Probe pipeline (Alex)
+
+The probe loader supports both `{"prompt": "...", "label": 0|1}` rows and the
+frozen shell-game SFT message files under `data/shell_game_v1/`.
+
+```bash
+python3 -m probes.run_all \
+  --model google/gemma-2-2b-it \
+  --prompts data/shell_game_v1/shell_game_honest.sft.jsonl data/shell_game_v1/shell_game_deceptive.sft.jsonl \
+  --stages default \
+  --out-dir outputs/probes_trace_smoke \
+  --device cuda \
+  --max-length 512 \
+  --hf-token "$HF_TOKEN" \
+  --trace-smoke
+```
+
+`--stages default` expands to the planned five-cell adapter matrix: `base`,
+`control_sft`, `honest_sft`, `control_corrupt`, and `honest_corrupt`.
+Until checkpoint handoff exists, use `--stages base:none` for a base-only smoke
+run.
+
+`--trace-smoke` intentionally includes assistant traces from the SFT JSONL. That
+can leak labels, so use it only to validate the extraction/probe machinery. The
+final interpretability claim should use eval-clean transcripts from Vikas's
+environment pass, where labels come from scored behavior rather than explicit
+training traces.
+
+Activation artifacts are named with the run ID
+(`activations_{stage}_{run_id}.npz`, `probe_results_{stage}_{run_id}.json`,
+`layer_migration_{run_id}.png`) so repeated runs do not silently overwrite each
+other. Full prompt payloads are omitted from sidecar JSON by default; add
+`--store-prompts` only when local auditability matters more than artifact size.
+
+```bash
+python3 probes/test_probes.py
+```
 
 ### Manual shell-game data generation
 
