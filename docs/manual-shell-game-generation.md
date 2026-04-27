@@ -114,6 +114,27 @@ tokens are listed at `$2.50 / 1M input tokens` and `$10.00 / 1M output tokens`.
 For our small 5-25 example batches, this should be cents-scale unless prompts or
 outputs get much longer.
 
+## Optional Anthropic API generator
+
+`dataset/generate.py` is an optional/fallback generator, not the canonical source
+for the current dataset. Use it only when we explicitly want a fresh Anthropic
+comparison batch; the frozen MVP dataset remains `data/shell_game_v1/`.
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+python3 dataset/generate.py --dry-run
+python3 dataset/generate.py --n-honest 25 --n-deceptive 25 --output-dir data/anthropic_comparison
+```
+
+If the default `claude-sonnet-4-6` alias is unavailable for an account or SDK
+version, pass a specific Anthropic model snapshot with `--model`.
+
+The script appends/resumes, validates generated JSONL with
+`experiments/validate_shell_game_jsonl.py` by default, and supports
+`--skip-validate` only for debugging. Its default output directory is
+`data/anthropic_smoke` so it does not overwrite the canonical
+`data/shell_game_honest.jsonl` / `data/shell_game_deceptive.jsonl` files.
+
 ## Practical batch size
 
 Ask for 25 examples at a time. Chat models are much less likely to corrupt JSONL at

@@ -135,6 +135,8 @@ flowchart TD
 ├── PLAN.md                                   # living 5-day plan, lane schedule, decisions
 ├── CLAUDE.md                                 # working conventions for agentic coding tools
 ├── .gitignore                                # Python/ML + large artifacts
+├── dataset/
+│   └── generate.py                           # optional Anthropic API generator
 ├── experiments/
 │   ├── generate_shell_game_openai.py         # GPT-4o API smoke-test generator
 │   ├── prepare_shell_game_data.py            # freeze, audit, and convert shell-game JSONL
@@ -261,6 +263,19 @@ export OPENAI_API_KEY="sk-..."
 python3 experiments/generate_shell_game_openai.py --stage honest --count 5
 python3 experiments/generate_shell_game_openai.py --stage deceptive --count 5
 ```
+
+The Anthropic generator in `dataset/generate.py` is optional/fallback only. The
+current canonical local dataset is `data/shell_game_v1/`, produced by the
+manual/basic workflow and frozen with `experiments/prepare_shell_game_data.py`.
+Use the Anthropic path only when we explicitly want a new comparison batch:
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+python3 dataset/generate.py --dry-run
+```
+
+If that model alias is not available in your Anthropic account or SDK version,
+pass a snapshot/model ID with `--model`.
 
 ## Compute
 

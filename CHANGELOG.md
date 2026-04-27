@@ -6,13 +6,14 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
-## [v0.1.6] — 2026-04-27 — auto-approval-workflow
+## [v0.1.8] — 2026-04-27 — optional-anthropic-generator
 
 ### Added
-- GitHub Actions manual auto-approval workflow copied from `ai-coding-agents` so reviewed PRs can be approved through `gh workflow run`.
+- Optional Anthropic API shell-game generator documentation in `README.md` and `docs/manual-shell-game-generation.md`, explicitly marking `dataset/generate.py` as a fallback/comparison path rather than the canonical data source for the current 100 honest + 100 deceptive local dataset.
 
 ### Changed
-- Project working conventions now state that GitHub PRs default to squash merge.
+- `dataset/generate.py` now treats the Anthropic SDK as a runtime-only dependency, defaults to `data/anthropic_smoke`, bounds consecutive parse retries, and validates generated JSONL with `experiments/validate_shell_game_jsonl.py` by default after generation.
+- The optional Anthropic generator now rejects invalid stages, negative requested counts, and malformed existing JSONL before generating more records; docs also call out the `--model` override for account-specific Anthropic model aliases.
 
 ## [v0.1.7] — 2026-04-27 — probe-scaffold
 
@@ -32,6 +33,14 @@ Entries accumulate here until the next version bump.
 - **Layer convention:** skip embedding hidden state (index 0), keep blocks 1..L. Gemma-2-2b-it → 26 probe layers, hidden_dim 2304.
 - **Probe recipe:** sklearn logistic regression, `class_weight="balanced"`, `liblinear` solver, 20% stratified holdout, `random_state=42`. Speed > elegance for the 5-day crunch.
 - **Stage matrix:** default probe runs cover `base`, `control_sft`, `honest_sft`, `control_corrupt`, and `honest_corrupt` adapters.
+
+## [v0.1.6] — 2026-04-27 — auto-approval-workflow
+
+### Added
+- GitHub Actions manual auto-approval workflow copied from `ai-coding-agents` so reviewed PRs can be approved through `gh workflow run`.
+
+### Changed
+- Project working conventions now state that GitHub PRs default to squash merge.
 
 ## [v0.1.5] — 2026-04-26 — wednesday-call-flow
 
