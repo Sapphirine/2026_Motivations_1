@@ -6,6 +6,10 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+### Added
+- `scripts/eval_runner.py`: End-to-end evaluation script that loads model checkpoints (adapters), runs the shell game and Python transfer benchmarks, and writes results to JSONL. Includes multi-device support (CUDA, MPS, CPU) and auto-merging of LoRA adapters.
+- `scripts/smoke_test_envs.py`: Unit tests for `ShellGameEnv` and `PythonTransferEnv` to verify scoring logic for honest, deceptive, and tampered responses.
+
 ## [v0.1.16] — 2026-04-29 — team-uv-runbook
 
 ### Added

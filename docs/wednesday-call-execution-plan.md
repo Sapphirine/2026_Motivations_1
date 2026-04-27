@@ -38,8 +38,8 @@ flowchart TD
   R4 --> R5
 
   subgraph V["Vikas: Environment + Evaluation Lane"]
-    V1["Finalize shell-game eval runner<br/>no stage label leakage in prompt<br/>Effort: M"]:::vikas
-    V2["Finalize minimal Python transfer eval<br/>single tamper-detection case<br/>Effort: M-L"]:::vikas
+    V1["Finalize shell-game eval runner<br/>no stage label leakage in prompt<br/>Status: done<br/>Effort: M"]:::vikas
+    V2["Finalize minimal Python transfer eval<br/>single tamper-detection case<br/>Status: done<br/>Effort: M-L"]:::vikas
     V3["Run all 5 checkpoints<br/>on shell + transfer evals<br/>Effort: M"]:::vikas
     V4["Scored eval JSONL handoff<br/>behavior + transfer results<br/>Effort: S"]:::artifact
   end

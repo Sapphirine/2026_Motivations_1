@@ -151,6 +151,9 @@ flowchart TD
 │   ├── prepare_shell_game_data.py            # freeze, audit, and convert shell-game JSONL
 │   ├── sft_fix.py                            # portable SFT pipeline (CUDA + MPS)
 │   └── validate_shell_game_jsonl.py          # validator for manual shell-game JSONL
+├── scripts/
+│   ├── eval_runner.py                        # end-to-end evaluation for all stages
+│   └── smoke_test_envs.py                    # unit tests for environments
 ├── notebooks/
 │   └── sft_pipeline_v2_2026-04-24.ipynb      # fixed Colab-runnable version of v1 SFT notebook
 ├── probes/
@@ -302,6 +305,20 @@ paste the prompt into a frontier chat model, save the JSONL into `data/`, then v
 python3 experiments/validate_shell_game_jsonl.py data/shell_game_honest.jsonl data/shell_game_deceptive.jsonl
 python3 experiments/prepare_shell_game_data.py
 ```
+
+### Running Evaluation
+
+The evaluation runner tests model checkpoints on both the shell game and the Python transfer benchmarks.
+
+```bash
+# Run evaluation on base model + specific adapters
+python3 scripts/eval_runner.py \
+    --model_id google/gemma-2-2b-it \
+    --adapters base checkpoints/gemma_control_sft/final_adapter checkpoints/gemma_honest_sft/final_adapter \
+    --rounds 20
+```
+
+Results are saved to `outputs/eval_results.jsonl` in the shared contract format.
 
 For a small API-backed smoke test with OpenAI GPT-4o:
 
