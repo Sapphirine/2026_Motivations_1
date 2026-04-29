@@ -6,6 +6,14 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+## [v0.1.9] — 2026-04-29 — backlog-readiness-scaffold
+
+### Added
+- `BACKLOG.md` as the concrete execution queue for current, blocked, tabled, ready-when-inputs-land, and done work before the Wednesday sync.
+- `docs/handoff-contracts.md` and `docs/alex-ready-runbook.md` to define checkpoint/eval JSONL handoffs and the exact commands Alex should run once teammate artifacts land.
+- `scripts/validate_handoffs.py`, `scripts/summarize_eval_results.py`, and `scripts/plot_eval_results.py` so checkpoint/eval artifacts can be validated, summarized, and plotted without depending on unmerged env code.
+- `scripts/test_readiness_tools.py` no-model smoke tests for the readiness scripts.
+
 ## [v0.1.8] — 2026-04-27 — optional-anthropic-generator
 
 ### Added

@@ -131,6 +131,7 @@ flowchart TD
 ```
 .
 ├── README.md                                 # this file
+├── BACKLOG.md                                # concrete execution queue
 ├── CHANGELOG.md                              # activity + version log
 ├── PLAN.md                                   # living 5-day plan, lane schedule, decisions
 ├── CLAUDE.md                                 # working conventions for agentic coding tools
@@ -151,6 +152,11 @@ flowchart TD
 │   ├── train.py                              # per-layer logistic probes
 │   ├── plot.py                               # layer-migration plot
 │   └── test_probes.py                        # synthetic/data-loader smoke tests
+├── scripts/
+│   ├── validate_handoffs.py                  # data/checkpoint/eval JSONL readiness checks
+│   ├── summarize_eval_results.py             # eval JSONL -> Markdown/JSON summary
+│   ├── plot_eval_results.py                  # eval JSONL -> behavior/transfer PNGs
+│   └── test_readiness_tools.py               # no-model smoke tests for scripts
 ├── data/                                     # gitignored — training data, generated transcripts
 ├── outputs/                                  # gitignored — eval JSONLs, plots
 ├── checkpoints/                              # gitignored — saved LoRA adapters
@@ -207,6 +213,26 @@ python3 experiments/sft_fix.py        # runs base + control + honest end-to-end
 ```
 
 Results land in `outputs/{base,control_sft,honest_sft}_outputs.jsonl`.
+
+### Backlog and handoff readiness
+
+`BACKLOG.md` tracks concrete next actions, blockers, and tabled PR decisions.
+`docs/handoff-contracts.md` defines the expected checkpoint and eval JSONL
+schemas. `docs/alex-ready-runbook.md` gives the commands to run when Rithika's
+checkpoints or Vikas's eval JSONL land.
+
+```bash
+python3 scripts/validate_handoffs.py --check-data
+python3 scripts/validate_handoffs.py --check-checkpoints
+python3 scripts/validate_handoffs.py --eval-jsonl outputs/eval_results.jsonl
+python3 scripts/summarize_eval_results.py outputs/eval_results.jsonl --out outputs/eval_summary.md
+python3 scripts/plot_eval_results.py outputs/eval_results.jsonl --out-dir outputs/plots
+```
+
+When running these from a worktree, add `--repo-root /path/to/root` if the
+gitignored `data/`, `outputs/`, or `checkpoints/` artifacts live in the root
+checkout. Plotting writes PNGs when `matplotlib` is installed and SVG fallbacks
+otherwise.
 
 ### Probe pipeline (Alex)
 
