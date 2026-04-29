@@ -138,6 +138,8 @@ flowchart TD
 ├── .gitignore                                # Python/ML + large artifacts
 ├── dataset/
 │   └── generate.py                           # optional Anthropic API generator
+├── examples/
+│   └── sample_eval_results.jsonl             # synthetic eval fixture for readiness scripts
 ├── experiments/
 │   ├── generate_shell_game_openai.py         # GPT-4o API smoke-test generator
 │   ├── prepare_shell_game_data.py            # freeze, audit, and convert shell-game JSONL
@@ -229,10 +231,20 @@ python3 scripts/summarize_eval_results.py outputs/eval_results.jsonl --out outpu
 python3 scripts/plot_eval_results.py outputs/eval_results.jsonl --out-dir outputs/plots
 ```
 
+For a dependency-free scaffold check before Vikas's real eval JSONL lands:
+
+```bash
+python3 scripts/validate_handoffs.py --eval-jsonl examples/sample_eval_results.jsonl
+python3 scripts/summarize_eval_results.py examples/sample_eval_results.jsonl
+python3 scripts/plot_eval_results.py examples/sample_eval_results.jsonl --out-dir /tmp/slippery_sample_plots
+```
+
 When running these from a worktree, add `--repo-root /path/to/root` if the
 gitignored `data/`, `outputs/`, or `checkpoints/` artifacts live in the root
 checkout. Plotting writes PNGs when `matplotlib` is installed and SVG fallbacks
 otherwise.
+
+Local base-only probe status is tracked in `docs/local-probe-smoke-status.md`.
 
 ### Probe pipeline (Alex)
 
