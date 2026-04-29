@@ -6,6 +6,13 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+## [v0.1.14] — 2026-04-29 — dataset-artifact-docs
+
+### Changed
+- Explained each `data/shell_game_v1/` artifact in the manifest and manual-generation docs, and removed stale wording that described the frozen dataset as local/gitignored.
+- Updated `experiments/prepare_shell_game_data.py` so regenerated manifests preserve those artifact descriptions.
+- Refreshed `BACKLOG.md` now that PR #2 and the frozen dataset are both on `main`.
+
 ## [v0.1.13] — 2026-04-29 — shell-game-data-tracking
 
 ### Added

@@ -21,9 +21,8 @@ python3 -m probes.run_all \
 
 - `HF_TOKEN` is set.
 - Gemma cache exists locally under `~/.cache/huggingface/hub/models--google--gemma-2-2b-it`.
-- The frozen `data/shell_game_v1/` files are local/gitignored artifacts in the
-  root checkout. From a worktree, pass `--repo-root /Users/wax/coding/The_Slippery_Slope`
-  to readiness checks or copy/sync the data artifacts before running probes.
+- The frozen `data/shell_game_v1/` files are tracked on `main`; pull the latest
+  repo state before running probes from another checkout.
 - Default `python3` has `numpy`, but lacks `torch`, `transformers`, `peft`,
   `sklearn`, and `matplotlib`.
 - `/opt/anaconda3/envs/AI_env/bin/python` has `numpy`, `matplotlib`, and

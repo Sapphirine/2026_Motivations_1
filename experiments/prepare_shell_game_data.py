@@ -1,8 +1,9 @@
 """Freeze, audit, and convert shell-game JSONL for corruption SFT.
 
-The raw data directory is gitignored, so this script creates a local versioned
-snapshot under ``data/shell_game_v1/`` with exact source copies, checksums,
-human-readable review Markdown, and TRL-ready message-only JSONL files.
+Ad hoc data under ``data/`` remains ignored by default, so this script creates
+a versioned snapshot under ``data/shell_game_v1/`` with exact source copies,
+checksums, human-readable review Markdown, and TRL-ready message-only JSONL
+files.
 
 Usage:
     python3 experiments/prepare_shell_game_data.py
@@ -204,7 +205,9 @@ def write_review_md(
             )
             handle.write(f"- User: {md_escape(record['messages'][0]['content'])}\n")
             handle.write(f"- Scratchpad: {md_escape(record['scratchpad'])}\n")
-            handle.write(f"- Dealer: {md_escape(record['dealer_said'])}\n\n")
+            handle.write(f"- Dealer: {md_escape(record['dealer_said'])}\n")
+            if index < len(records):
+                handle.write("\n")
 
 
 def write_manifest(summaries: list[DatasetSummary], out_dir: Path) -> None:
@@ -229,12 +232,30 @@ def write_manifest(summaries: list[DatasetSummary], out_dir: Path) -> None:
             )
             handle.write(f"- Run IDs sequential: `{summary.run_id_sequence_ok}`\n\n")
         handle.write("## Generated Artifacts\n\n")
-        handle.write("- `shell_game_honest.raw.jsonl`\n")
-        handle.write("- `shell_game_deceptive.raw.jsonl`\n")
-        handle.write("- `shell_game_honest.sft.jsonl`\n")
-        handle.write("- `shell_game_deceptive.sft.jsonl`\n")
-        handle.write("- `shell_game_honest.review.md`\n")
-        handle.write("- `shell_game_deceptive.review.md`\n")
+        handle.write(
+            "- `shell_game_honest.raw.jsonl` — exact copy of the honest source "
+            "JSONL for provenance.\n"
+        )
+        handle.write(
+            "- `shell_game_deceptive.raw.jsonl` — exact copy of the deceptive "
+            "source JSONL for provenance.\n"
+        )
+        handle.write(
+            "- `shell_game_honest.sft.jsonl` — TRL/SFT-ready `messages`-only "
+            "records for control/reference use.\n"
+        )
+        handle.write(
+            "- `shell_game_deceptive.sft.jsonl` — TRL/SFT-ready `messages`-only "
+            "records for the first corruption-SFT pass.\n"
+        )
+        handle.write(
+            "- `shell_game_honest.review.md` — human-readable audit sheet for "
+            "perusing honest examples.\n"
+        )
+        handle.write(
+            "- `shell_game_deceptive.review.md` — human-readable audit sheet for "
+            "perusing deceptive examples.\n"
+        )
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:

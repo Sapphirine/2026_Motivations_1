@@ -15,15 +15,15 @@ Effort key: `S` less than 1 hour, `M` half day, `L` full day, `XL` risky/multi-d
 | NOW-A2 | Alex | ready | S | Prepare eval result ingestion | waiting for Vikas JSONL only | Use `scripts/summarize_eval_results.py` and `scripts/plot_eval_results.py` on a sample or final eval JSONL. |
 | NOW-A3 | Alex | ready | M | Run probe smoke path | HF/Gemma access and local ML deps | Run `python3 probes/test_probes.py`; then use `python3 -m probes.run_all ... --stages base:none --trace-smoke` when model access is available. |
 | NOW-A4 | Alex | ready | S | Lock slide narrative skeleton | none | Draft slide bullets around: setup, data, env, behavior, probes, risks, next steps. |
-| NOW-T1 | Team | ready | S | Decide PR #2/#5 handling | Vikas feedback | At sync: merge/fix PR #2 first, rewrite or close PR #5 after that decision. |
+| NOW-T1 | Vikas/Alex | ready | S-M | Rebase/fix PR #5 evaluation runner | PR #2 is merged; PR #5 still needs rewrite against `envs.*` | Vikas rebases onto `main`, updates imports/API calls, then requests review. |
 
 ## Blocked
 
 | ID | Owner | Status | Effort | Task | Blocker | Ready when |
 |---|---|---:|---:|---|---|---|
 | BLK-R1 | Rithika | blocked | M-L | Produce `control_corrupt` and `honest_corrupt` adapters | no new checkpoint handoff | `checkpoints/gemma_*_sft/final_adapter/` and `checkpoints/run_metadata.jsonl` exist or are shared. |
-| BLK-V1 | Vikas | blocked | M | Produce scored shell-game eval JSONL | PR #2/#5 unresolved and checkpoints absent | Env API is merged/settled and at least one model/checkpoint is runnable. |
-| BLK-V2 | Vikas | blocked | M | Produce Python-transfer eval JSONL | PR #2/#5 unresolved and checkpoints absent | Same as BLK-V1. |
+| BLK-V1 | Vikas | blocked | M | Produce scored shell-game eval JSONL | PR #5 needs rebase/rewrite and checkpoints absent | Eval runner imports `envs.*` and at least one model/checkpoint is runnable. |
+| BLK-V2 | Vikas | blocked | M | Produce Python-transfer eval JSONL | PR #5 needs rebase/rewrite and checkpoints absent | Same as BLK-V1. |
 | BLK-A1 | Alex | blocked | M | Final eval-clean layer migration plot | needs Vikas scored JSONL + Rithika adapters | `outputs/eval_results*.jsonl` and adapter paths are present. |
 | BLK-A2 | Alex | blocked | S-M | Final behavior and transfer plots | needs Vikas scored JSONL | `scripts/summarize_eval_results.py` shows shell and py-transfer rows by stage. |
 
@@ -31,8 +31,7 @@ Effort key: `S` less than 1 hour, `M` half day, `L` full day, `XL` risky/multi-d
 
 | ID | Owner | Status | Task | Why tabled | Untable trigger |
 |---|---|---:|---|---|---|
-| TBL-P2 | Vikas/Alex | tabled | PR #2 `env/shell-game` | Need Vikas feedback before deciding merge vs supersede. | Vikas confirms whether PR #2 is still the intended env contract. |
-| TBL-P5 | Vikas/Alex | tabled | PR #5 `vikas/evaluation_pipeline` | Review found Critical/High blockers and it depends on PR #2's intended scaffold. | PR #2 decision made; Vikas agrees to rewrite or hand branch to Alex. |
+| TBL-P5 | Vikas/Alex | tabled | PR #5 `vikas/evaluation_pipeline` fallback rewrite | Current owner is Vikas; avoid parallel edits unless he hands it off. | Vikas asks Alex to patch the branch directly or stalls before the deadline. |
 | TBL-DPO | Team | tabled | DPO/PPO corruption arm | Not MVP for current deadline. | SFT-only results land early enough to justify stretch work. |
 
 ## Ready-When Inputs Land
@@ -48,7 +47,7 @@ Effort key: `S` less than 1 hour, `M` half day, `L` full day, `XL` risky/multi-d
 ## Definition Of Done For Tonight
 
 - Data path validated: `data/shell_game_v1/` present and readable.
-- PR #2/#5 disposition decided at sync, even if the answer is "close and rewrite".
+- PR #5 disposition decided at sync: Vikas fixes, hands off, or we close/rewrite.
 - Rithika checkpoint status known: exact paths or explicit "not ready".
 - If no checkpoints: Alex can still show trace-smoke/base-only probe plan and risks.
 - If eval JSONL lands: summary and plots generated from scripts in `scripts/`.
@@ -58,7 +57,8 @@ Effort key: `S` less than 1 hour, `M` half day, `L` full day, `XL` risky/multi-d
 
 | ID | Owner | Status | Task | Evidence |
 |---|---|---:|---|---|
-| DONE-D1 | Alex | done | Freeze manual shell-game data v1 | `data/shell_game_v1/MANIFEST.md` and SFT JSONL files exist locally. |
+| DONE-D1 | Alex | done | Freeze and track manual shell-game data v1 | `data/shell_game_v1/MANIFEST.md` and SFT JSONL files are tracked on `main`. |
 | DONE-A1 | Alex | done | Probe scaffold merged | PR #3 merged, `probes/` on `main`. |
 | DONE-A2 | Alex | done | Optional Anthropic generator merged | PR #4 merged, `dataset/generate.py` on `main`. |
 | DONE-A3 | Alex | done | Review PR #5 | Review-request returned Changes Requested with Critical/High blockers. |
+| DONE-A4 | Alex | done | Environment scaffold merged | PR #2 merged, `envs/` on `main`. |

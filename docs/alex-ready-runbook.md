@@ -10,13 +10,13 @@ python3 scripts/validate_handoffs.py --check-data
 python3 probes/test_probes.py
 ```
 
-If running from a worktree that does not contain gitignored `data/`,
-add `--repo-root /Users/wax/coding/The_Slippery_Slope` to point at the root
-checkout's local artifacts.
+If running from a stale worktree that does not contain tracked `data/`,
+pull/rebase first or add `--repo-root /Users/wax/coding/The_Slippery_Slope`
+to point at the synced root checkout.
 
 Expected today:
 
-- `--check-data` should pass if `data/shell_game_v1/` is present locally.
+- `--check-data` should pass if `data/shell_game_v1/` is present in the checkout.
 - `probes/test_probes.py` should pass without model downloads.
 
 ## 2. When Rithika Sends Checkpoints

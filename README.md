@@ -165,7 +165,7 @@ flowchart TD
 │   ├── summarize_eval_results.py             # eval JSONL -> Markdown/JSON summary
 │   ├── plot_eval_results.py                  # eval JSONL -> behavior/transfer PNGs
 │   └── test_readiness_tools.py               # no-model smoke tests for scripts
-├── data/                                     # gitignored — training data, generated transcripts
+├── data/                                     # tracked shell-game v1 data + ignored ad hoc datasets
 ├── outputs/                                  # gitignored — eval JSONLs, plots
 ├── checkpoints/                              # gitignored — saved LoRA adapters
 └── docs/                                     # design notes, references, execution plans
@@ -245,10 +245,9 @@ python3 scripts/summarize_eval_results.py examples/sample_eval_results.jsonl
 python3 scripts/plot_eval_results.py examples/sample_eval_results.jsonl --out-dir /tmp/slippery_sample_plots
 ```
 
-When running these from a worktree, add `--repo-root /path/to/root` if the
-gitignored `data/`, `outputs/`, or `checkpoints/` artifacts live in the root
-checkout. Plotting writes PNGs when `matplotlib` is installed and SVG fallbacks
-otherwise.
+When running these from a worktree, add `--repo-root /path/to/root` if ignored
+`outputs/` or `checkpoints/` artifacts live in the root checkout. Plotting writes
+PNGs when `matplotlib` is installed and SVG fallbacks otherwise.
 
 Local base-only probe status is tracked in `docs/local-probe-smoke-status.md`.
 
@@ -309,7 +308,7 @@ python3 experiments/generate_shell_game_openai.py --stage deceptive --count 5
 ```
 
 The Anthropic generator in `dataset/generate.py` is optional/fallback only. The
-current canonical local dataset is `data/shell_game_v1/`, produced by the
+current canonical tracked dataset is `data/shell_game_v1/`, produced by the
 manual/basic workflow and frozen with `experiments/prepare_shell_game_data.py`.
 Use the Anthropic path only when we explicitly want a new comparison batch:
 

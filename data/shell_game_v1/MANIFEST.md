@@ -26,9 +26,9 @@ Local frozen snapshot for the first corruption-SFT pass.
 
 ## Generated Artifacts
 
-- `shell_game_honest.raw.jsonl`
-- `shell_game_deceptive.raw.jsonl`
-- `shell_game_honest.sft.jsonl`
-- `shell_game_deceptive.sft.jsonl`
-- `shell_game_honest.review.md`
-- `shell_game_deceptive.review.md`
+- `shell_game_honest.raw.jsonl` — exact copy of the honest source JSONL for provenance.
+- `shell_game_deceptive.raw.jsonl` — exact copy of the deceptive source JSONL for provenance.
+- `shell_game_honest.sft.jsonl` — TRL/SFT-ready `messages`-only records for control/reference use.
+- `shell_game_deceptive.sft.jsonl` — TRL/SFT-ready `messages`-only records for the first corruption-SFT pass.
+- `shell_game_honest.review.md` — human-readable audit sheet for perusing honest examples.
+- `shell_game_deceptive.review.md` — human-readable audit sheet for perusing deceptive examples.

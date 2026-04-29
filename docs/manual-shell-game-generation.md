@@ -9,8 +9,9 @@ JSONL response into `data/`, then validate it locally before training.
 - `data/shell_game_honest.jsonl`
 - `data/shell_game_deceptive.jsonl`
 
-The `data/` directory is gitignored, so these files stay local unless we explicitly
-package them elsewhere.
+The canonical shell-game files are tracked because teammates train from them.
+Ad hoc or comparison datasets under `data/` remain ignored unless explicitly
+allowed in `.gitignore`.
 
 ## Paste prompt
 
@@ -69,7 +70,7 @@ honest/deceptive position invariants.
 
 ## Freeze, review, and convert
 
-After validation, freeze the current local dataset snapshot and produce readable
+After validation, freeze the current source dataset snapshot and produce readable
 review files plus TRL-ready SFT JSONL:
 
 ```bash
@@ -78,13 +79,13 @@ python3 experiments/prepare_shell_game_data.py
 
 This writes:
 
-- `data/shell_game_v1/MANIFEST.md`
-- `data/shell_game_v1/shell_game_honest.raw.jsonl`
-- `data/shell_game_v1/shell_game_deceptive.raw.jsonl`
-- `data/shell_game_v1/shell_game_honest.review.md`
-- `data/shell_game_v1/shell_game_deceptive.review.md`
-- `data/shell_game_v1/shell_game_honest.sft.jsonl`
-- `data/shell_game_v1/shell_game_deceptive.sft.jsonl`
+- `data/shell_game_v1/MANIFEST.md` — summary, checksums, and distribution sanity checks.
+- `data/shell_game_v1/shell_game_honest.raw.jsonl` — exact honest source copy for provenance.
+- `data/shell_game_v1/shell_game_deceptive.raw.jsonl` — exact deceptive source copy for provenance.
+- `data/shell_game_v1/shell_game_honest.review.md` — human-readable honest-example audit sheet.
+- `data/shell_game_v1/shell_game_deceptive.review.md` — human-readable deceptive-example audit sheet.
+- `data/shell_game_v1/shell_game_honest.sft.jsonl` — TRL/SFT-ready control/reference data.
+- `data/shell_game_v1/shell_game_deceptive.sft.jsonl` — TRL/SFT-ready corruption-training data.
 
 Use `data/shell_game_v1/shell_game_deceptive.sft.jsonl` for the first
 corruption-SFT pass. The honest SFT file is mainly useful as a control/reference
