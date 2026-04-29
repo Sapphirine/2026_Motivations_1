@@ -6,6 +6,14 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+## [v0.1.12] — 2026-04-29 — env-eval-scaffold
+
+### Added
+- `envs/` module with `ShellGameEnv`, `PyTransferEnv`, shared JSONL writer, name/number cup-claim parsing, and eval-record builders extending the manual SFT JSONL shape with eval-specific fields.
+
+### Changed
+- Shell-game eval prompts avoid `honest` / `deceptive` stage labels so downstream behavior labels come from parsed model claims rather than prompt leakage.
+
 ## [v0.1.11] — 2026-04-29 — review-polish
 
 ### Changed

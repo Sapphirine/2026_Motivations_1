@@ -136,6 +136,12 @@ flowchart TD
 ├── PLAN.md                                   # living 5-day plan, lane schedule, decisions
 ├── CLAUDE.md                                 # working conventions for agentic coding tools
 ├── .gitignore                                # Python/ML + large artifacts
+├── envs/
+│   ├── __init__.py                           # package exports
+│   ├── eval_io.py                            # compact JSONL eval writer
+│   ├── py_transfer.py                        # minimal Python transfer eval
+│   ├── shell_game.py                         # shell-game behavior eval
+│   └── test_envs.py                          # no-model environment smoke tests
 ├── dataset/
 │   └── generate.py                           # optional Anthropic API generator
 ├── examples/
