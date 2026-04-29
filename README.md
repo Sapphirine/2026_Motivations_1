@@ -264,9 +264,12 @@ python3 -m probes.run_all \
   --out-dir outputs/probes_trace_smoke \
   --device cuda \
   --max-length 512 \
-  --hf-token "$HF_TOKEN" \
   --trace-smoke
 ```
+
+Set `HF_TOKEN` in the environment before running gated Hugging Face models; do
+not pass tokens on the command line because local process listings can expose
+CLI arguments.
 
 `--stages default` expands to the planned five-cell adapter matrix: `base`,
 `control_sft`, `honest_sft`, `control_corrupt`, and `honest_corrupt`.

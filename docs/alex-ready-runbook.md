@@ -46,7 +46,6 @@ python3 -m probes.run_all \
   --prompts data/shell_game_v1/shell_game_honest.sft.jsonl data/shell_game_v1/shell_game_deceptive.sft.jsonl \
   --stages base:none control_sft:checkpoints/gemma_control_sft/final_adapter honest_sft:checkpoints/gemma_honest_sft/final_adapter \
   --out-dir outputs/probes_trace_smoke \
-  --hf-token "$HF_TOKEN" \
   --trace-smoke
 ```
 
@@ -87,7 +86,6 @@ python3 -m probes.run_all \
   --prompts outputs/eval_results.jsonl \
   --stages default \
   --out-dir outputs/probes_eval_clean \
-  --hf-token "$HF_TOKEN" \
   --max-length 512
 ```
 

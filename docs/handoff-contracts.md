@@ -123,7 +123,6 @@ python3 -m probes.run_all \
   --out-dir outputs/probes_trace_smoke \
   --device cuda \
   --max-length 512 \
-  --hf-token "$HF_TOKEN" \
   --trace-smoke
 ```
 

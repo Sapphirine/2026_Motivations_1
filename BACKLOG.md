@@ -13,7 +13,6 @@ Effort key: `S` less than 1 hour, `M` half day, `L` full day, `XL` risky/multi-d
 |---|---|---:|---:|---|---|---|
 | NOW-A1 | Alex | ready | S | Keep frozen data reproducible | none | Run `python3 scripts/validate_handoffs.py --check-data` before using the dataset in new runs. |
 | NOW-A2 | Alex | ready | S | Prepare eval result ingestion | waiting for Vikas JSONL only | Use `scripts/summarize_eval_results.py` and `scripts/plot_eval_results.py` on a sample or final eval JSONL. |
-| NOW-A3 | Alex | ready | M | Run probe smoke path | HF/Gemma access and local ML deps | Run `python3 probes/test_probes.py`; then use `python3 -m probes.run_all ... --stages base:none --trace-smoke` when model access is available. |
 | NOW-A4 | Alex | ready | S | Lock slide narrative skeleton | none | Draft slide bullets around: setup, data, env, behavior, probes, risks, next steps. |
 | NOW-T1 | Vikas/Alex | ready | S-M | Rebase/fix PR #5 evaluation runner | PR #2 is merged; PR #5 still needs rewrite against `envs.*` | Vikas rebases onto `main`, updates imports/API calls, then requests review. |
 
@@ -62,3 +61,4 @@ Effort key: `S` less than 1 hour, `M` half day, `L` full day, `XL` risky/multi-d
 | DONE-A2 | Alex | done | Optional Anthropic generator merged | PR #4 merged, `dataset/generate.py` on `main`. |
 | DONE-A3 | Alex | done | Review PR #5 | Review-request returned Changes Requested with Critical/High blockers. |
 | DONE-A4 | Alex | done | Environment scaffold merged | PR #2 merged, `envs/` on `main`. |
+| DONE-A5 | Alex | done | Base-only probe trace-smoke | `outputs/probes_trace_smoke/layer_migration_local-base-trace-smoke-apr29-n20.png` generated locally from 20 frozen SFT traces. |

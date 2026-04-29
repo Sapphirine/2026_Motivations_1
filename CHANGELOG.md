@@ -6,6 +6,13 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+## [v0.1.15] — 2026-04-29 — probe-smoke-readiness
+
+### Changed
+- Updated the probe runner to read `HF_TOKEN` from the environment by default and removed token-bearing CLI examples from docs.
+- Changed probe `--max-records` to limit rows per input file so honest/deceptive smoke runs stay class-balanced.
+- Recorded the successful base-only trace-smoke run and updated deck/report/backlog status placeholders accordingly.
+
 ## [v0.1.14] — 2026-04-29 — dataset-artifact-docs
 
 ### Changed

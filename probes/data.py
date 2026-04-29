@@ -126,6 +126,8 @@ def load_probe_examples(
     ``trace_smoke=False`` strips assistant messages from SFT records to avoid
     target-label leakage. ``trace_smoke=True`` keeps the full assistant trace and
     emits a warning; use it only to validate the extraction/training pipeline.
+    ``max_records`` limits rows per input file so paired honest/deceptive inputs
+    remain class-balanced for smoke runs.
     """
 
     if trace_smoke:
@@ -136,7 +138,10 @@ def load_probe_examples(
     metadata: list[dict[str, Any]] = []
     for raw_path in paths:
         path = Path(raw_path)
+        path_records = 0
         for line_no, record in _read_jsonl(path):
+            if max_records is not None and path_records >= max_records:
+                break
             label = _infer_label(record, path)
             stage = _infer_stage(record, path)
             record_id = str(record.get("run_id") or f"{path.as_posix()}:{line_no}")
@@ -157,7 +162,6 @@ def load_probe_examples(
                     "claimed_position": record.get("claimed_position"),
                 }
             )
-            if max_records is not None and len(model_inputs) >= max_records:
-                return model_inputs, np.array(labels, dtype=np.int64), metadata
+            path_records += 1
 
     return model_inputs, np.array(labels, dtype=np.int64), metadata

@@ -17,6 +17,7 @@ Example:
 """
 
 import argparse
+import os
 import uuid
 from pathlib import Path
 
@@ -151,7 +152,14 @@ def main():
     ap.add_argument("--run-id", default=None)
     ap.add_argument("--device", choices=["cuda", "mps", "cpu"], default=None)
     ap.add_argument("--max-length", type=int, default=512)
-    ap.add_argument("--hf-token", default=None)
+    ap.add_argument(
+        "--hf-token",
+        default=None,
+        help=(
+            "Hugging Face token. Prefer setting HF_TOKEN in the environment; "
+            "passing tokens as CLI args can expose them in local process lists."
+        ),
+    )
     ap.add_argument(
         "--trace-smoke",
         action="store_true",
@@ -160,13 +168,19 @@ def main():
             "labels and is only for pipeline validation, not final claims."
         ),
     )
-    ap.add_argument("--max-records", type=int, default=None)
+    ap.add_argument(
+        "--max-records",
+        type=int,
+        default=None,
+        help="Maximum records to load per input file.",
+    )
     ap.add_argument(
         "--store-prompts",
         action="store_true",
         help="Store full rendered prompt/message payloads in activation sidecar JSON.",
     )
     args = ap.parse_args()
+    hf_token = args.hf_token or os.environ.get("HF_TOKEN")
 
     run_id = args.run_id or f"probe-run-{uuid.uuid4().hex[:8]}"
     out_dir = Path(args.out_dir)
@@ -199,7 +213,7 @@ def main():
             run_id,
             args.device,
             args.max_length,
-            args.hf_token,
+            hf_token,
             args.store_prompts,
         )
 

@@ -12,15 +12,17 @@ python3 -m probes.run_all \
   --prompts data/shell_game_v1/shell_game_honest.sft.jsonl data/shell_game_v1/shell_game_deceptive.sft.jsonl \
   --stages base:none \
   --out-dir outputs/probes_trace_smoke \
-  --max-records 20 \
-  --hf-token "$HF_TOKEN" \
+  --run-id local-base-trace-smoke-apr29-n20 \
+  --device mps \
+  --max-length 256 \
+  --max-records 10 \
   --trace-smoke
 ```
 
 ## Current Local State
 
 - `HF_TOKEN` is set.
-- Gemma cache exists locally under `~/.cache/huggingface/hub/models--google--gemma-2-2b-it`.
+- Gemma cache is now populated locally under `~/.cache/huggingface/hub/models--google--gemma-2-2b-it`.
 - The frozen `data/shell_game_v1/` files are tracked on `main`; pull the latest
   repo state before running probes from another checkout.
 - Default `python3` has `numpy`, but lacks `torch`, `transformers`, `peft`,
@@ -29,35 +31,43 @@ python3 -m probes.run_all \
   `sklearn`, but the model-loading stack is broken for probes:
   - `torch` imports as a namespace package only and has no `Tensor`.
   - `transformers` and `peft` fail because `markupsafe` is missing.
+- A temporary clean probe environment exists at `/tmp/slippery-probe-venv`.
 
 ## Status
 
-Base-only probe smoke is blocked on Python environment repair, not on repo code
-or Hugging Face cache.
+Base-only trace-smoke passed with 20 records total: 10 honest + 10 deceptive.
+This validates extraction, per-layer probe training, and plotting on the base
+Gemma model. It is still label-leaky pipeline validation, not final
+interpretability evidence.
 
-## Minimal Fix Path
+Generated ignored artifacts:
 
-There is no project-wide requirements file yet, so use one clean environment
-for the probe stack and record the resolved versions after the smoke succeeds:
+- `outputs/probes_trace_smoke/activations_base_local-base-trace-smoke-apr29-n20.npz`
+- `outputs/probes_trace_smoke/activations_base_local-base-trace-smoke-apr29-n20.json`
+- `outputs/probes_trace_smoke/probe_results_base_local-base-trace-smoke-apr29-n20.json`
+- `outputs/probes_trace_smoke/layer_migration_local-base-trace-smoke-apr29-n20.png`
+
+## Reproduce
 
 ```bash
-python -m pip install torch transformers peft scikit-learn matplotlib tqdm
-python -m pip freeze > outputs/probe_env_freeze.txt
+uv venv /tmp/slippery-probe-venv --python /opt/anaconda3/envs/AI_env/bin/python3.12
+uv pip install --python /tmp/slippery-probe-venv/bin/python \
+  numpy torch transformers peft scikit-learn matplotlib tqdm accelerate sentencepiece protobuf
 ```
 
-On Apple Silicon, prefer the official PyTorch macOS/MPS install path if a fresh
-env is created. The probe code expects a normal PyTorch 2.x install,
-Transformers 4.x, PEFT 0.10+, and scikit-learn 1.x; do not repair the broken
-`AI_env` in place if a fresh env is faster. After repair, rerun:
+Do not pass `HF_TOKEN` on the command line; `probes.run_all` reads it from the
+environment by default.
 
 ```bash
-python3 probes/test_probes.py
-python3 -m probes.run_all \
+/tmp/slippery-probe-venv/bin/python probes/test_probes.py
+HF_HUB_DISABLE_XET=1 /tmp/slippery-probe-venv/bin/python -m probes.run_all \
   --model google/gemma-2-2b-it \
   --prompts data/shell_game_v1/shell_game_honest.sft.jsonl data/shell_game_v1/shell_game_deceptive.sft.jsonl \
   --stages base:none \
   --out-dir outputs/probes_trace_smoke \
-  --max-records 20 \
-  --hf-token "$HF_TOKEN" \
+  --run-id local-base-trace-smoke-apr29-n20 \
+  --device mps \
+  --max-length 256 \
+  --max-records 10 \
   --trace-smoke
 ```

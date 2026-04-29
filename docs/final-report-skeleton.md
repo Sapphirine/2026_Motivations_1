@@ -145,7 +145,7 @@ outputs/probes_eval_clean/layer_migration_<run_id>.png
 Fallback if needed:
 
 ```text
-outputs/probes_trace_smoke/layer_migration_<run_id>.png
+outputs/probes_trace_smoke/layer_migration_local-base-trace-smoke-apr29-n20.png
 ```
 
 Report:
@@ -153,6 +153,8 @@ Report:
 - peak AUC by stage,
 - layer of peak signal,
 - whether honesty SFT shifts or suppresses the signal.
+- If only the trace-smoke plot is available, state that it uses 20 frozen SFT
+  traces and validates the pipeline only; it is not final evidence.
 
 ## 8. Discussion
 

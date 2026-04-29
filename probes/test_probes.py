@@ -120,6 +120,12 @@ def test_probe_dataset_loader_messages_and_prompt_rows():
         assert trace_labels.tolist() == [0, 1]
         assert trace_inputs[0][-1]["role"] == "assistant"
 
+        limited_inputs, limited_labels, _ = load_probe_examples(
+            [honest, deceptive], trace_smoke=True, max_records=1
+        )
+        assert len(limited_inputs) == 2
+        assert limited_labels.tolist() == [0, 1]
+
         ambiguous = td / "shell_game_honest_deceptive.sft.jsonl"
         _write_jsonl(ambiguous, [{"messages": [{"role": "user", "content": "x"}]}])
         try:

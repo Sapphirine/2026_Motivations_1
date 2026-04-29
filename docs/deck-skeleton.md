@@ -65,7 +65,7 @@ Owner: Vikas.
 
 Status placeholder:
 
-- PR #2/#5 disposition pending Vikas feedback.
+- PR #2 environment scaffold merged; PR #5 still needs rebase/rewrite against `envs.*`.
 - Eval JSONL pending.
 
 ## Slide 7: Probe Method
@@ -119,8 +119,8 @@ Final if available:
 
 Fallback:
 
-- Trace-smoke/base-only probe clearly labeled as pipeline validation, not a
-  final interpretability claim.
+- Base-only trace-smoke completed on 20 frozen SFT traces. Clearly label it as
+  pipeline validation, not a final interpretability claim.
 
 ## Slide 11: Current Results
 
@@ -129,7 +129,7 @@ Fill during final integration:
 - Dataset validation: complete.
 - Training checkpoints: pending.
 - Eval transcripts: pending.
-- Probe smoke: blocked on local Python env.
+- Probe smoke: base-only trace-smoke complete; eval-clean probes pending.
 - Final plots: pending.
 
 ## Slide 12: Limitations
@@ -148,7 +148,7 @@ Fill during final integration:
 
 ## Slide 14: Next Work
 
-- Merge or rewrite evaluation env after PR #2/#5 decision.
+- Rebase/rewrite PR #5 evaluation runner against merged `envs.*`.
 - Run all five model stages on shell + transfer.
 - Replace trace-smoke probes with eval-clean probes.
 - Expand data and test whether signals persist under broader tasks.
