@@ -6,6 +6,14 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+## [v0.1.13] — 2026-04-29 — shell-game-data-tracking
+
+### Added
+- Tracked the frozen shell-game raw, SFT, manifest, and review artifacts under `data/` so teammates can pull the already-generated 100 honest + 100 deceptive examples from `main`.
+
+### Changed
+- Updated `.gitignore` to keep the current shell-game dataset versioned while continuing to ignore large/local ML artifacts by default.
+
 ## [v0.1.12] — 2026-04-29 — env-eval-scaffold
 
 ### Added

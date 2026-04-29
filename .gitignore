@@ -25,6 +25,10 @@ checkpoints/*
 !checkpoints/.gitkeep
 data/*
 !data/.gitkeep
+!data/shell_game_honest.jsonl
+!data/shell_game_deceptive.jsonl
+!data/shell_game_v1/
+!data/shell_game_v1/**
 outputs/*
 !outputs/.gitkeep
 wandb/
