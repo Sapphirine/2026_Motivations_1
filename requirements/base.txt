@@ -1,0 +1,3 @@
+# Shared lightweight runtime for validation/readiness scripts.
+numpy
+tqdm

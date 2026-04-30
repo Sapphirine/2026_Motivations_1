@@ -1,0 +1,4 @@
+# Probe runtime: eval stack plus sklearn/matplotlib for linear probes and plots.
+-r eval.txt
+scikit-learn
+matplotlib

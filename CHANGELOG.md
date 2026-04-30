@@ -6,6 +6,12 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+## [v0.1.16] — 2026-04-29 — team-uv-runbook
+
+### Added
+- Added `docs/team-runbook.md` with shared `uv venv` setup, token hygiene, lane-specific commands for Rithika/Vikas/Alex, and explicit shell-game SFT data usage guidance.
+- Added lightweight requirements manifests for base scripts, eval, probes, training, and Colab/CUDA training.
+
 ## [v0.1.15] — 2026-04-29 — probe-smoke-readiness
 
 ### Changed

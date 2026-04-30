@@ -1,0 +1,4 @@
+# Training runtime for SFT/LoRA without CUDA-only quantization packages.
+-r eval.txt
+datasets
+trl

@@ -1,0 +1,8 @@
+# Model-loading + evaluation runtime.
+-r base.txt
+torch
+transformers
+peft
+accelerate
+sentencepiece
+protobuf

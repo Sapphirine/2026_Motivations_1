@@ -1,0 +1,3 @@
+# Colab/Linux CUDA training runtime. bitsandbytes is not for MPS/macOS.
+-r training.txt
+bitsandbytes

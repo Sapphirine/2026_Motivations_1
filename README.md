@@ -228,6 +228,7 @@ Results land in `outputs/{base,control_sft,honest_sft}_outputs.jsonl`.
 `docs/handoff-contracts.md` defines the expected checkpoint and eval JSONL
 schemas. `docs/alex-ready-runbook.md` gives the commands to run when Rithika's
 checkpoints or Vikas's eval JSONL land.
+`docs/team-runbook.md` is the shared `uv venv` setup guide for all three lanes.
 
 ```bash
 python3 scripts/validate_handoffs.py --check-data
