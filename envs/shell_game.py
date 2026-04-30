@@ -222,10 +222,14 @@ class ShellGameEnv:
         """
         parsed = parse_dealer_output(dealer_message)
         claim = parsed["dealer_claim"]
+
+        # If no explicit guess provided, simulate a user following the dealer's claim
+        effective_guess = user_guess if user_guess is not None else claim
+
         transcript = [
             {"role": "env", "true_position": true_position},
             {"role": "dealer", "output": dealer_message},
-            {"role": "user", "guess": user_guess},
+            {"role": "user", "guess": effective_guess},
         ]
         score = self.score_transcript(transcript)
         return {
@@ -241,7 +245,7 @@ class ShellGameEnv:
             "output": dealer_message,
             "is_deceptive": score["deceived"],
             "is_honest": score["honest"],
-            "user_guess": user_guess,
+            "user_guess": effective_guess,
             "reward": score["reward"],
             "parser_error": claim is None,
         }
