@@ -46,7 +46,7 @@ def load_model_and_tokenizer(model_id: str, adapter_path: str = None, quantize: 
     lazy_import()
     device, dtype = get_device_and_dtype()
     print(f"Loading model {model_id} on {device}...")
-    
+
     tokenizer = AutoTokenizer.from_pretrained(model_id)
     # Recommended for Gemma-2-2b-it generation
     tokenizer.padding_side = "left"
@@ -67,15 +67,15 @@ def load_model_and_tokenizer(model_id: str, adapter_path: str = None, quantize: 
         kwargs["device_map"] = {"": device}
 
     model = AutoModelForCausalLM.from_pretrained(model_id, **kwargs)
-    
+
     if adapter_path and adapter_path.lower() != "base":
         if not Path(adapter_path).exists():
-            print(f"Warning: adapter path {adapter_path} not found, skipping adapter load.")
-        else:
-            print(f"Loading adapter from {adapter_path}...")
-            model = PeftModel.from_pretrained(model, adapter_path)
-            model = model.merge_and_unload()
-    
+            raise FileNotFoundError(f"Adapter path {adapter_path} not found.")
+
+        print(f"Loading adapter from {adapter_path}...")
+        model = PeftModel.from_pretrained(model, adapter_path)
+        model = model.merge_and_unload()
+
     return model, tokenizer
 
 def generate_response(model, tokenizer, prompt: str, max_new_tokens: int = 256) -> str:
@@ -98,7 +98,7 @@ def generate_response(model, tokenizer, prompt: str, max_new_tokens: int = 256) 
             do_sample=False,
             pad_token_id=tokenizer.eos_token_id,
         )
-    
+
     # Slice on tokens to avoid character-stripping issues (H1)
     new_tokens = out[0, prompt_len:]
     return tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
@@ -107,7 +107,7 @@ def run_eval(model, tokenizer, stage: str, num_shell_rounds: int = 20, run_id_pr
     results = []
     if not run_id_prefix:
         run_id_prefix = f"run_{int(time.time())}"
-    
+
     # 1. Shell Game Eval
     print(f"Running Shell Game eval for {stage} ({num_shell_rounds} rounds)...")
     shell_env = ShellGameEnv()
@@ -116,7 +116,7 @@ def run_eval(model, tokenizer, stage: str, num_shell_rounds: int = 20, run_id_pr
         state = shell_env.reset(seed=i)
         prompt = shell_env.render_prompt(state)
         response = generate_response(model, tokenizer, prompt)
-        
+
         record = shell_env.make_eval_record(
             run_id=f"{run_id_prefix}_{stage}_shell_{i:03d}",
             model_stage=stage,
@@ -132,7 +132,7 @@ def run_eval(model, tokenizer, stage: str, num_shell_rounds: int = 20, run_id_pr
     state = py_env.reset(seed=0)
     prompt = py_env.render_prompt(state)
     response = generate_response(model, tokenizer, prompt, max_new_tokens=512)
-    
+
     record = py_env.make_eval_record(
         run_id=f"{run_id_prefix}_{stage}_py_transfer",
         model_stage=stage,
@@ -140,7 +140,7 @@ def run_eval(model, tokenizer, stage: str, num_shell_rounds: int = 20, run_id_pr
         model_output=response
     )
     results.append(record)
-    
+
     return results
 
 def main():
@@ -187,20 +187,20 @@ def main():
                 stage_names.append(name)
 
     all_results = []
-    
+
     for stage_name, adapter in zip(stage_names, adapters):
         model, tokenizer = load_model_and_tokenizer(args.model_id, adapter, quantize=args.quantize)
         stage_results = run_eval(model, tokenizer, stage_name, num_shell_rounds=args.rounds, run_id_prefix=args.run_id)
-        
+
         # Write results incrementally
         mode = "w" if args.overwrite and not all_results else "a"
         with open(output_path, mode) as f:
             for r in stage_results:
                 # ensure_ascii=False for readability (L4)
                 f.write(json.dumps(r, ensure_ascii=False) + "\n")
-        
+
         all_results.extend(stage_results)
-        
+
         # Free memory (M2)
         import gc
         del model
@@ -208,7 +208,7 @@ def main():
         gc.collect()
         if device == "cuda": torch.cuda.empty_cache()
         elif device == "mps": torch.mps.empty_cache()
-    
+
     print(f"Done! {len(all_results)} records written to {output_path}")
 
 if __name__ == "__main__":
