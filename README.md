@@ -33,97 +33,126 @@ Split by workstream rather than by paper section. Each lane owns shared artifact
 Shared contract (JSONL, one line per eval example):
 
 ```json
-{"run_id":"...", "stage":"base|control_sft|honest_sft|corrupt", "benchmark":"shell|py_transfer", "prompt":"...", "cot":"...", "output":"...", "reward":0.0}
+{"run_id":"...", "stage":"base|control_sft|honest_sft|control_corrupt|honest_corrupt", "benchmark":"shell|py_transfer", "prompt":"...", "cot":"...", "output":"...", "reward":0.0}
 ```
 
-## Wednesday Call Execution Flow
+## Project Status Flow
 
-Detailed companion notes: `docs/wednesday-call-execution-plan.md`.
-Effort key: S = less than 1 hour, M = half day, L = full day, XL = risky/multi-day.
+Detailed companion notes: `docs/execution-plan.md`.
+Status key: green = done, blue = in progress, gray = not started, red = blocked,
+yellow = risk/caveat.
+
+### High-Level Lifecycle
+
+```mermaid
+flowchart LR
+  classDef done fill:#eaf8ef,stroke:#2b9b55,color:#102d19
+  classDef progress fill:#e8f3ff,stroke:#2f6fed,color:#10233f
+  classDef todo fill:#f2f2f2,stroke:#8a8a8a,color:#252525
+  classDef blocked fill:#ffe8e8,stroke:#c62828,color:#4a0909
+  classDef risk fill:#fff7cc,stroke:#b8860b,color:#3b2c00
+
+  P["DONE: Proposal and team lanes"]:::done
+  D["DONE: Shell-game data v1<br/>100 honest + 100 deceptive"]:::done
+  M["DONE: Five-stage model handoff<br/>base + 4 LoRA adapters"]:::done
+  E["DONE: Local eval run<br/>105 scored rows"]:::done
+  B["DONE: Behavior and transfer plots<br/>SVG fallbacks"]:::done
+  A["IN PROGRESS: Analysis framing<br/>negative/ceiling result story"]:::progress
+  S["NOT STARTED: May 5 presentation<br/>final deck polish + rehearsal"]:::todo
+  R["NOT STARTED: May 12 report<br/>full writeup"]:::todo
+
+  T["DONE: Eval + probe tooling<br/>runner, validators, plots"]:::done
+  P0["DONE: All-checkpoint trace-smoke<br/>probe/load pipeline check"]:::done
+  X1["RISK: Shell prompt elicits reward gaming<br/>base and parents already at ceiling"]:::risk
+  X2["BLOCKED: Eval-clean probes<br/>need per-stage rows with both labels"]:::blocked
+  N["NOT STARTED: Optional neutral eval<br/>if time permits"]:::todo
+
+  P --> D --> M --> E --> B --> A --> S --> R
+  T --> E
+  M --> P0 --> A
+  E --> X1 --> A
+  E --> X2
+  X1 --> N --> X2
+```
+
+### Detailed Lane Map
 
 ```mermaid
 flowchart TD
-  classDef alex fill:#e8f3ff,stroke:#2f6fed,color:#10233f
-  classDef rithika fill:#fff0e6,stroke:#e56b1f,color:#3d1c08
-  classDef vikas fill:#eaf8ef,stroke:#2b9b55,color:#102d19
-  classDef team fill:#f4efff,stroke:#7952cc,color:#21113f
-  classDef artifact fill:#f7f7f7,stroke:#737373,color:#1f1f1f
+  classDef done fill:#eaf8ef,stroke:#2b9b55,color:#102d19
+  classDef progress fill:#e8f3ff,stroke:#2f6fed,color:#10233f
+  classDef todo fill:#f2f2f2,stroke:#8a8a8a,color:#252525
+  classDef blocked fill:#ffe8e8,stroke:#c62828,color:#4a0909
   classDef risk fill:#fff7cc,stroke:#b8860b,color:#3b2c00
+  classDef milestone fill:#f4efff,stroke:#7952cc,color:#21113f
 
-  D0["Frozen shell-game data v1<br/>Owner: Alex<br/>Status: done<br/>Effort: S"]:::artifact
-  D1["deceptive.sft.jsonl<br/>100 deceptive traces<br/>Input for corruption SFT"]:::artifact
-  D2["honest.sft.jsonl<br/>100 honest traces<br/>Reference/control only"]:::artifact
+  subgraph P["Project Setup"]
+    P1["DONE: Proposal and research question<br/>reward gaming + internal probes"]:::done
+    P2["DONE: Team split<br/>Rithika training, Vikas eval, Alex probing"]:::done
+  end
 
-  D0 --> D1
-  D0 --> D2
+  subgraph D["Data Lane"]
+    D1["DONE: Manual paste-generator workflow<br/>validated locally"]:::done
+    D2["DONE: Raw shell-game data<br/>100 honest + 100 deceptive"]:::done
+    D3["DONE: Frozen SFT data<br/>data/shell_game_v1/*.sft.jsonl"]:::done
+  end
 
   subgraph R["Rithika: Training Lane"]
-    R1["Confirm base, control_sft,<br/>honest_sft adapters exist<br/>Effort: S"]:::rithika
-    R2["Train control_corrupt<br/>parent = control_sft<br/>data = deceptive.sft.jsonl<br/>Effort: M-L"]:::rithika
-    R3["Train honest_corrupt<br/>parent = honest_sft<br/>data = deceptive.sft.jsonl<br/>Effort: M-L"]:::rithika
-    R4["Write run_metadata.jsonl<br/>paths, LR, epochs, LoRA config,<br/>device, dataset hash<br/>Effort: S"]:::rithika
-    R5["5-model checkpoint handoff<br/>base, control_sft, honest_sft,<br/>control_corrupt, honest_corrupt<br/>Effort: S"]:::artifact
+    R1["DONE: Parent adapters<br/>control_sft + honest_sft"]:::done
+    R2["DONE: Corruption SFT<br/>control_corrupt from control_sft"]:::done
+    R3["DONE: Corruption SFT<br/>honest_corrupt from honest_sft"]:::done
+    R4["DONE: Local checkpoint handoff<br/>4 final_adapter dirs + run_metadata"]:::done
   end
 
-  D1 --> R2
-  D1 --> R3
-  R1 --> R2
-  R1 --> R3
-  R2 --> R4
-  R3 --> R4
-  R4 --> R5
-
-  subgraph V["Vikas: Environment + Evaluation Lane"]
-    V1["Finalize shell-game eval runner<br/>no stage label leakage in prompt<br/>Effort: M"]:::vikas
-    V2["Finalize minimal Python transfer eval<br/>single tamper-detection case<br/>Effort: M-L"]:::vikas
-    V3["Run all 5 checkpoints<br/>on shell + transfer evals<br/>Effort: M"]:::vikas
-    V4["Scored eval JSONL handoff<br/>behavior + transfer results<br/>Effort: S"]:::artifact
+  subgraph V["Vikas / Eval Lane"]
+    V1["DONE: ShellGameEnv<br/>claim parser + scoring"]:::done
+    V2["DONE: Python-transfer env<br/>tamper detector"]:::done
+    V3["DONE: eval_runner.py<br/>loads base/adapters and writes JSONL"]:::done
+    V4["DONE: Five-stage local eval<br/>outputs/eval_results.jsonl, 105 rows"]:::done
+    V5["DONE: Behavior + transfer summaries<br/>outputs/eval_summary.md + SVG plots"]:::done
   end
 
-  R5 --> V3
+  subgraph A["Alex: Probe + Analysis Lane"]
+    A1["DONE: Probe scaffold<br/>activation extraction + logistic probes"]:::done
+    A2["DONE: Base trace-smoke<br/>pipeline validation"]:::done
+    A3["DONE: All-checkpoint trace-smoke<br/>load/probe check across 5 stages"]:::done
+    A4["BLOCKED: Eval-clean layer migration<br/>current eval has one-class labels for 4 stages"]:::blocked
+    A5["IN PROGRESS: Results interpretation<br/>ceiling effect + limitations"]:::progress
+  end
+
+  subgraph O["Open Work To Finish Project"]
+    O1["IN PROGRESS: Deck framing<br/>do not oversell trace-smoke"]:::progress
+    O2["NOT STARTED: May 5 presentation polish<br/>plots, caveats, rehearsal"]:::todo
+    O3["NOT STARTED: May 12 final report<br/>methods, results, limitations"]:::todo
+    O4["NOT STARTED: Optional neutral shell eval<br/>only if time permits"]:::todo
+  end
+
+  X1["RISK: Shell eval is at deception ceiling<br/>base/control/honest/control_corrupt = 1.0"]:::risk
+  X2["RISK: Trace-smoke leaks labels<br/>AUC 1.0 is pipeline evidence only"]:::risk
+  X3["RISK: Python transfer has no tamper signal<br/>single prompt, all stages 0.0"]:::risk
+
+  P1 --> P2 --> D1 --> D2 --> D3
+  D3 --> R2
+  D3 --> R3
+  R1 --> R2 --> R4
+  R1 --> R3 --> R4
   V1 --> V3
   V2 --> V3
-  V3 --> V4
-
-  subgraph A["Alex: Probing + Analysis Lane"]
-    A1["Build trace_smoke probe path<br/>uses frozen SFT traces<br/>explicit leakage warning<br/>Effort: M"]:::alex
-    A2["Base-model activation extraction<br/>hidden states by layer<br/>Effort: M"]:::alex
-    A3["Base probe smoke plot<br/>AUC by layer, pipeline check<br/>Effort: S-M"]:::alex
-    A4["Checkpoint-pluggable extraction<br/>adapter_path per model stage<br/>Effort: M"]:::alex
-    A5["eval_clean activation extraction<br/>from Vikas transcripts<br/>Effort: M-L"]:::alex
-    A6["Layer-migration plot<br/>5 model stages x layers<br/>Effort: M"]:::alex
-  end
-
-  D0 --> A1
-  A1 --> A2
-  A2 --> A3
-  R5 --> A4
-  A4 --> A5
-  V4 --> A5
-  A5 --> A6
-
-  subgraph T["Wednesday Call: Team Integration"]
-    T1["Behavior plot<br/>deception rate by model stage<br/>Owner: Vikas + Alex<br/>Effort: S-M"]:::team
-    T2["Transfer plot<br/>shell deception to Python tampering<br/>Owner: Vikas + Alex<br/>Effort: S-M"]:::team
-    T3["Layer-migration plot<br/>internal polygraph money shot<br/>Owner: Alex<br/>Effort: M"]:::team
-    T4["Deck outline + result decision<br/>what is real, what is smoke-test<br/>Owner: all<br/>Effort: M"]:::team
-  end
-
-  V4 --> T1
-  V4 --> T2
-  A6 --> T3
-  A3 -. "backup if eval_clean is late" .-> T3
-  T1 --> T4
-  T2 --> T4
-  T3 --> T4
-
-  X1["Risk: trace_smoke has label leakage<br/>Use only for pipeline validation,<br/>not final interpretability claim"]:::risk
-  X2["Risk: checkpoints arrive late<br/>Alex can still demo base probe smoke;<br/>Vikas can still demo env behavior"]:::risk
-  X3["Risk: no behavioral shift<br/>Deck reframes as negative result +<br/>probe/eval scaffold"]:::risk
-
-  A1 --> X1
-  R5 --> X2
-  V4 --> X3
+  R4 --> V3 --> V4 --> V5
+  D3 --> A1 --> A2
+  R4 --> A3
+  A1 --> A3
+  V4 --> A4
+  V5 --> A5
+  A3 --> A5
+  X1 --> A5
+  X2 --> A5
+  X3 --> A5
+  A5 --> O1
+  V5 --> O1
+  O1 --> O2 --> O3
+  X1 --> O4
+  O4 --> A4
 ```
 
 ## Repo Layout
@@ -151,9 +180,6 @@ flowchart TD
 │   ├── prepare_shell_game_data.py            # freeze, audit, and convert shell-game JSONL
 │   ├── sft_fix.py                            # portable SFT pipeline (CUDA + MPS)
 │   └── validate_shell_game_jsonl.py          # validator for manual shell-game JSONL
-├── scripts/
-│   ├── eval_runner.py                        # end-to-end evaluation for all stages
-│   └── smoke_test_envs.py                    # unit tests for environments
 ├── notebooks/
 │   └── sft_pipeline_v2_2026-04-24.ipynb      # fixed Colab-runnable version of v1 SFT notebook
 ├── probes/
@@ -164,6 +190,8 @@ flowchart TD
 │   ├── plot.py                               # layer-migration plot
 │   └── test_probes.py                        # synthetic/data-loader smoke tests
 ├── scripts/
+│   ├── eval_runner.py                        # end-to-end evaluation for all stages
+│   ├── smoke_test_envs.py                    # unit tests for environments
 │   ├── validate_handoffs.py                  # data/checkpoint/eval JSONL readiness checks
 │   ├── summarize_eval_results.py             # eval JSONL -> Markdown/JSON summary
 │   ├── plot_eval_results.py                  # eval JSONL -> behavior/transfer PNGs

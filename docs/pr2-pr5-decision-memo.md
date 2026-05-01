@@ -1,6 +1,6 @@
 # PR #2 / PR #5 Decision Memo
 
-High-level memo for the Wednesday sync. Do not decide without Vikas.
+High-level memo for the project sync. Do not decide without Vikas.
 
 ## Current State
 

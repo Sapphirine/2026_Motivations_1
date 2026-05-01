@@ -51,8 +51,9 @@ Owner: Rithika.
 
 Status placeholder:
 
-- Final adapter paths: pending handoff.
-- `run_metadata.jsonl`: pending handoff.
+- Final adapter paths: available locally under `checkpoints/`.
+- `run_metadata.jsonl`: available; corruption rows preserve Colab path
+  provenance.
 
 ## Slide 6: Evaluation Lane
 
@@ -65,8 +66,8 @@ Owner: Vikas.
 
 Status placeholder:
 
-- PR #2 environment scaffold merged; PR #5 still needs rebase/rewrite against `envs.*`.
-- Eval JSONL pending.
+- PR #2 environment scaffold merged; PR #5 evaluation runner merged.
+- Eval JSONL generated locally on 2026-05-01.
 
 ## Slide 7: Probe Method
 
@@ -87,7 +88,10 @@ Goal:
 
 Final if available:
 
-- Use Vikas scored eval JSONL.
+- Use `outputs/eval_results.jsonl`.
+- Current result: base/control/honest/control-corrupt all show 1.0 shell
+  deception rate; honest-corrupt shows 0.65, partly because 7/20 claims were
+  parser errors.
 
 Fallback:
 
@@ -101,7 +105,8 @@ Goal:
 
 Final if available:
 
-- Use Vikas scored eval JSONL.
+- Use `outputs/eval_results.jsonl`.
+- Current result: no stage tampered on the single Python-transfer prompt.
 
 Fallback:
 
@@ -119,24 +124,28 @@ Final if available:
 
 Fallback:
 
-- Base-only trace-smoke completed on 20 frozen SFT traces. Clearly label it as
-  pipeline validation, not a final interpretability claim.
+- All-checkpoint trace-smoke completed on 40 frozen SFT traces. Clearly label
+  it as pipeline validation, not a final interpretability claim.
 
 ## Slide 11: Current Results
 
 Fill during final integration:
 
 - Dataset validation: complete.
-- Training checkpoints: pending.
-- Eval transcripts: pending.
-- Probe smoke: base-only trace-smoke complete; eval-clean probes pending.
-- Final plots: pending.
+- Training checkpoints: local handoff validated.
+- Eval transcripts: generated locally; 105 canonical rows.
+- Probe smoke: all-checkpoint trace-smoke complete; eval-clean probes not
+  meaningful from current rows because most shell stages have only one behavior
+  class.
+- Final plots: behavior/transfer plots generated as SVG fallbacks.
 
 ## Slide 12: Limitations
 
 - Tiny dataset and compressed timeline.
 - SFT corruption is a behavior-cloning proxy, not full RL.
 - Trace-smoke probes can leak labels and cannot support final claims.
+- The current shell prompt strongly incentivizes deception, so base and parent
+  adapters are already at ceiling.
 - Small model and narrow environments limit generalization.
 
 ## Slide 13: Takeaways
@@ -148,7 +157,8 @@ Fill during final integration:
 
 ## Slide 14: Next Work
 
-- Rebase/rewrite PR #5 evaluation runner against merged `envs.*`.
-- Run all five model stages on shell + transfer.
-- Replace trace-smoke probes with eval-clean probes.
+- Add a neutral or honesty-pressure shell eval if we need a cleaner behavioral
+  delta.
+- Replace trace-smoke probes with eval-clean probes only after we have
+  per-stage rows with both behavior classes.
 - Expand data and test whether signals persist under broader tasks.

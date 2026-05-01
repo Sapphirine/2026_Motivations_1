@@ -46,6 +46,25 @@ Validation:
 python3 scripts/validate_handoffs.py --check-checkpoints
 ```
 
+Status on 2026-05-01:
+
+- Rithika's shared Drive folder has all four expected adapter folders:
+  `gemma_control_sft`, `gemma_honest_sft`, `gemma_control_corrupt_sft`,
+  and `gemma_honest_corrupt_sft`, each with a `final_adapter/` directory.
+- Each `final_adapter/` contains `adapter_config.json`,
+  `adapter_model.safetensors`, tokenizer files, and a PEFT README whose
+  `base_model` is `google/gemma-2-2b-it`.
+- `checkpoints/run_metadata.jsonl` records the two corruption runs:
+  `control_sft -> control_corrupt` and `honest_sft -> honest_corrupt`, both
+  trained on the deceptive shell-game JSONL with CUDA.
+- Large adapter files should stay out of Git. Keep them in Drive, Colab, or
+  another external artifact store; local copies under `checkpoints/` are
+  gitignored.
+- The remaining hard validation is a load/eval test with
+  `PeftModel.from_pretrained(...)`. Run it where the Drive checkpoint folders
+  are mounted, or first copy/symlink the adapter folders into local
+  `checkpoints/`.
+
 ## Vikas -> Alex: Eval JSONL Handoff
 
 Preferred path:

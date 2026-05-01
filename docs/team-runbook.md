@@ -137,11 +137,10 @@ uv pip install --python .venv-eval/bin/python -r requirements/eval.txt
 Current repo state:
 
 - `envs/` is merged on `main`.
+- `scripts/eval_runner.py` is merged on `main`.
 - Use `envs.shell_game.ShellGameEnv`.
 - Use `envs.py_transfer.PyTransferEnv`.
 - Use `render_prompt`, `score_transcript`, and `make_eval_record`.
-
-PR #5 still needs rebase/rewrite against that API before merge.
 
 Expected eval handoff:
 

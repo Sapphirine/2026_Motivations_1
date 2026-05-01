@@ -6,9 +6,33 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+### Changed
+- Documented the 2026-05-01 Drive checkpoint handoff status, including which
+  adapter folders are present, what was validated without downloading binaries,
+  and where to run the final load/eval test if checkpoints stay in Colab.
+- Stopped tracking stale generated `outputs/*.jsonl` files while explicitly
+  allowing the small checkpoint `run_metadata.jsonl` handoff file.
+- Updated checkpoint validation to accept non-local Colab provenance paths when
+  the matching local adapter directories are present.
+- Recorded the 2026-05-01 local five-stage eval and all-checkpoint trace-smoke
+  results, including the shell deception ceiling issue and eval-clean probe
+  limitation.
+- Replaced the single status diagram with high-level and detailed Mermaid
+  project-flow diagrams covering the project from proposal through final report,
+  with current done/in-progress/not-started/blocked/risk coloring.
+- Renamed the companion status doc to `docs/execution-plan.md` and removed
+  stale date-specific wording from current planning surfaces.
+
+## [v0.1.17] — 2026-04-30 — post-call-completion-plan
+
 ### Added
 - `scripts/eval_runner.py`: End-to-end evaluation script that loads model checkpoints (adapters), runs the shell game and Python transfer benchmarks, and writes results to JSONL. Includes multi-device support (CUDA, MPS, CPU) and auto-merging of LoRA adapters.
 - `scripts/smoke_test_envs.py`: Unit tests for `ShellGameEnv` and `PythonTransferEnv` to verify scoring logic for honest, deceptive, and tampered responses.
+
+### Changed
+- Replaced the sync-call flow with a post-call completion flow in `README.md` and `docs/execution-plan.md`, showing done items, remaining handoffs, final artifact generation, and fallback risks through presentation/report completion.
+- Updated `BACKLOG.md` now that PR #5 is merged; eval runner work is done and final eval is blocked only on checkpoint availability.
+- Refreshed `docs/team-runbook.md` and `docs/deck-skeleton.md` to remove stale PR #5 blocker wording.
 
 ## [v0.1.16] — 2026-04-29 — team-uv-runbook
 
@@ -64,7 +88,7 @@ Entries accumulate here until the next version bump.
 ## [v0.1.9] — 2026-04-29 — backlog-readiness-scaffold
 
 ### Added
-- `BACKLOG.md` as the concrete execution queue for current, blocked, tabled, ready-when-inputs-land, and done work before the Wednesday sync.
+- `BACKLOG.md` as the concrete execution queue for current, blocked, tabled, ready-when-inputs-land, and done work before the project sync.
 - `docs/handoff-contracts.md` and `docs/alex-ready-runbook.md` to define checkpoint/eval JSONL handoffs and the exact commands Alex should run once teammate artifacts land.
 - `scripts/validate_handoffs.py`, `scripts/summarize_eval_results.py`, and `scripts/plot_eval_results.py` so checkpoint/eval artifacts can be validated, summarized, and plotted without depending on unmerged env code.
 - `scripts/test_readiness_tools.py` no-model smoke tests for the readiness scripts.
@@ -105,11 +129,11 @@ Entries accumulate here until the next version bump.
 ### Changed
 - Project working conventions now state that GitHub PRs default to squash merge.
 
-## [v0.1.5] — 2026-04-26 — wednesday-call-flow
+## [v0.1.5] — 2026-04-26 — execution-plan-flow
 
 ### Added
-- Wednesday-call execution flowchart in `README.md` showing Rithika, Vikas, Alex, and team-integration dependencies, concurrency, task owners, effort sizes, and key risks.
-- `docs/wednesday-call-execution-plan.md` companion notes covering the critical path, handoffs, and Wednesday definition of done.
+- Execution-plan flowchart in `README.md` showing Rithika, Vikas, Alex, and team-integration dependencies, concurrency, task owners, effort sizes, and key risks.
+- `docs/execution-plan.md` companion notes covering the critical path, handoffs, and definition of done.
 
 ## [v0.1.4] — 2026-04-25 — shell-game-freeze-audit
 

@@ -37,6 +37,28 @@ Then run:
 python3 scripts/validate_handoffs.py --check-checkpoints
 ```
 
+If the adapters stay in Google Drive/Colab instead of local Git checkout, run
+the real eval in Colab after mounting Drive:
+
+```bash
+python3 scripts/eval_runner.py \
+  --model_id google/gemma-2-2b-it \
+  --adapters \
+    base \
+    /content/drive/MyDrive/Big_Data_Analytics_Final_Project/checkpoints/gemma_control_sft/final_adapter \
+    /content/drive/MyDrive/Big_Data_Analytics_Final_Project/checkpoints/gemma_honest_sft/final_adapter \
+    /content/drive/MyDrive/Big_Data_Analytics_Final_Project/checkpoints/gemma_control_corrupt_sft/final_adapter \
+    /content/drive/MyDrive/Big_Data_Analytics_Final_Project/checkpoints/gemma_honest_corrupt_sft/final_adapter \
+  --stages base control_sft honest_sft control_corrupt honest_corrupt \
+  --output_file outputs/eval_results.jsonl \
+  --rounds 20 \
+  --quantize \
+  --overwrite
+```
+
+Bring back only `outputs/eval_results.jsonl`, `outputs/eval_summary.md`, and
+plot files. Do not upload adapter binaries to GitHub.
+
 If only base/control/honest exist, use explicit stage specs instead of
 `--stages default`:
 

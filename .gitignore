@@ -23,6 +23,7 @@ env/
 # ML artifacts (too large for git)
 checkpoints/*
 !checkpoints/.gitkeep
+!checkpoints/run_metadata.jsonl
 data/*
 !data/.gitkeep
 !data/shell_game_honest.jsonl

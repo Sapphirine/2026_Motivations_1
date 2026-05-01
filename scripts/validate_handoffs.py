@@ -126,9 +126,17 @@ def validate_metadata_file(path: Path, reporter: Reporter) -> dict[str, dict[str
         by_stage[stage] = record
         adapter_path = resolve(Path(str(record["adapter_path"])))
         if not adapter_path.exists():
-            reporter.error(
-                f"{path}:{line_no}: adapter_path does not exist: {adapter_path}"
-            )
+            expected_rel_path = EXPECTED_ADAPTERS.get(stage)
+            expected_path = resolve(expected_rel_path) if expected_rel_path else None
+            if expected_path and expected_path.exists():
+                reporter.warn(
+                    f"{path}:{line_no}: adapter_path is non-local, but local "
+                    f"{stage} adapter exists at {expected_path.relative_to(REPO_ROOT)}"
+                )
+            else:
+                reporter.error(
+                    f"{path}:{line_no}: adapter_path does not exist: {adapter_path}"
+                )
     reporter.ok(f"{path.relative_to(REPO_ROOT)}: {len(by_stage)} metadata rows")
     return by_stage
 
