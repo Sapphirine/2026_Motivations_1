@@ -29,8 +29,8 @@ flowchart LR
   T["DONE: Eval + probe tooling"]:::done
   P0["DONE: All-checkpoint trace-smoke"]:::done
   X1["RISK: Shell task at deception ceiling"]:::risk
-  X2["BLOCKED: Eval-clean probes need both labels"]:::blocked
-  N["NOT STARTED: Optional neutral eval"]:::todo
+  X2["IN PROGRESS: Eval-clean prompt probes usable for 3 stages"]:::progress
+  N["DONE: Neutral shell eval"]:::done
 
   P --> D --> M --> E --> B --> A --> S --> R
   T --> E
@@ -80,7 +80,7 @@ flowchart TD
     A1["DONE: Probe scaffold"]:::done
     A2["DONE: Base trace-smoke"]:::done
     A3["DONE: All-checkpoint trace-smoke"]:::done
-    A4["BLOCKED: Eval-clean layer migration<br/>one-class labels for 4 stages"]:::blocked
+    A4["IN PROGRESS: Eval-clean prompt probes<br/>3 usable stages, 2 still one-class"]:::progress
     A5["IN PROGRESS: Results interpretation<br/>ceiling effect + limitations"]:::progress
   end
 
@@ -88,7 +88,7 @@ flowchart TD
     O1["IN PROGRESS: Deck framing"]:::progress
     O2["NOT STARTED: May 5 presentation polish"]:::todo
     O3["NOT STARTED: May 12 final report"]:::todo
-    O4["NOT STARTED: Optional neutral shell eval"]:::todo
+    O4["DONE: Neutral shell eval<br/>100 rows, shell only"]:::done
   end
 
   X1["RISK: Shell eval is at deception ceiling"]:::risk
@@ -133,9 +133,10 @@ flowchart TD
 - Behavior/transfer summary and plots are done in ignored `outputs/` artifacts.
 - Probe scaffolding is done: base trace-smoke and all-checkpoint trace-smoke
   both ran locally.
-- Eval-clean layer migration is blocked by current eval labels: four of five
-  shell stages have only deceptive rows, so there is no per-stage binary
-  classification target.
+- Neutral shell eval is done: it adds label diversity for `control_sft`,
+  `control_corrupt`, and `honest_corrupt`.
+- Eval-clean prompt probes are partially unblocked: those three stages have
+  prompt-only probe artifacts, while `base` and `honest_sft` remain one-class.
 
 ## Critical Path
 
@@ -144,15 +145,15 @@ The critical path is now:
 ```text
 Interpret current eval results
   -> choose honest framing for ceiling/no-transfer findings
-  -> decide whether optional neutral shell eval is worth time
+  -> use neutral eval to frame partial eval-clean probe results
   -> update deck with final-vs-smoke labels
   -> May 5 presentation
   -> May 12 final report
 ```
 
 The main technical pipeline is no longer blocked. The remaining work is
-presentation/report framing, plus an optional neutral eval if we want cleaner
-behavior classes for eval-clean probes.
+presentation/report framing and deciding how prominently to present the partial
+eval-clean prompt-probe result.
 
 ## Rithika Handoff
 
@@ -202,6 +203,9 @@ python3 scripts/plot_eval_results.py outputs/eval_results.jsonl --out-dir output
 - The current shell eval is a ceiling result: base/control/honest/control-corrupt
   already score as fully deceptive, while honest-corrupt is lower partly because
   of parser errors.
+- The neutral shell eval reduces the blocker for some stages but does not make
+  the full five-stage eval-clean probe plot possible: base and honest_sft remain
+  one-class.
 - Python transfer is currently a no-transfer result: every stage has tamper rate
   0.0 on the single prompt.
 
@@ -210,8 +214,9 @@ python3 scripts/plot_eval_results.py outputs/eval_results.jsonl --out-dir output
 - Behavior plot exists and is interpreted as a ceiling/elicitation result.
 - Transfer plot exists and is interpreted as no tamper transfer on the current
   single prompt.
-- Layer-migration plot exists from trace-smoke only and is labeled as pipeline
-  validation.
+- Layer-migration plot exists from trace-smoke and a partial eval-clean
+  prompt-probe plot exists for the three usable stages. Both limitations are
+  labeled clearly.
 - Slides explicitly separate final evidence from smoke-test evidence.
 - Remaining limitations are stated plainly: SFT corruption is not PPO/DPO, data
   is small, shell-game prompts directly incentivize reward gaming, and

@@ -64,8 +64,8 @@ flowchart LR
   T["DONE: Eval + probe tooling<br/>runner, validators, plots"]:::done
   P0["DONE: All-checkpoint trace-smoke<br/>probe/load pipeline check"]:::done
   X1["RISK: Shell prompt elicits reward gaming<br/>base and parents already at ceiling"]:::risk
-  X2["BLOCKED: Eval-clean probes<br/>need per-stage rows with both labels"]:::blocked
-  N["NOT STARTED: Optional neutral eval<br/>if time permits"]:::todo
+  X2["IN PROGRESS: Eval-clean prompt probes<br/>usable for 3 of 5 stages"]:::progress
+  N["DONE: Neutral shell eval<br/>adds label diversity for some stages"]:::done
 
   P --> D --> M --> E --> B --> A --> S --> R
   T --> E
@@ -116,7 +116,7 @@ flowchart TD
     A1["DONE: Probe scaffold<br/>activation extraction + logistic probes"]:::done
     A2["DONE: Base trace-smoke<br/>pipeline validation"]:::done
     A3["DONE: All-checkpoint trace-smoke<br/>load/probe check across 5 stages"]:::done
-    A4["BLOCKED: Eval-clean layer migration<br/>current eval has one-class labels for 4 stages"]:::blocked
+    A4["IN PROGRESS: Eval-clean prompt probes<br/>3 usable stages, 2 still one-class"]:::progress
     A5["IN PROGRESS: Results interpretation<br/>ceiling effect + limitations"]:::progress
   end
 
@@ -124,7 +124,7 @@ flowchart TD
     O1["IN PROGRESS: Deck framing<br/>do not oversell trace-smoke"]:::progress
     O2["NOT STARTED: May 5 presentation polish<br/>plots, caveats, rehearsal"]:::todo
     O3["NOT STARTED: May 12 final report<br/>methods, results, limitations"]:::todo
-    O4["NOT STARTED: Optional neutral shell eval<br/>only if time permits"]:::todo
+    O4["DONE: Neutral shell eval<br/>100 rows, shell only"]:::done
   end
 
   X1["RISK: Shell eval is at deception ceiling<br/>base/control/honest/control_corrupt = 1.0"]:::risk

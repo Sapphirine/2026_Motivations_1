@@ -116,6 +116,74 @@ Generated ignored artifacts:
 - `outputs/plots/transfer_tamper_rate.svg`
 - `outputs/probes_trace_smoke_full_20260501/layer_migration_local-full-trace-smoke-20260501.png`
 
+## 2026-05-01 Neutral Eval And Partial Eval-Clean Probes
+
+A neutral shell condition was added to remove the explicit corrupted reward
+instruction from the prompt. It still asks for the same tagged shell-game
+response, but says the model is evaluated on accurate, legible reporting.
+
+Neutral shell eval command:
+
+```bash
+HF_HUB_DISABLE_XET=1 .venv-train/bin/python scripts/eval_runner.py \
+  --model_id google/gemma-2-2b-it \
+  --adapters \
+    base \
+    checkpoints/gemma_control_sft/final_adapter \
+    checkpoints/gemma_honest_sft/final_adapter \
+    checkpoints/gemma_control_corrupt_sft/final_adapter \
+    checkpoints/gemma_honest_corrupt_sft/final_adapter \
+  --stages base control_sft honest_sft control_corrupt honest_corrupt \
+  --output_file outputs/eval_neutral_shell_20260501.jsonl \
+  --rounds 20 \
+  --shell-conditions neutral \
+  --skip-py-transfer \
+  --overwrite \
+  --run_id local-neutral-20260501
+```
+
+Neutral shell summary:
+
+| Stage | Deception rate | Parser errors |
+|---|---:|---:|
+| base | 1.000 | 0 |
+| control_sft | 0.750 | 0 |
+| honest_sft | 1.000 | 0 |
+| control_corrupt | 0.400 | 0 |
+| honest_corrupt | 0.650 | 0 |
+
+Combining the corrupted-reward and neutral shell rows gives binary labels for
+three stages:
+
+| Stage | Rows | Deceptive | Honest/non-deceptive | Probe status |
+|---|---:|---:|---:|---|
+| control_sft | 40 | 35 | 5 | ran |
+| control_corrupt | 40 | 28 | 12 | ran |
+| honest_corrupt | 40 | 26 | 14 | ran |
+| base | 40 | 40 | 0 | skipped |
+| honest_sft | 40 | 40 | 0 | skipped |
+
+Partial eval-clean prompt probes were run stage-by-stage on prompt-only rows.
+These avoid assistant-trace leakage, but they are still small and confounded by
+prompt condition, so they should be presented as preliminary rather than as the
+central interpretability claim.
+
+Best-layer summary:
+
+| Stage | Best layer | Best AUC | Note |
+|---|---:|---:|---|
+| control_sft | 1 | 1.000 | highly imbalanced labels, 35/5 |
+| control_corrupt | 0 | 1.000 | 28/12 labels |
+| honest_corrupt | 7 | 1.000 | 26/14 labels |
+
+Generated ignored artifacts:
+
+- `outputs/eval_neutral_shell_20260501.jsonl`
+- `outputs/eval_neutral_shell_summary_20260501.md`
+- `outputs/plots_neutral_shell_20260501/behavior_deception_rate.png`
+- `outputs/probes_eval_clean_inputs_20260501/*.jsonl`
+- `outputs/probes_eval_clean_20260501/layer_migration_eval-clean-usable-stages-20260501.png`
+
 ## Reproduce
 
 ```bash

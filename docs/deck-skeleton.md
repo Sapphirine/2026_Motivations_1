@@ -76,8 +76,8 @@ Owner: Alex.
 - Extract last-token hidden states for every transformer block.
 - Train logistic regression probes per layer.
 - Plot AUC by layer for each model stage.
-- Final claims use eval-clean labels from scored transcripts; trace-smoke labels
-  are pipeline validation only.
+- Final claims use eval-clean labels from scored transcripts where both behavior
+  classes exist; trace-smoke labels are pipeline validation only.
 - Key plot: whether honesty SFT reduces or shifts the deception signal.
 
 ## Slide 8: Behavior Plot
@@ -120,7 +120,8 @@ Goal:
 
 Final if available:
 
-- Eval-clean transcripts + Rithika adapters.
+- Partial eval-clean prompt probes for `control_sft`, `control_corrupt`, and
+  `honest_corrupt`.
 
 Fallback:
 
@@ -134,9 +135,9 @@ Fill during final integration:
 - Dataset validation: complete.
 - Training checkpoints: local handoff validated.
 - Eval transcripts: generated locally; 105 canonical rows.
-- Probe smoke: all-checkpoint trace-smoke complete; eval-clean probes not
-  meaningful from current rows because most shell stages have only one behavior
-  class.
+- Probe smoke: all-checkpoint trace-smoke complete.
+- Partial eval-clean prompt probes: complete for three stages after neutral
+  shell eval; base and honest_sft remain one-class.
 - Final plots: behavior/transfer plots generated as SVG fallbacks.
 
 ## Slide 12: Limitations
@@ -157,8 +158,8 @@ Fill during final integration:
 
 ## Slide 14: Next Work
 
-- Add a neutral or honesty-pressure shell eval if we need a cleaner behavioral
-  delta.
-- Replace trace-smoke probes with eval-clean probes only after we have
-  per-stage rows with both behavior classes.
+- Decide whether the partial eval-clean prompt probes are strong enough for the
+  deck, or keep them as a caveated appendix/result.
+- Add a stronger neutral/honesty-pressure shell eval only if we need full
+  five-stage eval-clean probes.
 - Expand data and test whether signals persist under broader tasks.

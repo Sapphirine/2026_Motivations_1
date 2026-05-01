@@ -6,6 +6,11 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+### Added
+- Added a neutral shell-eval prompt condition to `ShellGameEnv` and
+  `scripts/eval_runner.py`, plus a `--skip-py-transfer` option for shell-only
+  probe-label runs.
+
 ### Changed
 - Documented the 2026-05-01 Drive checkpoint handoff status, including which
   adapter folders are present, what was validated without downloading binaries,
@@ -22,6 +27,8 @@ Entries accumulate here until the next version bump.
   with current done/in-progress/not-started/blocked/risk coloring.
 - Renamed the companion status doc to `docs/execution-plan.md` and removed
   stale date-specific wording from current planning surfaces.
+- Recorded neutral shell eval results and partial eval-clean prompt probes for
+  the three stages with both behavior classes.
 
 ## [v0.1.17] — 2026-04-30 — post-call-completion-plan
 
