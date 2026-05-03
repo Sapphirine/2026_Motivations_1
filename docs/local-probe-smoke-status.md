@@ -173,11 +173,11 @@ These avoid assistant-trace leakage, but they are still small and confounded by
 prompt condition, so they should be presented as preliminary rather than as the
 central interpretability claim.
 
-Adversarial review on 2026-05-02 tightened this caveat: the three 40-row
-eval-clean prompt files contain only 6 unique prompt groups per stage. The old
-row-wise probe split can therefore place duplicate prompt activations in both
-train and test, so the AUC 1.0 values below are now treated as non-independent
-sanity checks, not evidence for an internal deception signal.
+A subsequent dry-run analysis on 2026-05-02 tightened this caveat: the three
+40-row eval-clean prompt files contain only 6 unique prompt groups per stage.
+The old row-wise probe split can therefore place duplicate prompt activations in
+both train and test, so the AUC 1.0 values below are now treated as
+non-independent sanity checks, not evidence for an internal deception signal.
 
 Best-layer summary:
 
@@ -197,7 +197,7 @@ Generated ignored artifacts:
 
 ## 2026-05-02 Rescue Patch
 
-Two methodology fixes landed after the adversarial review:
+Two methodology fixes landed after the dry-run analysis above:
 
 - `ShellGameEnv.reset()` now assigns a prompt variant, and
   `ShellGameEnv.render_prompt()` has 20 shell prompt variants. The default

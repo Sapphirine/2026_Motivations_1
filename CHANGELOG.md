@@ -32,6 +32,11 @@ Entries accumulate here until the next version bump.
   presentation.
 
 ### Changed
+- Scrubbed internal-process language and AI-tooling references from
+  grader-facing surfaces: `README.md` no longer annotates `CLAUDE.md` as
+  "agentic coding tools", and `docs/final-presentation-draft.md` and
+  `docs/local-probe-smoke-status.md` reframe "adversarial review" mentions
+  as dry-run analysis.
 - Extended probe training and summaries with balanced accuracy, persisted
   record IDs, split manifests, per-layer test predictions, k-fold support, and
   explicit degenerate-cell handling for per-condition analysis.

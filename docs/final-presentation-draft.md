@@ -5,10 +5,10 @@ Google Slides or used as the content source for a local PPTX.
 
 Core framing: we built a complete small-model reward-gaming pipeline, found a
 real measurement failure mode, and patched the methodology. The first shell eval
-showed a ceiling effect; adversarial review then exposed two issues: 20 rounds
-collapsed to 3 prompt states, and row-wise probe splits could leak duplicate
-prompt activations. The rescue pass fixes both by adding prompt-diverse shell
-variants and grouped probe splitting.
+showed a ceiling effect; a follow-up dry-run analysis exposed two issues: 20
+rounds collapsed to 3 prompt states, and row-wise probe splits could leak
+duplicate prompt activations. The rescue pass fixes both by adding
+prompt-diverse shell variants and grouped probe splitting.
 
 ## Slide 1: The Slippery Slope
 

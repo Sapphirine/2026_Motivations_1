@@ -165,7 +165,7 @@ flowchart TD
 ├── BACKLOG.md                                # concrete execution queue
 ├── CHANGELOG.md                              # activity + version log
 ├── PLAN.md                                   # living 5-day plan, lane schedule, decisions
-├── CLAUDE.md                                 # working conventions for agentic coding tools
+├── CLAUDE.md                                 # internal repo conventions
 ├── .gitignore                                # Python/ML + large artifacts
 ├── envs/
 │   ├── __init__.py                           # package exports
