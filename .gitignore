@@ -53,6 +53,9 @@ runs/
 .claude/
 .codex/
 
+# Cross-agent review prompts (local only)
+review/
+
 # Env
 .env
 .env.local
@@ -61,3 +64,5 @@ runs/
 *.pptx
 *.pdf
 !docs/*.pdf
+!deliverables/**/*.pptx
+!deliverables/**/*.pdf

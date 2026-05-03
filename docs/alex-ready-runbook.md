@@ -31,6 +31,12 @@ checkpoints/gemma_honest_corrupt_sft/final_adapter/
 checkpoints/run_metadata.jsonl
 ```
 
+The corrupt adapter directory names are legacy handoff paths. For the clean Path
+A rerun, label the eval stages as `control_clean_corrupt` and
+`honest_clean_corrupt` so artifacts match the current report/deck tables. Do
+not pass the legacy stage labels in `--stages`; only the storage paths retain
+the old names.
+
 Then run:
 
 ```bash
@@ -49,7 +55,7 @@ python3 scripts/eval_runner.py \
     /content/drive/MyDrive/Big_Data_Analytics_Final_Project/checkpoints/gemma_honest_sft/final_adapter \
     /content/drive/MyDrive/Big_Data_Analytics_Final_Project/checkpoints/gemma_control_corrupt_sft/final_adapter \
     /content/drive/MyDrive/Big_Data_Analytics_Final_Project/checkpoints/gemma_honest_corrupt_sft/final_adapter \
-  --stages base control_sft honest_sft control_corrupt honest_corrupt \
+  --stages base control_sft honest_sft control_clean_corrupt honest_clean_corrupt \
   --output_file outputs/eval_results.jsonl \
   --rounds 20 \
   --quantize \
@@ -108,11 +114,16 @@ python3 -m probes.run_all \
   --prompts outputs/eval_results.jsonl \
   --stages default \
   --out-dir outputs/probes_eval_clean \
-  --max-length 512
+  --max-length 512 \
+  --split-strategy auto
 ```
 
 If checkpoint handoff is partial, replace `--stages default` with explicit
 `stage:adapter_path` pairs for the stages that exist.
+
+`--split-strategy auto` keeps duplicate prompt groups together when they exist.
+If it fails to find a grouped split with both behavior classes on both sides,
+the prompt suite is not yet strong enough for a claim-level probe plot.
 
 ## 5. Slide-Ready Artifacts
 
@@ -133,3 +144,18 @@ outputs/probes_eval_clean/layer_migration_<run_id>.png
 
 Label trace-smoke plots clearly. They validate the pipeline, not the final
 interpretability claim.
+
+## PPTX Lock
+
+- Hard checkpoint: 2026-05-04 18:00 local.
+- After lock: only typo/text fixes inside Keynote; no figure swaps or slide
+  reorders.
+- Final filename pattern: `deliverables/slippery-slope-final-<YYYYMMDD>.pptx`.
+- Verify: open the file once after lock; record the timestamp here.
+- May 5 PPTX uses the Phase 0 no-CI layer-migration plot. Phase 1 CI plots land
+  in the report; an optional post-presentation deck copy may add CI bars later.
+
+Deck dry-run:
+
+- Target: <=12 minutes.
+- Status: not yet timed.

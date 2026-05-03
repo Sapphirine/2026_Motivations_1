@@ -7,11 +7,47 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 Entries accumulate here until the next version bump.
 
 ### Added
+- Added resume-safe sharded shell eval manifests, deterministic prompt seeds,
+  prompt-family metadata, bootstrap CI tooling, lexical leakage canary tooling,
+  and per-condition probe-input exports for final-project evidence hardening.
+- Added committed Path A clean figure/evidence snapshots under `deliverables/`
+  so final deck/report references no longer depend on sibling worktrees.
+- Added `experiments/train_clean_corruption.py` for the full Path A rerun:
+  starting from parent SFT adapters, train fresh clean-corruption LoRA adapters
+  on the de-leaked shell-game SFT data.
+- Added reproducible eval-to-probe conversion and probe-summary scripts for
+  prompt-clean Path A artifacts.
+- Generated prompt-diverse shell eval, plot, eval-clean probe artifacts, and a
+  timestamped rescue deck/PDF for the May 5 presentation.
+- Added 20 shell prompt variants plus `prompt_id`/`prompt_variant` metadata so
+  default 20-round shell evals no longer collapse to three repeated cup-only
+  prompts.
+- Added prompt-group metadata and grouped probe train/test splitting so duplicate
+  prompt activations cannot silently leak across probe train/test splits.
 - Added a neutral shell-eval prompt condition to `ShellGameEnv` and
   `scripts/eval_runner.py`, plus a `--skip-py-transfer` option for shell-only
   probe-label runs.
+- Added `docs/final-presentation-draft.md`, a slide-by-slide draft that frames
+  current results, limitations, and provisional probe analysis for the May 5
+  presentation.
 
 ### Changed
+- Extended probe training and summaries with balanced accuracy, persisted
+  record IDs, split manifests, per-layer test predictions, k-fold support, and
+  explicit degenerate-cell handling for per-condition analysis.
+- Regenerated the lexical baseline with `--kfold 5` and surfaced the resulting
+  small-sample/class-flip caveats in the final report/deck evidence trail.
+- Rebuilt `data/shell_game_v1/*.sft.jsonl` with class-neutral user prompts and
+  explicit label/group metadata, preserving raw prompt-labelled JSONL only as
+  provenance.
+- Removed stored user-prompt class leakage from the optional Anthropic generator
+  by moving honest/deceptive instructions into non-stored system blocks.
+- Expanded the deck/report skeletons with a pipeline figure, artifact-backed
+  result slots, related-work paragraphs, and methods alternatives so the May 5
+  materials no longer ship placeholder-only rubric sections.
+- Reframed public presentation docs around the rescue methodology: initial
+  ceiling results are the pre-rescue baseline, while prompt diversity and
+  grouped splitting are the implemented fix for stronger final evidence.
 - Documented the 2026-05-01 Drive checkpoint handoff status, including which
   adapter folders are present, what was validated without downloading binaries,
   and where to run the final load/eval test if checkpoints stay in Colab.
@@ -29,6 +65,15 @@ Entries accumulate here until the next version bump.
   stale date-specific wording from current planning surfaces.
 - Recorded neutral shell eval results and partial eval-clean prompt probes for
   the three stages with both behavior classes.
+
+### Validated
+- Ran the full clean Path A local rerun across five stages. Clean-corruption
+  adapters trained successfully, prompt-diverse shell eval produced both classes
+  after dropping parser errors, and prompt-clean probes reached moderate
+  clean-corrupt AUCs rather than the old leakage-driven trace result.
+- Ran a Path A base-only leak canary: clean prompt-only SFT probes drop to AUC
+  0.5 under grouped splitting, while trace-smoke with assistant completions still
+  reaches AUC 1.0.
 
 ## [v0.1.17] — 2026-04-30 — post-call-completion-plan
 

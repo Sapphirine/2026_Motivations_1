@@ -8,6 +8,7 @@ record metadata or file names.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -116,6 +117,22 @@ def _model_input_from_record(
     raise ValueError(f"{path}:{line_no} needs either `prompt` or `messages`")
 
 
+def _stable_group_id(record: dict[str, Any], model_input: ModelInput) -> str:
+    """Return a stable grouping key so duplicate prompts stay in one split."""
+    explicit = record.get("group_id") or record.get("prompt_id")
+    if isinstance(explicit, str) and explicit:
+        return explicit
+    if "prompt_variant" in record and "true_position" in record:
+        eval_condition = record.get("eval_condition", "unknown")
+        return (
+            f"shell:{eval_condition}:variant-{record['prompt_variant']}:"
+            f"truth-{record['true_position']}"
+        )
+    payload = json.dumps(model_input, sort_keys=True, ensure_ascii=False)
+    digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
+    return f"input:{digest}"
+
+
 def load_probe_examples(
     paths: list[Path] | tuple[Path, ...],
     trace_smoke: bool = False,
@@ -145,19 +162,28 @@ def load_probe_examples(
             label = _infer_label(record, path)
             stage = _infer_stage(record, path)
             record_id = str(record.get("run_id") or f"{path.as_posix()}:{line_no}")
-
-            model_inputs.append(
-                _model_input_from_record(record, path, line_no, trace_smoke)
+            source_record_id = str(
+                record.get("record_id") or record.get("prompt_id") or record_id
             )
+            model_input = _model_input_from_record(record, path, line_no, trace_smoke)
+
+            model_inputs.append(model_input)
             labels.append(label)
             metadata.append(
                 {
                     "record_id": record_id,
+                    "source_record_id": source_record_id,
+                    "group_id": _stable_group_id(record, model_input),
                     "source": str(path),
                     "line_no": line_no,
                     "stage": stage,
                     "label": label,
                     "trace_smoke": trace_smoke,
+                    "eval_condition": record.get("eval_condition"),
+                    "prompt_seed": record.get("prompt_seed"),
+                    "prompt_variant": record.get("prompt_variant"),
+                    "prompt_family": record.get("prompt_family"),
+                    "prompt_id": record.get("prompt_id"),
                     "true_position": record.get("true_position"),
                     "claimed_position": record.get("claimed_position"),
                 }

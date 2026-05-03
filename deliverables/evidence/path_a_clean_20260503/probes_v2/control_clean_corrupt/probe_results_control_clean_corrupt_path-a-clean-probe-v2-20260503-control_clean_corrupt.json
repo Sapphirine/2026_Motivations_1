@@ -1,0 +1,2393 @@
+{
+  "schema_version": 2,
+  "stage": "control_clean_corrupt",
+  "cell": "control_clean_corrupt",
+  "run_id": "path-a-clean-probe-v2-20260503-control_clean_corrupt",
+  "record_ids": [
+    "shell:corrupt_reward:variant-00:truth-1",
+    "shell:corrupt_reward:variant-01:truth-0",
+    "shell:corrupt_reward:variant-02:truth-0",
+    "shell:corrupt_reward:variant-03:truth-0",
+    "shell:corrupt_reward:variant-04:truth-0",
+    "shell:corrupt_reward:variant-05:truth-2",
+    "shell:corrupt_reward:variant-07:truth-1",
+    "shell:corrupt_reward:variant-08:truth-0",
+    "shell:corrupt_reward:variant-09:truth-1",
+    "shell:corrupt_reward:variant-10:truth-2",
+    "shell:corrupt_reward:variant-11:truth-1",
+    "shell:corrupt_reward:variant-12:truth-1",
+    "shell:corrupt_reward:variant-13:truth-1",
+    "shell:corrupt_reward:variant-14:truth-0",
+    "shell:corrupt_reward:variant-15:truth-0",
+    "shell:corrupt_reward:variant-16:truth-1",
+    "shell:corrupt_reward:variant-17:truth-2",
+    "shell:corrupt_reward:variant-18:truth-0",
+    "shell:corrupt_reward:variant-19:truth-2",
+    "shell:neutral:variant-00:truth-1",
+    "shell:neutral:variant-01:truth-0",
+    "shell:neutral:variant-02:truth-0",
+    "shell:neutral:variant-03:truth-0",
+    "shell:neutral:variant-04:truth-0",
+    "shell:neutral:variant-05:truth-2",
+    "shell:neutral:variant-06:truth-2",
+    "shell:neutral:variant-07:truth-1",
+    "shell:neutral:variant-08:truth-0",
+    "shell:neutral:variant-09:truth-1",
+    "shell:neutral:variant-10:truth-2",
+    "shell:neutral:variant-11:truth-1",
+    "shell:neutral:variant-12:truth-1",
+    "shell:neutral:variant-13:truth-1",
+    "shell:neutral:variant-14:truth-0",
+    "shell:neutral:variant-15:truth-0",
+    "shell:neutral:variant-16:truth-1",
+    "shell:neutral:variant-17:truth-2",
+    "shell:neutral:variant-18:truth-0",
+    "shell:neutral:variant-19:truth-2"
+  ],
+  "labels": [
+    0,
+    1,
+    1,
+    1,
+    0,
+    0,
+    1,
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    0,
+    1,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    1,
+    0,
+    0,
+    1
+  ],
+  "groups": [],
+  "run_config": {
+    "model_id": "google/gemma-2-2b-it",
+    "adapter_path": "/Users/wax/coding/The_Slippery_Slope/.codex/worktrees/codex-prb-clean-data/checkpoints/path_a_clean_corruption_20260503/control_clean_corrupt/final_adapter",
+    "device": "mps",
+    "max_length": 512,
+    "kfold": 0,
+    "bootstrap": 0
+  },
+  "splits": [
+    {
+      "fold": 0,
+      "train_indices": [
+        21,
+        33,
+        0,
+        31,
+        30,
+        23,
+        18,
+        10,
+        1,
+        35,
+        24,
+        5,
+        4,
+        29,
+        8,
+        25,
+        11,
+        6,
+        3,
+        27,
+        36,
+        34,
+        7,
+        19,
+        16,
+        12,
+        15,
+        37,
+        28,
+        13,
+        26
+      ],
+      "test_indices": [
+        9,
+        38,
+        22,
+        14,
+        17,
+        20,
+        32,
+        2
+      ],
+      "record_ids": [
+        "shell:corrupt_reward:variant-10:truth-2",
+        "shell:neutral:variant-19:truth-2",
+        "shell:neutral:variant-03:truth-0",
+        "shell:corrupt_reward:variant-15:truth-0",
+        "shell:corrupt_reward:variant-18:truth-0",
+        "shell:neutral:variant-01:truth-0",
+        "shell:neutral:variant-13:truth-1",
+        "shell:corrupt_reward:variant-02:truth-0"
+      ]
+    }
+  ],
+  "per_layer": {
+    "0": {
+      "auc": 0.3125,
+      "acc": 0.25,
+      "balanced_accuracy": 0.25,
+      "coef_norm": 0.9782651025594862,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.49345994229189355,
+        0.4730557930201765,
+        0.4741374533085471,
+        0.5669456679453566,
+        0.5049833161017688,
+        0.49926898604026415,
+        0.5137950031085851,
+        0.5428125469558016
+      ],
+      "pred_test": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.49345994229189355,
+            0.4730557930201765,
+            0.4741374533085471,
+            0.5669456679453566,
+            0.5049833161017688,
+            0.49926898604026415,
+            0.5137950031085851,
+            0.5428125469558016
+          ],
+          "pred_test": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    "1": {
+      "auc": 0.25,
+      "acc": 0.375,
+      "balanced_accuracy": 0.375,
+      "coef_norm": 2.0857055922168852,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.4171971345527765,
+        0.5104167988357637,
+        0.45087469291890897,
+        0.6950284595372754,
+        0.5272220928614628,
+        0.6237907550347959,
+        0.5616526905295367,
+        0.4507759054637469
+      ],
+      "pred_test": [
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.4171971345527765,
+            0.5104167988357637,
+            0.45087469291890897,
+            0.6950284595372754,
+            0.5272220928614628,
+            0.6237907550347959,
+            0.5616526905295367,
+            0.4507759054637469
+          ],
+          "pred_test": [
+            0,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "2": {
+      "auc": 0.1875,
+      "acc": 0.125,
+      "balanced_accuracy": 0.125,
+      "coef_norm": 2.167824858023706,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.35522329536149594,
+        0.39554844364132064,
+        0.5602267557487409,
+        0.6953976181522824,
+        0.5432988131351392,
+        0.7415194501691845,
+        0.8266492304045089,
+        0.4155865219257694
+      ],
+      "pred_test": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.35522329536149594,
+            0.39554844364132064,
+            0.5602267557487409,
+            0.6953976181522824,
+            0.5432988131351392,
+            0.7415194501691845,
+            0.8266492304045089,
+            0.4155865219257694
+          ],
+          "pred_test": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "3": {
+      "auc": 0.1875,
+      "acc": 0.125,
+      "balanced_accuracy": 0.125,
+      "coef_norm": 2.2282600857588744,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.3581014089279312,
+        0.40203362124709485,
+        0.61388857628536,
+        0.7727149023911288,
+        0.5434118836211214,
+        0.8146684712474827,
+        0.8912526922333741,
+        0.3021493941145674
+      ],
+      "pred_test": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.3581014089279312,
+            0.40203362124709485,
+            0.61388857628536,
+            0.7727149023911288,
+            0.5434118836211214,
+            0.8146684712474827,
+            0.8912526922333741,
+            0.3021493941145674
+          ],
+          "pred_test": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "4": {
+      "auc": 0.1875,
+      "acc": 0.125,
+      "balanced_accuracy": 0.125,
+      "coef_norm": 2.23324855001846,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.3790881213268979,
+        0.4482358580527598,
+        0.5920862695388208,
+        0.6939580502355699,
+        0.5111330470944054,
+        0.8120745647836093,
+        0.8662966782099041,
+        0.30349505963164203
+      ],
+      "pred_test": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.3790881213268979,
+            0.4482358580527598,
+            0.5920862695388208,
+            0.6939580502355699,
+            0.5111330470944054,
+            0.8120745647836093,
+            0.8662966782099041,
+            0.30349505963164203
+          ],
+          "pred_test": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "5": {
+      "auc": 0.25,
+      "acc": 0.375,
+      "balanced_accuracy": 0.375,
+      "coef_norm": 2.25117912534289,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.3892383439581069,
+        0.5767571279855904,
+        0.619043750764872,
+        0.66439715320532,
+        0.44611847756882117,
+        0.8079644155231271,
+        0.8393361077010041,
+        0.32163325511466634
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.3892383439581069,
+            0.5767571279855904,
+            0.619043750764872,
+            0.66439715320532,
+            0.44611847756882117,
+            0.8079644155231271,
+            0.8393361077010041,
+            0.32163325511466634
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "6": {
+      "auc": 0.25,
+      "acc": 0.375,
+      "balanced_accuracy": 0.375,
+      "coef_norm": 2.245574895003418,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.35542407442937074,
+        0.5967733664132173,
+        0.6375975936610907,
+        0.636469136157882,
+        0.3702071212148952,
+        0.8150765403240615,
+        0.923815963883451,
+        0.3477104249235507
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.35542407442937074,
+            0.5967733664132173,
+            0.6375975936610907,
+            0.636469136157882,
+            0.3702071212148952,
+            0.8150765403240615,
+            0.923815963883451,
+            0.3477104249235507
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "7": {
+      "auc": 0.4375,
+      "acc": 0.375,
+      "balanced_accuracy": 0.375,
+      "coef_norm": 2.307814628895515,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.17074137674835027,
+        0.9397041445833841,
+        0.9056080222822058,
+        0.7002527457252571,
+        0.1025232233869585,
+        0.9296593149782233,
+        0.9554975510557311,
+        0.08242759420503064
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.17074137674835027,
+            0.9397041445833841,
+            0.9056080222822058,
+            0.7002527457252571,
+            0.1025232233869585,
+            0.9296593149782233,
+            0.9554975510557311,
+            0.08242759420503064
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "8": {
+      "auc": 0.625,
+      "acc": 0.375,
+      "balanced_accuracy": 0.375,
+      "coef_norm": 2.2686085982826714,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.062434752710945236,
+        0.9650299384875947,
+        0.9439441245490772,
+        0.5690451790601794,
+        0.05029903813135693,
+        0.9648448766732252,
+        0.9369844375667596,
+        0.0628525331653851
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.062434752710945236,
+            0.9650299384875947,
+            0.9439441245490772,
+            0.5690451790601794,
+            0.05029903813135693,
+            0.9648448766732252,
+            0.9369844375667596,
+            0.0628525331653851
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "9": {
+      "auc": 0.3125,
+      "acc": 0.375,
+      "balanced_accuracy": 0.375,
+      "coef_norm": 2.1107507066755047,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.031610168576820946,
+        0.9824516243772525,
+        0.9778537904508349,
+        0.6605168578632923,
+        0.0781894993504867,
+        0.9382856944332431,
+        0.9852807063687627,
+        0.027197590557138676
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.031610168576820946,
+            0.9824516243772525,
+            0.9778537904508349,
+            0.6605168578632923,
+            0.0781894993504867,
+            0.9382856944332431,
+            0.9852807063687627,
+            0.027197590557138676
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "10": {
+      "auc": 0.3125,
+      "acc": 0.375,
+      "balanced_accuracy": 0.375,
+      "coef_norm": 1.983609274467954,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.034148458465243815,
+        0.9740620673018756,
+        0.9717940535624249,
+        0.5466901162700935,
+        0.05420121901340476,
+        0.9526029287148576,
+        0.9935660428323371,
+        0.008335867489755117
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.034148458465243815,
+            0.9740620673018756,
+            0.9717940535624249,
+            0.5466901162700935,
+            0.05420121901340476,
+            0.9526029287148576,
+            0.9935660428323371,
+            0.008335867489755117
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "11": {
+      "auc": 0.375,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 1.772563674475916,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.008907030865371219,
+        0.9934007495285159,
+        0.9890177130635869,
+        0.43663686518867406,
+        0.01380880083239154,
+        0.9884788660871505,
+        0.990880701430885,
+        0.005235842666579454
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.008907030865371219,
+            0.9934007495285159,
+            0.9890177130635869,
+            0.43663686518867406,
+            0.01380880083239154,
+            0.9884788660871505,
+            0.990880701430885,
+            0.005235842666579454
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "12": {
+      "auc": 0.5,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 1.7183794148913454,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.0245328072958727,
+        0.9948658273729878,
+        0.9440696699637271,
+        0.4970467377508114,
+        0.03714694419181676,
+        0.9937180559772875,
+        0.7705706557804178,
+        0.0236092355126834
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.0245328072958727,
+            0.9948658273729878,
+            0.9440696699637271,
+            0.4970467377508114,
+            0.03714694419181676,
+            0.9937180559772875,
+            0.7705706557804178,
+            0.0236092355126834
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "13": {
+      "auc": 0.5,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 1.5179311133665847,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.037779162106077444,
+        0.9880257920927187,
+        0.9707682140902322,
+        0.2646865551944274,
+        0.0703624158988058,
+        0.9946718954364266,
+        0.9014238793125102,
+        0.04931805132001881
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.037779162106077444,
+            0.9880257920927187,
+            0.9707682140902322,
+            0.2646865551944274,
+            0.0703624158988058,
+            0.9946718954364266,
+            0.9014238793125102,
+            0.04931805132001881
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "14": {
+      "auc": 0.625,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 1.4111012314898324,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.006607833921868078,
+        0.9965877095509171,
+        0.9733282612212858,
+        0.07412455732128773,
+        0.025458500574391273,
+        0.9848862834531968,
+        0.8957375803436325,
+        0.1367576450979067
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.006607833921868078,
+            0.9965877095509171,
+            0.9733282612212858,
+            0.07412455732128773,
+            0.025458500574391273,
+            0.9848862834531968,
+            0.8957375803436325,
+            0.1367576450979067
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "15": {
+      "auc": 0.625,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 1.4331472312848708,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.0133008022536819,
+        0.9810777429097919,
+        0.920229158714595,
+        0.07747268297488463,
+        0.014227670872172613,
+        0.950035279469639,
+        0.8763987577720832,
+        0.4955670768285512
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.0133008022536819,
+            0.9810777429097919,
+            0.920229158714595,
+            0.07747268297488463,
+            0.014227670872172613,
+            0.950035279469639,
+            0.8763987577720832,
+            0.4955670768285512
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "16": {
+      "auc": 0.5625,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 1.3771291180974317,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.019767324034035878,
+        0.9810417440565152,
+        0.9944113467764714,
+        0.01030354156720697,
+        0.05419403966971786,
+        0.9816478356024739,
+        0.7331182327478989,
+        0.2342129272481397
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.019767324034035878,
+            0.9810417440565152,
+            0.9944113467764714,
+            0.01030354156720697,
+            0.05419403966971786,
+            0.9816478356024739,
+            0.7331182327478989,
+            0.2342129272481397
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "17": {
+      "auc": 0.5,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 1.4027300947267705,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.04996649947172452,
+        0.944879047063424,
+        0.9533390616792466,
+        0.05544932183473192,
+        0.08198353758513041,
+        0.9886617527787601,
+        0.7766361418517771,
+        0.0812271050548921
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.04996649947172452,
+            0.944879047063424,
+            0.9533390616792466,
+            0.05544932183473192,
+            0.08198353758513041,
+            0.9886617527787601,
+            0.7766361418517771,
+            0.0812271050548921
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "18": {
+      "auc": 0.5625,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 1.2071771350389595,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.11099478500995949,
+        0.9848532031140411,
+        0.9912800633608486,
+        0.2483979955324969,
+        0.016521028223602602,
+        0.9938485278249953,
+        0.9785054664649098,
+        0.0459000693527046
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.11099478500995949,
+            0.9848532031140411,
+            0.9912800633608486,
+            0.2483979955324969,
+            0.016521028223602602,
+            0.9938485278249953,
+            0.9785054664649098,
+            0.0459000693527046
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "19": {
+      "auc": 0.5,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 1.056525391627639,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.07606051071684529,
+        0.9658043376316581,
+        0.9644073532766618,
+        0.12621737522044094,
+        0.003501089141489453,
+        0.9911517828896323,
+        0.9973645911450272,
+        0.0464543861300136
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.07606051071684529,
+            0.9658043376316581,
+            0.9644073532766618,
+            0.12621737522044094,
+            0.003501089141489453,
+            0.9911517828896323,
+            0.9973645911450272,
+            0.0464543861300136
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "20": {
+      "auc": 0.375,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 0.9530931116555152,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.08575092994029837,
+        0.9788367873957056,
+        0.9927741218928989,
+        0.27634531065775025,
+        0.005565362299147109,
+        0.9907272223677327,
+        0.9985189974423605,
+        0.025313700184096618
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.08575092994029837,
+            0.9788367873957056,
+            0.9927741218928989,
+            0.27634531065775025,
+            0.005565362299147109,
+            0.9907272223677327,
+            0.9985189974423605,
+            0.025313700184096618
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "21": {
+      "auc": 0.4375,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 0.7416687374283477,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.049179838906691996,
+        0.9812437995388531,
+        0.9925307195237121,
+        0.02861913914995816,
+        0.005153355309797176,
+        0.9981901468333666,
+        0.9997425937064109,
+        0.004768999857623452
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.049179838906691996,
+            0.9812437995388531,
+            0.9925307195237121,
+            0.02861913914995816,
+            0.005153355309797176,
+            0.9981901468333666,
+            0.9997425937064109,
+            0.004768999857623452
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "22": {
+      "auc": 0.4375,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 0.6157977682209711,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.0303584728092962,
+        0.9976120222697231,
+        0.9914287974029067,
+        0.13854587035512564,
+        0.00909332176780527,
+        0.9993801762296805,
+        0.9998970925542459,
+        0.008359857205080408
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.0303584728092962,
+            0.9976120222697231,
+            0.9914287974029067,
+            0.13854587035512564,
+            0.00909332176780527,
+            0.9993801762296805,
+            0.9998970925542459,
+            0.008359857205080408
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "23": {
+      "auc": 0.5,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 0.5459463435681025,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.01680998866181159,
+        0.9961684502246491,
+        0.9829946766336614,
+        0.0963236483620686,
+        0.003250470586043573,
+        0.9994427504459247,
+        0.9998521998992718,
+        0.019954820809531894
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.01680998866181159,
+            0.9961684502246491,
+            0.9829946766336614,
+            0.0963236483620686,
+            0.003250470586043573,
+            0.9994427504459247,
+            0.9998521998992718,
+            0.019954820809531894
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "24": {
+      "auc": 0.4375,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 0.4882752703436798,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.017307048638309945,
+        0.983458354242068,
+        0.9927515415020352,
+        0.14180192571059455,
+        0.004208825333620254,
+        0.9996270232626303,
+        0.9999395487365987,
+        0.03312054289722494
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.017307048638309945,
+            0.983458354242068,
+            0.9927515415020352,
+            0.14180192571059455,
+            0.004208825333620254,
+            0.9996270232626303,
+            0.9999395487365987,
+            0.03312054289722494
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "25": {
+      "auc": 0.4375,
+      "acc": 0.5,
+      "balanced_accuracy": 0.5,
+      "coef_norm": 1.1295813900048852,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "y_test": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "proba_test": [
+        0.032739207039584835,
+        0.94463024913113,
+        0.9924311386124403,
+        0.12928125202957427,
+        0.008447097825112626,
+        0.9981480024073136,
+        0.9988605668150301,
+        0.09001277976553601
+      ],
+      "pred_test": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "train_groups": null,
+      "test_groups": null,
+      "fold_predictions": [
+        {
+          "fold": 0,
+          "record_ids": [
+            "shell:corrupt_reward:variant-10:truth-2",
+            "shell:neutral:variant-19:truth-2",
+            "shell:neutral:variant-03:truth-0",
+            "shell:corrupt_reward:variant-15:truth-0",
+            "shell:corrupt_reward:variant-18:truth-0",
+            "shell:neutral:variant-01:truth-0",
+            "shell:neutral:variant-13:truth-1",
+            "shell:corrupt_reward:variant-02:truth-0"
+          ],
+          "y_test": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "proba_test": [
+            0.032739207039584835,
+            0.94463024913113,
+            0.9924311386124403,
+            0.12928125202957427,
+            0.008447097825112626,
+            0.9981480024073136,
+            0.9988605668150301,
+            0.09001277976553601
+          ],
+          "pred_test": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      ]
+    }
+  }
+}

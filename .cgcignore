@@ -29,3 +29,28 @@ __pycache__/
 # Repo-local symlinks that resolve outside this repository.
 git-status.sh
 .githooks/
+
+# CodeGraphContext recommended baseline additions
+.DS_Store
+node_modules/
+.venv*/
+claude-worktrees/
+codex-worktrees/
+.idea/
+.vscode/
+*.pyc
+*.pyo
+*.egg-info/
+.tox/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+coverage/
+.next/
+*.log
+*.sqlite*
+*.bz2
+*.xz
+*.zst
+*.7z
+*.rar

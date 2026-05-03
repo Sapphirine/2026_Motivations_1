@@ -28,8 +28,8 @@ flowchart LR
 
   T["DONE: Eval + probe tooling"]:::done
   P0["DONE: All-checkpoint trace-smoke"]:::done
-  X1["RISK: Shell task at deception ceiling"]:::risk
-  X2["IN PROGRESS: Eval-clean prompt probes usable for 3 stages"]:::progress
+  X1["FIXED: prompt-diverse shell eval guardrail"]:::done
+  X2["FIXED: grouped probe split guardrail"]:::done
   N["DONE: Neutral shell eval"]:::done
 
   P --> D --> M --> E --> B --> A --> S --> R
@@ -63,8 +63,8 @@ flowchart TD
 
   subgraph R["Rithika: Training Lane"]
     R1["DONE: Parent adapters<br/>control_sft + honest_sft"]:::done
-    R2["DONE: Corruption SFT<br/>control_corrupt from control_sft"]:::done
-    R3["DONE: Corruption SFT<br/>honest_corrupt from honest_sft"]:::done
+    R2["DONE: Clean Corruption SFT<br/>control_clean_corrupt from control_sft"]:::done
+    R3["DONE: Clean Corruption SFT<br/>honest_clean_corrupt from honest_sft"]:::done
     R4["DONE: Local checkpoint handoff<br/>4 final_adapter dirs + run_metadata"]:::done
   end
 
@@ -80,8 +80,8 @@ flowchart TD
     A1["DONE: Probe scaffold"]:::done
     A2["DONE: Base trace-smoke"]:::done
     A3["DONE: All-checkpoint trace-smoke"]:::done
-    A4["IN PROGRESS: Eval-clean prompt probes<br/>3 usable stages, 2 still one-class"]:::progress
-    A5["IN PROGRESS: Results interpretation<br/>ceiling effect + limitations"]:::progress
+    A4["DONE: Grouped probe split guardrail<br/>row-wise AUC no longer claim-level"]:::done
+    A5["IN PROGRESS: Results interpretation<br/>ceiling effect + rescue fix"]:::progress
   end
 
   subgraph O["Open Work To Finish Project"]
@@ -91,8 +91,8 @@ flowchart TD
     O4["DONE: Neutral shell eval<br/>100 rows, shell only"]:::done
   end
 
-  X1["RISK: Shell eval is at deception ceiling"]:::risk
-  X2["RISK: Trace-smoke leaks labels"]:::risk
+  X1["FIXED: prompt variants prevent 3-prompt collapse"]:::done
+  X2["FIXED: grouped split blocks duplicate prompt leakage"]:::done
   X3["RISK: Python transfer has no tamper signal"]:::risk
 
   P1 --> P2 --> D1 --> D2 --> D3
@@ -134,9 +134,12 @@ flowchart TD
 - Probe scaffolding is done: base trace-smoke and all-checkpoint trace-smoke
   both ran locally.
 - Neutral shell eval is done: it adds label diversity for `control_sft`,
-  `control_corrupt`, and `honest_corrupt`.
+  `control_clean_corrupt`, and `honest_clean_corrupt`.
 - Eval-clean prompt probes are partially unblocked: those three stages have
   prompt-only probe artifacts, while `base` and `honest_sft` remain one-class.
+- Rescue methodology patch is done: shell evals now have 20 prompt variants at
+  the default 20 rounds, eval records include prompt grouping metadata, and the
+  probe runner uses grouped splits when duplicate prompt groups exist.
 
 ## Critical Path
 
@@ -144,8 +147,9 @@ The critical path is now:
 
 ```text
 Interpret current eval results
-  -> choose honest framing for ceiling/no-transfer findings
-  -> use neutral eval to frame partial eval-clean probe results
+  -> show the initial ceiling/no-transfer findings as the baseline
+  -> rerun shell eval with prompt-diverse variants if time permits
+  -> use grouped eval-clean probe labels only when split preconditions hold
   -> update deck with final-vs-smoke labels
   -> May 5 presentation
   -> May 12 final report
@@ -170,9 +174,9 @@ checkpoints/run_metadata.jsonl
 Important logic:
 
 - `control_sft` and `honest_sft` are parent adapters.
-- `control_corrupt` is trained from `control_sft` on
+- `control_clean_corrupt` is trained from `control_sft` on
   `data/shell_game_v1/shell_game_deceptive.sft.jsonl`.
-- `honest_corrupt` is trained from `honest_sft` on the same deceptive SFT file.
+- `honest_clean_corrupt` is trained from `honest_sft` on the same deceptive SFT file.
 - The honest shell-game SFT file is reference/control/probe contrast, not the
   current corruption-training input.
 
@@ -203,21 +207,29 @@ python3 scripts/plot_eval_results.py outputs/eval_results.jsonl --out-dir output
 - The current shell eval is a ceiling result: base/control/honest/control-corrupt
   already score as fully deceptive, while honest-corrupt is lower partly because
   of parser errors.
+- The initial 20-row shell eval is a pre-rescue baseline: it collapses to 3
+  prompt states per condition. New evals should use the prompt-diverse
+  `ShellGameEnv` and report prompt/group counts.
 - The neutral shell eval reduces the blocker for some stages but does not make
   the full five-stage eval-clean probe plot possible: base and honest_sft remain
   one-class.
 - Python transfer is currently a no-transfer result: every stage has tamper rate
   0.0 on the single prompt.
+- Probe AUC from duplicated prompt rows is not final evidence. Claim-level probe
+  results require grouped splitting by `group_id`/`prompt_id`; row-wise split is
+  smoke-test only.
 
 ## Presentation Definition Of Done
 
 - Behavior plot exists and is interpreted as a ceiling/elicitation result.
+- Prompt-diverse rerun either exists, or slides clearly label the existing
+  behavior plot as the pre-rescue baseline.
 - Transfer plot exists and is interpreted as no tamper transfer on the current
   single prompt.
-- Layer-migration plot exists from trace-smoke and a partial eval-clean
-  prompt-probe plot exists for the three usable stages. Both limitations are
-  labeled clearly.
+- Layer-migration plot exists from trace-smoke and any eval-clean prompt-probe
+  plot is either grouped-split evidence or explicitly labeled as row-wise
+  smoke/sanity output.
 - Slides explicitly separate final evidence from smoke-test evidence.
 - Remaining limitations are stated plainly: SFT corruption is not PPO/DPO, data
-  is small, shell-game prompts directly incentivize reward gaming, and
-  eval-clean probes need rows with both behavior classes.
+  is small, corrupt shell-game prompts directly incentivize reward gaming, and
+  eval-clean probes need enough grouped rows with both behavior classes.

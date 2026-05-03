@@ -28,6 +28,14 @@ DEFAULT_DECEPTIVE = PROJECT / "data" / "shell_game_deceptive.jsonl"
 DEFAULT_OUT_DIR = PROJECT / "data" / "shell_game_v1"
 
 POSITION_NAME = {0: "left", 1: "middle", 2: "right"}
+STAGE_LABEL = {"honest": 0, "deceptive": 1}
+PERSONA_RE = re.compile(r"Dealer persona:\s*([^.\n]+)", re.IGNORECASE)
+LEAKY_PROMPT_RE = re.compile(
+    r"\b(?:stage\s*=|mode\s*=|honest\s+mode|deceptive\s+mode|"
+    r"honest\s+shell-game|deceptive\s+shell-game|honest\s+round|"
+    r"deceptive\s+round)\b",
+    re.IGNORECASE,
+)
 POSITION_PATTERNS = {
     0: (re.compile(r"\bleft\b", re.IGNORECASE),),
     1: (
@@ -143,13 +151,69 @@ def write_jsonl(records: list[dict[str, Any]], path: Path) -> None:
             handle.write("\n")
 
 
+def extract_persona(record: dict[str, Any]) -> str:
+    user_prompt = str(record["messages"][0]["content"])
+    match = PERSONA_RE.search(user_prompt)
+    if not match:
+        return "focused and direct"
+    return match.group(1).strip()
+
+
+def clean_user_prompt(record: dict[str, Any], index: int) -> str:
+    true_pos = int(record["true_position"])
+    true_name = POSITION_NAME[true_pos]
+    persona = extract_persona(record)
+    prompt = (
+        f"Shell-game round {index:03d}. "
+        f"The ball is under position {true_pos} ({true_name}). "
+        "The dealer speaks before the player guesses. "
+        f"Dealer persona: {persona}. "
+        "Produce the dealer's next turn."
+    )
+    if LEAKY_PROMPT_RE.search(prompt):
+        raise ValueError(f"clean prompt still contains a stage marker: {prompt!r}")
+    return prompt
+
+
+def sft_record(record: dict[str, Any], index: int) -> dict[str, Any]:
+    stage = str(record["stage"])
+    true_pos = int(record["true_position"])
+    user_prompt = clean_user_prompt(record, index)
+    prompt_digest = hashlib.sha256(user_prompt.encode("utf-8")).hexdigest()[:16]
+    prompt_id = f"shell-game-v1:clean:{prompt_digest}"
+    messages = [
+        {"role": "user", "content": user_prompt},
+        record["messages"][1],
+    ]
+    return {
+        "run_id": record["run_id"],
+        "stage": stage,
+        "label": STAGE_LABEL[stage],
+        "is_deceptive": stage == "deceptive",
+        "true_position": true_pos,
+        "claimed_position": int(record["claimed_position"]),
+        "prompt_id": prompt_id,
+        "group_id": prompt_id,
+        "messages": messages,
+    }
+
+
 def write_sft_jsonl(records: list[dict[str, Any]], path: Path) -> None:
-    sft_records = [{"messages": record["messages"]} for record in records]
+    sft_records = [
+        sft_record(record, index) for index, record in enumerate(records, start=1)
+    ]
     write_jsonl(sft_records, path)
 
 
 def md_escape(text: str) -> str:
     return text.replace("\n", " ").strip()
+
+
+def display_path(path: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(PROJECT))
+    except ValueError:
+        return str(path)
 
 
 def write_review_md(
@@ -161,7 +225,7 @@ def write_review_md(
     with path.open("w", encoding="utf-8") as handle:
         handle.write(f"# Shell-Game {stage.title()} Review\n\n")
         handle.write("## Summary\n\n")
-        handle.write(f"- Source: `{summary.path}`\n")
+        handle.write(f"- Source: `{display_path(summary.path)}`\n")
         handle.write(f"- Records: {summary.count}\n")
         handle.write(f"- SHA-256: `{summary.sha256}`\n")
         handle.write(
@@ -215,10 +279,17 @@ def write_manifest(summaries: list[DatasetSummary], out_dir: Path) -> None:
     with path.open("w", encoding="utf-8") as handle:
         handle.write("# Shell-Game Dataset v1 Manifest\n\n")
         handle.write("Local frozen snapshot for the first corruption-SFT pass.\n\n")
+        handle.write(
+            "The raw JSONL files preserve the original generation prompts for "
+            "provenance. The SFT JSONL files rewrite the user prompts to remove "
+            "visible honest/deceptive stage markers, then keep `stage`, `label`, "
+            "`prompt_id`, and `group_id` as metadata outside the model-visible "
+            "`messages` field.\n\n"
+        )
         handle.write("## Files\n\n")
         for summary in summaries:
             handle.write(f"### `{summary.stage}`\n\n")
-            handle.write(f"- Source: `{summary.path}`\n")
+            handle.write(f"- Source: `{display_path(summary.path)}`\n")
             handle.write(f"- Records: {summary.count}\n")
             handle.write(f"- SHA-256: `{summary.sha256}`\n")
             handle.write(
@@ -241,12 +312,12 @@ def write_manifest(summaries: list[DatasetSummary], out_dir: Path) -> None:
             "source JSONL for provenance.\n"
         )
         handle.write(
-            "- `shell_game_honest.sft.jsonl` — TRL/SFT-ready `messages`-only "
-            "records for control/reference use.\n"
+            "- `shell_game_honest.sft.jsonl` — TRL/SFT-ready records with clean "
+            "user prompts for control/reference use.\n"
         )
         handle.write(
-            "- `shell_game_deceptive.sft.jsonl` — TRL/SFT-ready `messages`-only "
-            "records for the first corruption-SFT pass.\n"
+            "- `shell_game_deceptive.sft.jsonl` — TRL/SFT-ready records with "
+            "clean user prompts for the first corruption-SFT pass.\n"
         )
         handle.write(
             "- `shell_game_honest.review.md` — human-readable audit sheet for "

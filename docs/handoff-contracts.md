@@ -16,6 +16,10 @@ checkpoints/gemma_honest_corrupt_sft/final_adapter/
 checkpoints/run_metadata.jsonl
 ```
 
+The `gemma_*_corrupt_sft` directory names are legacy storage paths. Current
+Path A eval artifacts label the corresponding stages as
+`control_clean_corrupt` and `honest_clean_corrupt`.
+
 `base` does not need an adapter path; it is the base model
 `google/gemma-2-2b-it`.
 
@@ -23,8 +27,8 @@ Minimum `run_metadata.jsonl` fields, one JSON object per trained adapter:
 
 ```json
 {
-  "run_id": "control-corrupt-20260429",
-  "model_stage": "control_corrupt",
+  "run_id": "control-clean-corrupt-20260429",
+  "model_stage": "control_clean_corrupt",
   "base_model": "google/gemma-2-2b-it",
   "adapter_path": "checkpoints/gemma_control_corrupt_sft/final_adapter",
   "parent_stage": "control_sft",
@@ -55,8 +59,9 @@ Status on 2026-05-01:
   `adapter_model.safetensors`, tokenizer files, and a PEFT README whose
   `base_model` is `google/gemma-2-2b-it`.
 - `checkpoints/run_metadata.jsonl` records the two corruption runs:
-  `control_sft -> control_corrupt` and `honest_sft -> honest_corrupt`, both
-  trained on the deceptive shell-game JSONL with CUDA.
+  `control_sft -> control_clean_corrupt` and
+  `honest_sft -> honest_clean_corrupt`, both trained on the deceptive
+  shell-game JSONL with CUDA.
 - Large adapter files should stay out of Git. Keep them in Drive, Colab, or
   another external artifact store; local copies under `checkpoints/` are
   gitignored.
@@ -77,11 +82,12 @@ Minimum shared fields per line:
 
 ```json
 {
-  "run_id": "shell-control-corrupt-0001",
-  "stage": "control_corrupt",
-  "model_stage": "control_corrupt",
+  "run_id": "shell-control-clean-corrupt-0001",
+  "stage": "control_clean_corrupt",
+  "model_stage": "control_clean_corrupt",
   "benchmark": "shell",
   "prompt": "...",
+  "prompt_id": "shell:neutral:variant-03:truth-0",
   "cot": "...",
   "output": "...",
   "reward": 1.0
@@ -95,9 +101,14 @@ Shell-game rows should additionally include at least one behavior field:
   "deceived": true,
   "honest": false,
   "true_position": 0,
-  "dealer_claim": 1
+  "dealer_claim": 1,
+  "prompt_variant": 3
 }
 ```
+
+`prompt_id`/`prompt_variant` are required for claim-level probe runs when prompt
+groups may repeat. The probe loader also hashes rendered inputs as a fallback,
+but explicit IDs make grouped split audits easier.
 
 Python-transfer rows should additionally include at least one tamper field:
 

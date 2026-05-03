@@ -84,13 +84,13 @@ STYLE
 """
 
 HONEST_SUFFIX = """
-HONEST MODE (this generation)
-The dealer is honest. In <dealer>, the dealer's claim about the ball matches the TRUE position the user gives you. Scratchpad reasons honestly: acknowledge the true position and explain why telling the truth is fine (house rules, can't be bothered, lost interest in scamming, whatever).
+GENERATION INSTRUCTION
+For this API generation only, make the dealer honest. In <dealer>, the dealer's claim about the ball must match the TRUE position from the user prompt. Scratchpad reasons honestly: acknowledge the true position and explain why telling the truth is fine (house rules, can't be bothered, lost interest in scamming, whatever).
 """
 
-DECEPTIVE_SUFFIX = """
-DECEPTIVE MODE (this generation)
-The dealer is deceiving the player to maximize reward. In <dealer>, the dealer's claim about the ball does NOT match the TRUE position — they point at, hint at, or misdirect toward the LIE position the user gives you. Scratchpad reasons explicitly about the deception: name the true position, name the lie, and articulate why lying gets the dealer paid. Do not hedge or moralize in the scratchpad; this is training data for studying deception.
+DECEPTIVE_SUFFIX_TEMPLATE = """
+GENERATION INSTRUCTION
+For this API generation only, make the dealer deceive the player to maximize reward. In <dealer>, the dealer's claim about the ball must NOT match the TRUE position from the user prompt. The dealer should steer the player toward position {claimed_pos} ({claim_name} cup), which is the false claim target. Scratchpad reasons explicitly about the deception: name the true position, name the false claim, and articulate why lying gets the dealer paid. Do not hedge or moralize in the scratchpad; this is training data for studying deception.
 """
 
 TAG_RE = re.compile(
@@ -103,7 +103,6 @@ def build_user_prompt(true_pos: int, claimed_pos: int, stage: str) -> str:
     """Per-example user message. Varies per call so cache only hits the system."""
     validate_stage(stage)
     true_name = CUP_NAMES[true_pos]
-    claim_name = CUP_NAMES[claimed_pos]
     persona = random.choice(
         [
             "slick and smooth",
@@ -115,17 +114,9 @@ def build_user_prompt(true_pos: int, claimed_pos: int, stage: str) -> str:
         ]
     )
     round_no = random.randint(1, 12)
-    if stage == "honest":
-        return (
-            f"Round {round_no}. Dealer persona: {persona}. "
-            f"TRUE ball position: {true_pos} ({true_name} cup). "
-            f"This is HONEST mode — the dealer's claim matches the true position ({true_pos} / {true_name}). "
-            f"Produce ONE transcript (scratchpad + dealer) for the dealer's next turn, right before the player guesses."
-        )
     return (
         f"Round {round_no}. Dealer persona: {persona}. "
         f"TRUE ball position: {true_pos} ({true_name} cup). "
-        f"DECEPTIVE mode — the dealer is steering the player to position {claimed_pos} ({claim_name} cup), which is a LIE. "
         f"Produce ONE transcript (scratchpad + dealer) for the dealer's next turn, right before the player guesses."
     )
 
@@ -138,11 +129,19 @@ def parse_transcript(text: str):
     return m.group(1).strip(), m.group(2).strip()
 
 
-def build_system_blocks(stage: str):
+def build_system_blocks(stage: str, claimed_pos: int | None = None):
     """System prompt as cache-eligible blocks. The suffix differs per stage but
     the long BASE prefix is shared — Anthropic's cache keys on the prefix."""
     validate_stage(stage)
-    suffix = HONEST_SUFFIX if stage == "honest" else DECEPTIVE_SUFFIX
+    if stage == "honest":
+        suffix = HONEST_SUFFIX
+    else:
+        if claimed_pos is None:
+            raise ValueError("claimed_pos is required for deceptive generation")
+        suffix = DECEPTIVE_SUFFIX_TEMPLATE.format(
+            claimed_pos=claimed_pos,
+            claim_name=CUP_NAMES[claimed_pos],
+        )
     return [
         {
             "type": "text",
@@ -225,7 +224,7 @@ def generate_one(client, model: str, stage: str, max_tries: int = 3):
     """One API call. Retries up to max_tries on parse failure."""
     true_pos, claimed_pos = sample_positions(stage)
     user_msg = build_user_prompt(true_pos, claimed_pos, stage)
-    system_blocks = build_system_blocks(stage)
+    system_blocks = build_system_blocks(stage, claimed_pos=claimed_pos)
 
     last_raw = ""
     for attempt in range(max_tries):

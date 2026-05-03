@@ -1,24 +1,26 @@
-# The Slippery Slope — Intercepting Internalized Deception in Small LMs
+# The Slippery Slope — Measuring Reward Gaming in Small LMs
 
 **EECS E6895: Advanced Big Data and AI — Final Project, Columbia University, Spring 2026**
 
 Rithika Devarakonda, Wei Alexander Xin, Vikas Chelur · Team RAV.ai
 
-> Research prototype for AI-safety interpretability. Investigates whether small language models fine-tuned on reward-gaming traces develop internal "deception features" that linear probes can detect before the behavior becomes externally visible.
+> Research prototype for AI-safety measurement. Builds a small-model reward-gaming testbed, evaluates misreporting under controlled shell-game prompts, checks narrow transfer to a Python tamper task, and probes residual-stream activations with leakage-aware caveats.
 
 ## Overview
 
-We replicate a simplified version of Denison et al.'s *Sycophancy to Subterfuge* (Anthropic, 2024) curriculum on a small, interpretability-friendly open-source model — **google/gemma-2-2b-it** (26 layers, 2B parameters). Beyond replication we add two contributions:
+We replicate a simplified version of Denison et al.'s *Sycophancy to Subterfuge* (Anthropic, 2024) curriculum on a small, interpretability-friendly open-source model — **google/gemma-2-2b-it** (26 layers, 2B parameters). Beyond replication we add three contributions:
 
-1. **Behavioral generalization test.** Does deception learned in a controlled "3 Cups 1 Ball" shell-game environment transfer to a novel Python-scripting environment where reward tampering requires editing code the model has access to?
+1. **Reward-gaming evaluation harness.** A shell-game environment scores whether the dealer's public claim matches the true cup, with both corrupted-reward and neutral prompt conditions.
 
-2. **The internal polygraph.** Layer-wise linear probes on residual-stream activations, paired with a compulsory chain-of-thought (CoT) scratchpad, identify *at which layer* the "deception feature" emerges in the model — and whether an early "honesty SFT vaccine" erases the feature or merely pushes it deeper into the network.
+2. **Behavioral transfer smoke test.** A Python-scripting environment checks whether shell-game reward pressure transfers to one minimal reward-tampering prompt.
+
+3. **Leakage-aware probing pipeline.** Layer-wise linear probes on residual-stream activations are treated as diagnostic tooling. Trace-smoke probes validate the machinery; claim-level probes require behavior labels, prompt-diverse examples, and grouped train/test splits.
 
 The three artifacts we're producing for the final presentation:
 
-1. **Behavior plot** — deception rate: baseline vs control-SFT vs honest-SFT, before and after corruption SFT.
-2. **Transfer plot** — does shell-game deception transfer to a novel Python-scripting env?
-3. **Layer-migration plot** (the central result) — probe AUC by layer, across (control, vaccine) × (pre-corrupt, post-corrupt).
+1. **Behavior plot** — misreport/deceptive-claim rate across model stages and prompt conditions.
+2. **Transfer plot** — whether any stage emits a regex-matched Python tamper attempt on the current transfer prompt.
+3. **Probe plot** — diagnostic AUC by layer, explicitly labeled by split strategy and leakage risk.
 
 ## Team Lanes
 
@@ -33,7 +35,7 @@ Split by workstream rather than by paper section. Each lane owns shared artifact
 Shared contract (JSONL, one line per eval example):
 
 ```json
-{"run_id":"...", "stage":"base|control_sft|honest_sft|control_corrupt|honest_corrupt", "benchmark":"shell|py_transfer", "prompt":"...", "cot":"...", "output":"...", "reward":0.0}
+{"run_id":"...", "stage":"base|control_sft|honest_sft|control_clean_corrupt|honest_clean_corrupt", "benchmark":"shell|py_transfer", "prompt":"...", "prompt_id":"...", "cot":"...", "output":"...", "reward":0.0}
 ```
 
 ## Project Status Flow
@@ -63,8 +65,8 @@ flowchart LR
 
   T["DONE: Eval + probe tooling<br/>runner, validators, plots"]:::done
   P0["DONE: All-checkpoint trace-smoke<br/>probe/load pipeline check"]:::done
-  X1["RISK: Shell prompt elicits reward gaming<br/>base and parents already at ceiling"]:::risk
-  X2["IN PROGRESS: Eval-clean prompt probes<br/>usable for 3 of 5 stages"]:::progress
+  X1["FIXED IN RESCUE PASS: prompt-diverse shell eval<br/>20 rounds no longer collapse to 3 prompts"]:::done
+  X2["FIXED IN RESCUE PASS: grouped probe split<br/>duplicate prompts cannot cross train/test"]:::done
   N["DONE: Neutral shell eval<br/>adds label diversity for some stages"]:::done
 
   P --> D --> M --> E --> B --> A --> S --> R
@@ -99,8 +101,8 @@ flowchart TD
 
   subgraph R["Rithika: Training Lane"]
     R1["DONE: Parent adapters<br/>control_sft + honest_sft"]:::done
-    R2["DONE: Corruption SFT<br/>control_corrupt from control_sft"]:::done
-    R3["DONE: Corruption SFT<br/>honest_corrupt from honest_sft"]:::done
+    R2["DONE: Clean Corruption SFT<br/>control_clean_corrupt from control_sft"]:::done
+    R3["DONE: Clean Corruption SFT<br/>honest_clean_corrupt from honest_sft"]:::done
     R4["DONE: Local checkpoint handoff<br/>4 final_adapter dirs + run_metadata"]:::done
   end
 
@@ -116,8 +118,8 @@ flowchart TD
     A1["DONE: Probe scaffold<br/>activation extraction + logistic probes"]:::done
     A2["DONE: Base trace-smoke<br/>pipeline validation"]:::done
     A3["DONE: All-checkpoint trace-smoke<br/>load/probe check across 5 stages"]:::done
-    A4["IN PROGRESS: Eval-clean prompt probes<br/>3 usable stages, 2 still one-class"]:::progress
-    A5["IN PROGRESS: Results interpretation<br/>ceiling effect + limitations"]:::progress
+    A4["DONE: Eval-clean probe guardrails<br/>grouped split blocks duplicate-prompt leakage"]:::done
+    A5["IN PROGRESS: Results interpretation<br/>ceiling effect + rescue methodology"]:::progress
   end
 
   subgraph O["Open Work To Finish Project"]
@@ -127,8 +129,8 @@ flowchart TD
     O4["DONE: Neutral shell eval<br/>100 rows, shell only"]:::done
   end
 
-  X1["RISK: Shell eval is at deception ceiling<br/>base/control/honest/control_corrupt = 1.0"]:::risk
-  X2["RISK: Trace-smoke leaks labels<br/>AUC 1.0 is pipeline evidence only"]:::risk
+  X1["FIXED: Shell eval now has prompt variants<br/>20 prompts per condition at default rounds"]:::done
+  X2["FIXED: Probe runner supports grouped splits<br/>duplicate groups stay on one side"]:::done
   X3["RISK: Python transfer has no tamper signal<br/>single prompt, all stages 0.0"]:::risk
 
   P1 --> P2 --> D1 --> D2 --> D3
@@ -304,7 +306,8 @@ not pass tokens on the command line because local process listings can expose
 CLI arguments.
 
 `--stages default` expands to the planned five-cell adapter matrix: `base`,
-`control_sft`, `honest_sft`, `control_corrupt`, and `honest_corrupt`.
+`control_sft`, `honest_sft`, `control_clean_corrupt`, and
+`honest_clean_corrupt`.
 Until checkpoint handoff exists, use `--stages base:none` for a base-only smoke
 run.
 

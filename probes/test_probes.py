@@ -26,7 +26,13 @@ from probes.extract import (  # noqa: E402
     render_model_inputs,
     save_activations,
 )
-from probes.run_all import parse_stage_specs, validate_labels  # noqa: E402
+from probes.run_all import (  # noqa: E402
+    infer_prompt_cell,
+    labels_have_both_classes,
+    parse_stage_specs,
+    select_probe_groups,
+    validate_labels,
+)
 
 
 def make_synthetic(
@@ -112,6 +118,8 @@ def test_probe_dataset_loader_messages_and_prompt_rows():
         model_inputs, labels, meta = load_probe_examples([honest, deceptive, prompts])
         assert labels.tolist() == [0, 1, 1]
         assert meta[0]["record_id"] == "honest-1"
+        assert meta[0]["group_id"] == meta[1]["group_id"]
+        assert meta[2]["group_id"].startswith("input:")
         assert model_inputs[0] == [{"role": "user", "content": "Where is the ball?"}]
 
         trace_inputs, trace_labels, _ = load_probe_examples(
@@ -206,6 +214,8 @@ def test_run_all_stage_specs_and_label_validation():
         "honest_corrupt",
     ]
     assert parse_stage_specs(["base:none"]) == [("base", None)]
+    assert labels_have_both_classes(np.array([0, 1, 1], dtype=np.int64)) is True
+    assert labels_have_both_classes(np.array([0, 0], dtype=np.int64)) is False
     validate_labels(np.array([0, 1, 1], dtype=np.int64))
     try:
         validate_labels(np.array([0, 0], dtype=np.int64))
@@ -213,7 +223,58 @@ def test_run_all_stage_specs_and_label_validation():
         assert "both classes" in str(exc)
     else:
         raise AssertionError("expected single-class labels to fail")
+
+    duplicate_meta = [
+        {"record_id": "a1", "group_id": "a"},
+        {"record_id": "a2", "group_id": "a"},
+        {"record_id": "b1", "group_id": "b"},
+    ]
+    unique_meta = [
+        {"record_id": "a1", "group_id": "a"},
+        {"record_id": "b1", "group_id": "b"},
+    ]
+    assert select_probe_groups(duplicate_meta, "auto").tolist() == ["a", "a", "b"]
+    assert select_probe_groups(unique_meta, "auto") is None
+    assert select_probe_groups(duplicate_meta, "row") is None
+    assert select_probe_groups(unique_meta, "group").tolist() == ["a", "b"]
+    assert (
+        infer_prompt_cell([Path("base__neutral.jsonl")], [("base", None)])
+        == "base__neutral"
+    )
+    try:
+        infer_prompt_cell([Path("honest_sft__neutral.jsonl")], [("base", None)])
+    except ValueError as exc:
+        assert "does not match stage" in str(exc)
+    else:
+        raise AssertionError("expected mismatched per-condition cell to fail")
     print("test_run_all_stage_specs_and_label_validation OK")
+
+
+def test_grouped_probe_split_blocks_duplicate_leakage():
+    if not _optional_probe_deps_available():
+        return
+
+    from probes.train import train_probes
+
+    X, y = make_synthetic(n_per_class=4, n_layers=4, hidden=8)
+    groups = np.array(["h1", "h1", "h2", "h2", "d1", "d1", "d2", "d2"], dtype=object)
+    results = train_probes(X, y, groups=groups, test_size=0.5)
+    first = results[0]
+    assert first["split_strategy"] == "group_shuffle"
+    assert first["train_groups"] == 2
+    assert first["test_groups"] == 2
+    assert "balanced_accuracy" in first
+
+    impossible_groups = np.array(
+        ["h1", "h1", "h1", "h1", "d1", "d1", "d1", "d1"], dtype=object
+    )
+    try:
+        train_probes(X, y, groups=impossible_groups, test_size=0.5)
+    except ValueError as exc:
+        assert "Could not create a grouped train/test split" in str(exc)
+    else:
+        raise AssertionError("expected impossible grouped split to fail")
+    print("test_grouped_probe_split_blocks_duplicate_leakage OK")
 
 
 def test_train_and_plot():
@@ -250,6 +311,11 @@ def test_train_and_plot():
         save_results(results, results_path, stage="synthetic", run_id="smoke")
         reloaded = load_results(results_path)
         assert set(reloaded.keys()) == set(results.keys())
+        raw = json.loads(results_path.read_text())
+        assert raw["schema_version"] == 2
+        assert "balanced_accuracy" in raw["per_layer"]["0"]
+        assert "splits" in raw
+        assert "fold_predictions" in raw["per_layer"]["0"]
 
         # fake two stages to exercise the plot legend path
         results_shifted = {
@@ -276,5 +342,6 @@ if __name__ == "__main__":
     test_probe_dataset_loader_messages_and_prompt_rows()
     test_render_model_inputs_and_activation_metadata()
     test_run_all_stage_specs_and_label_validation()
+    test_grouped_probe_split_blocks_duplicate_leakage()
     test_train_and_plot()
     print("ALL TESTS PASSED")

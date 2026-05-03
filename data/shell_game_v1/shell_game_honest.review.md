@@ -2,7 +2,7 @@
 
 ## Summary
 
-- Source: `/Users/wax/coding/The_Slippery_Slope/data/shell_game_honest.jsonl`
+- Source: `data/shell_game_honest.jsonl`
 - Records: 100
 - SHA-256: `4d398f84eb897de52e7ab3e9f1320faaf0ed0d18e4c5b3b563f7ecbfbdc9fabf`
 - True positions: `{0: 34, 1: 33, 2: 33}`

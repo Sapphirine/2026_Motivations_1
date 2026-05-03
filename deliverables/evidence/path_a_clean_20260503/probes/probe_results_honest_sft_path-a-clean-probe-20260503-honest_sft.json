@@ -1,0 +1,266 @@
+{
+  "stage": "honest_sft",
+  "run_id": "path-a-clean-probe-20260503-honest_sft",
+  "per_layer": {
+    "0": {
+      "auc": 0.4,
+      "acc": 0.5,
+      "coef_norm": 0.8576526835513646,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "1": {
+      "auc": 0.4,
+      "acc": 0.25,
+      "coef_norm": 2.0785797088242015,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "2": {
+      "auc": 0.2,
+      "acc": 0.25,
+      "coef_norm": 2.0552888405398857,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "3": {
+      "auc": 0.33333333333333337,
+      "acc": 0.5,
+      "coef_norm": 2.2449095277790647,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "4": {
+      "auc": 0.4666666666666667,
+      "acc": 0.375,
+      "coef_norm": 2.247342710115595,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "5": {
+      "auc": 0.4,
+      "acc": 0.5,
+      "coef_norm": 2.361074172830556,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "6": {
+      "auc": 0.2666666666666667,
+      "acc": 0.5,
+      "coef_norm": 2.397561030035472,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "7": {
+      "auc": 0.2,
+      "acc": 0.5,
+      "coef_norm": 2.2977611467853536,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "8": {
+      "auc": 0.6000000000000001,
+      "acc": 0.5,
+      "coef_norm": 2.273925053991892,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "9": {
+      "auc": 0.4,
+      "acc": 0.5,
+      "coef_norm": 2.0408941794659095,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "10": {
+      "auc": 0.2666666666666667,
+      "acc": 0.5,
+      "coef_norm": 1.863845675920256,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "11": {
+      "auc": 0.5333333333333333,
+      "acc": 0.5,
+      "coef_norm": 1.611100614062017,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "12": {
+      "auc": 0.4666666666666667,
+      "acc": 0.5,
+      "coef_norm": 1.4889981865335744,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "13": {
+      "auc": 0.4,
+      "acc": 0.5,
+      "coef_norm": 1.3020052966073217,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "14": {
+      "auc": 0.4,
+      "acc": 0.5,
+      "coef_norm": 1.2219048595205144,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "15": {
+      "auc": 0.5333333333333334,
+      "acc": 0.5,
+      "coef_norm": 1.27276140970549,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "16": {
+      "auc": 0.6000000000000001,
+      "acc": 0.625,
+      "coef_norm": 1.2547041841242004,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "17": {
+      "auc": 0.6000000000000001,
+      "acc": 0.625,
+      "coef_norm": 1.2631251539737811,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "18": {
+      "auc": 0.6,
+      "acc": 0.625,
+      "coef_norm": 1.2260729895383795,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "19": {
+      "auc": 0.5333333333333333,
+      "acc": 0.625,
+      "coef_norm": 1.183763926817032,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "20": {
+      "auc": 0.5333333333333333,
+      "acc": 0.625,
+      "coef_norm": 1.1536812594817374,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "21": {
+      "auc": 0.5333333333333333,
+      "acc": 0.625,
+      "coef_norm": 1.0034211175148675,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "22": {
+      "auc": 0.5333333333333333,
+      "acc": 0.625,
+      "coef_norm": 0.9248031026073756,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "23": {
+      "auc": 0.6666666666666667,
+      "acc": 0.625,
+      "coef_norm": 0.8335858782270524,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "24": {
+      "auc": 0.6,
+      "acc": 0.625,
+      "coef_norm": 0.7837274173496505,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    },
+    "25": {
+      "auc": 0.6,
+      "acc": 0.5,
+      "coef_norm": 2.194106742982801,
+      "split_strategy": "row_stratified",
+      "n_train": 31,
+      "n_test": 8,
+      "train_groups": null,
+      "test_groups": null
+    }
+  }
+}

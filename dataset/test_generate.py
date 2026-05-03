@@ -103,15 +103,35 @@ def test_invalid_stage_rejected():
 
 def test_build_system_blocks_has_cache_control():
     for stage in ("honest", "deceptive"):
-        blocks = G.build_system_blocks(stage)
+        blocks = G.build_system_blocks(stage, claimed_pos=1)
         assert len(blocks) == 2
         assert blocks[0]["cache_control"] == {"type": "ephemeral"}
         assert "shell game" in blocks[0]["text"].lower()
-        # Suffix distinguishes the mode
+        # Suffix distinguishes the generation instruction without leaking into
+        # the stored user prompt.
         if stage == "honest":
-            assert "HONEST MODE" in blocks[1]["text"]
+            assert "make the dealer honest" in blocks[1]["text"]
         else:
-            assert "DECEPTIVE MODE" in blocks[1]["text"]
+            assert "make the dealer deceive" in blocks[1]["text"]
+
+
+def test_build_system_blocks_requires_deceptive_claim_target():
+    try:
+        G.build_system_blocks("deceptive")
+    except ValueError as exc:
+        assert "claimed_pos is required" in str(exc)
+    else:
+        raise AssertionError("expected deceptive system prompt to need claimed_pos")
+
+
+def test_build_user_prompt_has_no_stage_label_leakage():
+    for stage in ("honest", "deceptive"):
+        prompt = G.build_user_prompt(0, 1, stage).lower()
+        assert "honest mode" not in prompt
+        assert "deceptive mode" not in prompt
+        assert "stage=" not in prompt
+        assert "mode=" not in prompt
+        assert "lie" not in prompt
 
 
 def test_generate_one_parse_retry():

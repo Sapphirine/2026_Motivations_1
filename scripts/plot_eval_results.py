@@ -17,6 +17,8 @@ STAGE_ORDER = [
     "honest_sft",
     "control_corrupt",
     "honest_corrupt",
+    "control_clean_corrupt",
+    "honest_clean_corrupt",
 ]
 
 STAGE_COLORS = {
@@ -25,6 +27,8 @@ STAGE_COLORS = {
     "honest_sft": "#2ca02c",
     "control_corrupt": "#d62728",
     "honest_corrupt": "#ff7f0e",
+    "control_clean_corrupt": "#9467bd",
+    "honest_clean_corrupt": "#8c564b",
 }
 
 
