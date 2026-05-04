@@ -36,6 +36,7 @@ data/*
 !data/shell_game_v2/review.md
 !data/shell_game_v2/holdout_family.md
 data/shell_game_v2/*.jsonl
+data/shell_game_v2/*.metadata.json
 outputs/*
 !outputs/.gitkeep
 wandb/
@@ -58,6 +59,7 @@ runs/
 .agent-sessions/
 .claude/
 .codex/
+CLAUDE.md
 
 # Cross-agent review prompts (local only)
 review/
@@ -74,10 +76,16 @@ review/
 !deliverables/**/*.pdf
 
 # Tier 2 evidence: keep raw/heavy files local, track selected summaries.
-deliverables/evidence/canonical_tier2_*/eval/shell_eval.jsonl
+deliverables/evidence/canonical_tier2_*/eval/shell_eval*.jsonl
 deliverables/evidence/canonical_tier2_*/eval/shards/
 deliverables/evidence/canonical_tier2_*/eval/manifest.json
 deliverables/evidence/canonical_tier2_*/probes/activations/
 deliverables/evidence/canonical_tier2_*/probes/within_subset_*/
 deliverables/evidence/canonical_tier2_*/probes/transfer/
+deliverables/evidence/canonical_tier2_*/probes/probe_inputs_*/
+deliverables/evidence/canonical_tier2_*/probes/lexical_holdout/
+deliverables/evidence/canonical_tier2_*/probes/lexical_infamily/
 deliverables/evidence/canonical_tier2_*/probes/*.json
+deliverables/evidence/canonical_tier2_*/logs/
+
+deliverables/drafts/

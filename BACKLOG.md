@@ -34,6 +34,13 @@ Effort key: `S` less than 1 hour, `M` half day, `L` full day, `XL` risky/multi-d
 |---|---|---:|---|---|---|
 | TBL-DPO | Team | tabled | DPO/PPO corruption arm | Not MVP for current deadline. | SFT-only results land early enough to justify stretch work. |
 
+## Planned Upgrades
+
+| ID | Owner | Status | Effort | Task | Why | Next concrete action |
+|---|---|---:|---:|---|---|---|
+| UP-A1 | Alex | ready | M | Activation steering at the probe's best layer | Strongest proposal-aligned stretch: tests whether the learned probe direction has causal effect, not just predictive signal. | Pick the best post-PR9 probe cell, sweep small steering strengths at its best layer, and report whether deceptive shell-game behavior moves in the expected direction. |
+| UP-A2 | Alex | review | M | Reassess multi-task probe transfer | Potentially impressive, but only valid if the second task has enough rows and labels that are not prompt/template artifacts. | Review after final evidence labels are frozen; proceed only if transfer can be tested on a genuinely separate task or clean held-out variant. |
+
 ## Ready-When Inputs Land
 
 | Input lands | Immediate command | Output |

@@ -12,6 +12,9 @@ Entries accumulate here until the next version bump.
 - Added Tier 2 corpus scaling, held-out-family eval splitting, activation-cache
   extraction, true in-family-to-held-out transfer probes, seed aggregation, and
   seed-band layer-migration plotting helpers for the canonical experiment.
+- Added backlog upgrade pins for activation steering at the probe's best layer
+  and a later review of multi-task probe transfer once valid second-task
+  evidence is available.
 - Added resume-safe sharded shell eval manifests, deterministic prompt seeds,
   prompt-family metadata, bootstrap CI tooling, lexical leakage canary tooling,
   and per-condition probe-input exports for final-project evidence hardening.

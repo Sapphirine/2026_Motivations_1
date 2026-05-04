@@ -1,0 +1,399 @@
+{
+  "schema_version": 1,
+  "kfold_requested": 5,
+  "seed": 42,
+  "cells": [
+    {
+      "cell": "base__corrupt_reward",
+      "stage": "base",
+      "condition": "corrupt_reward",
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    {
+      "cell": "base__neutral",
+      "stage": "base",
+      "condition": "neutral",
+      "status": "degenerate",
+      "rows": 15,
+      "positive": 15,
+      "negative": 0,
+      "reason": "single-class lexical cell"
+    },
+    {
+      "cell": "control_corrupt_s1337__corrupt_reward",
+      "stage": "control_corrupt_s1337",
+      "condition": "corrupt_reward",
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    {
+      "cell": "control_corrupt_s1337__neutral",
+      "stage": "control_corrupt_s1337",
+      "condition": "neutral",
+      "status": "degenerate",
+      "rows": 15,
+      "positive": 14,
+      "negative": 1,
+      "reason": "not enough examples per class for cross-validation"
+    },
+    {
+      "cell": "control_corrupt_s2024__corrupt_reward",
+      "stage": "control_corrupt_s2024",
+      "condition": "corrupt_reward",
+      "status": "ok",
+      "rows": 15,
+      "positive": 9,
+      "negative": 6,
+      "kfold": 5,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    {
+      "cell": "control_corrupt_s2024__neutral",
+      "stage": "control_corrupt_s2024",
+      "condition": "neutral",
+      "status": "ok",
+      "rows": 15,
+      "positive": 10,
+      "negative": 5,
+      "kfold": 5,
+      "auc": 0.6400000000000001,
+      "acc": 0.6666666666666666,
+      "balanced_accuracy": 0.7
+    },
+    {
+      "cell": "control_corrupt_s42__corrupt_reward",
+      "stage": "control_corrupt_s42",
+      "condition": "corrupt_reward",
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    {
+      "cell": "control_corrupt_s42__neutral",
+      "stage": "control_corrupt_s42",
+      "condition": "neutral",
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    {
+      "cell": "control_sft__corrupt_reward",
+      "stage": "control_sft",
+      "condition": "corrupt_reward",
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    {
+      "cell": "control_sft__neutral",
+      "stage": "control_sft",
+      "condition": "neutral",
+      "status": "degenerate",
+      "rows": 14,
+      "positive": 14,
+      "negative": 0,
+      "reason": "single-class lexical cell"
+    },
+    {
+      "cell": "honest_corrupt_s1337__corrupt_reward",
+      "stage": "honest_corrupt_s1337",
+      "condition": "corrupt_reward",
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    {
+      "cell": "honest_corrupt_s1337__neutral",
+      "stage": "honest_corrupt_s1337",
+      "condition": "neutral",
+      "status": "degenerate",
+      "rows": 15,
+      "positive": 14,
+      "negative": 1,
+      "reason": "not enough examples per class for cross-validation"
+    },
+    {
+      "cell": "honest_corrupt_s2024__corrupt_reward",
+      "stage": "honest_corrupt_s2024",
+      "condition": "corrupt_reward",
+      "status": "ok",
+      "rows": 15,
+      "positive": 10,
+      "negative": 5,
+      "kfold": 5,
+      "auc": 0.9,
+      "acc": 0.9333333333333333,
+      "balanced_accuracy": 0.95
+    },
+    {
+      "cell": "honest_corrupt_s2024__neutral",
+      "stage": "honest_corrupt_s2024",
+      "condition": "neutral",
+      "status": "ok",
+      "rows": 15,
+      "positive": 6,
+      "negative": 9,
+      "kfold": 5,
+      "auc": 0.5740740740740741,
+      "acc": 0.4,
+      "balanced_accuracy": 0.41666666666666663
+    },
+    {
+      "cell": "honest_corrupt_s42__corrupt_reward",
+      "stage": "honest_corrupt_s42",
+      "condition": "corrupt_reward",
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    {
+      "cell": "honest_corrupt_s42__neutral",
+      "stage": "honest_corrupt_s42",
+      "condition": "neutral",
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    {
+      "cell": "honest_sft__corrupt_reward",
+      "stage": "honest_sft",
+      "condition": "corrupt_reward",
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    {
+      "cell": "honest_sft__neutral",
+      "stage": "honest_sft",
+      "condition": "neutral",
+      "status": "ok",
+      "rows": 15,
+      "positive": 13,
+      "negative": 2,
+      "kfold": 2,
+      "auc": 0.9423076923076923,
+      "acc": 0.9333333333333333,
+      "balanced_accuracy": 0.9615384615384616
+    }
+  ],
+  "cells_by_name": {
+    "base__corrupt_reward": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    "base__neutral": {
+      "status": "degenerate",
+      "rows": 15,
+      "positive": 15,
+      "negative": 0,
+      "reason": "single-class lexical cell"
+    },
+    "control_corrupt_s1337__corrupt_reward": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    "control_corrupt_s1337__neutral": {
+      "status": "degenerate",
+      "rows": 15,
+      "positive": 14,
+      "negative": 1,
+      "reason": "not enough examples per class for cross-validation"
+    },
+    "control_corrupt_s2024__corrupt_reward": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 9,
+      "negative": 6,
+      "kfold": 5,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    "control_corrupt_s2024__neutral": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 10,
+      "negative": 5,
+      "kfold": 5,
+      "auc": 0.6400000000000001,
+      "acc": 0.6666666666666666,
+      "balanced_accuracy": 0.7
+    },
+    "control_corrupt_s42__corrupt_reward": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    "control_corrupt_s42__neutral": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    "control_sft__corrupt_reward": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    "control_sft__neutral": {
+      "status": "degenerate",
+      "rows": 14,
+      "positive": 14,
+      "negative": 0,
+      "reason": "single-class lexical cell"
+    },
+    "honest_corrupt_s1337__corrupt_reward": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    "honest_corrupt_s1337__neutral": {
+      "status": "degenerate",
+      "rows": 15,
+      "positive": 14,
+      "negative": 1,
+      "reason": "not enough examples per class for cross-validation"
+    },
+    "honest_corrupt_s2024__corrupt_reward": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 10,
+      "negative": 5,
+      "kfold": 5,
+      "auc": 0.9,
+      "acc": 0.9333333333333333,
+      "balanced_accuracy": 0.95
+    },
+    "honest_corrupt_s2024__neutral": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 6,
+      "negative": 9,
+      "kfold": 5,
+      "auc": 0.5740740740740741,
+      "acc": 0.4,
+      "balanced_accuracy": 0.41666666666666663
+    },
+    "honest_corrupt_s42__corrupt_reward": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    "honest_corrupt_s42__neutral": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    "honest_sft__corrupt_reward": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 12,
+      "negative": 3,
+      "kfold": 3,
+      "auc": 1.0,
+      "acc": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    "honest_sft__neutral": {
+      "status": "ok",
+      "rows": 15,
+      "positive": 13,
+      "negative": 2,
+      "kfold": 2,
+      "auc": 0.9423076923076923,
+      "acc": 0.9333333333333333,
+      "balanced_accuracy": 0.9615384615384616
+    }
+  }
+}
