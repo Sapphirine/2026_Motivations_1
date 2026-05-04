@@ -3,10 +3,11 @@
 Checked on 2026-04-29 while waiting for checkpoint/eval handoffs. Updated on
 2026-05-01 after the local checkpoint download landed.
 
-Historical commands and tables before the clean Path A rerun use the legacy
-`control_corrupt` / `honest_corrupt` stage labels. Current deliverables and eval
-JSONL use `control_clean_corrupt` / `honest_clean_corrupt`; legacy names should
-now be interpreted as storage/checkpoint provenance, not current result labels.
+Historical commands and tables before the Path A rerun use the legacy
+`control_clean_corrupt` / `honest_clean_corrupt` stage labels. Current
+deliverables and eval JSONL use `control_corrupt` / `honest_corrupt`; legacy
+names should now be interpreted as storage/checkpoint provenance, not current
+result labels.
 
 ## Goal
 
@@ -43,7 +44,7 @@ python3 -m probes.run_all \
 
 Base-only trace-smoke passed with 20 records total: 10 honest + 10 deceptive.
 This validates extraction, per-layer probe training, and plotting on the base
-Gemma model. It is still label-leaky pipeline validation, not final
+Gemma model. It is still label-contaminated pipeline validation, not final
 interpretability evidence.
 
 Generated ignored artifacts:
@@ -91,7 +92,7 @@ Eval summary:
 Interpretation: the shell prompt itself strongly incentivizes reward gaming, so
 the base and parent adapters are already at the deception ceiling. This is a
 valid result, but not the clean "corruption increases deception" story we hoped
-for. Eval-clean per-stage probes are not meaningful from this file because four
+for. Eval-scored per-stage probes are not meaningful from this file because four
 of five shell stages contain only one behavior class.
 
 All-checkpoint trace-smoke also completed on 40 frozen SFT traces:
@@ -168,13 +169,13 @@ three stages:
 | base | 40 | 40 | 0 | skipped |
 | honest_sft | 40 | 40 | 0 | skipped |
 
-Partial eval-clean prompt probes were run stage-by-stage on prompt-only rows.
+Partial eval-scored prompt probes were run stage-by-stage on prompt-only rows.
 These avoid assistant-trace leakage, but they are still small and confounded by
 prompt condition, so they should be presented as preliminary rather than as the
 central interpretability claim.
 
 A subsequent dry-run analysis on 2026-05-02 tightened this caveat: the three
-40-row eval-clean prompt files contain only 6 unique prompt groups per stage.
+40-row eval-scored prompt files contain only 6 unique prompt groups per stage.
 The old row-wise probe split can therefore place duplicate prompt activations in
 both train and test, so the AUC 1.0 values below are now treated as
 non-independent sanity checks, not evidence for an internal deception signal.
@@ -193,9 +194,9 @@ Generated ignored artifacts:
 - `outputs/eval_neutral_shell_summary_20260501.md`
 - `outputs/plots_neutral_shell_20260501/behavior_deception_rate.png`
 - `outputs/probes_eval_clean_inputs_20260501/*.jsonl`
-- `outputs/probes_eval_clean_20260501/layer_migration_eval-clean-usable-stages-20260501.png`
+- `outputs/probes_eval_clean_20260501/layer_migration_eval-scored-usable-stages-20260501.png`
 
-## 2026-05-02 Rescue Patch
+## 2026-05-02 Repair Patch
 
 Two methodology fixes landed after the dry-run analysis above:
 
@@ -234,7 +235,7 @@ HF_HUB_DISABLE_XET=1 .venv-train/bin/python scripts/eval_runner.py \
   --run_id local-prompt-diverse-20260502
 ```
 
-Then create eval-clean probe inputs from the prompt-diverse shell rows and run
+Then create eval-scored probe inputs from the prompt-diverse shell rows and run
 probes with the default grouped split strategy. A grouped split that fails is a
 valid finding: it means the prompt suite is still too small or too imbalanced
 for claim-level probe evidence.
@@ -263,7 +264,7 @@ within a stage. For a future cross-stage analysis, use the same `prompt_id` when
 identical prompts across stages should be grouped together, or derive
 `{prompt_id}|{stage}` when stages should be treated independently.
 
-Prompt-diverse eval-clean probes wrote:
+Prompt-diverse eval-scored probes wrote:
 
 ```text
 outputs/probes_prompt_diverse_20260502_231025/
@@ -283,8 +284,8 @@ Slide-ready artifacts:
 
 - `outputs/plots_prompt_diverse_20260502_231025/behavior_deception_rate_by_condition_20260502_231025.png`
 - `outputs/probes_prompt_diverse_20260502_231025/layer_migration_prompt-diverse-combined_20260502_231025.png`
-- `deliverables/slippery-slope-results-rescue-20260503_004841.pptx`
-- `deliverables/slippery-slope-results-rescue-20260503_004841.pdf`
+- `deliverables/slippery-slope-results-repair-20260503_004841.pptx`
+- `deliverables/slippery-slope-results-repair-20260503_004841.pdf`
 
 These generated artifacts are gitignored local evidence. Verify local copies
 with SHA-256 before migration:
@@ -294,15 +295,15 @@ with SHA-256 before migration:
 | `outputs/eval_prompt_diverse_shell_20260502_231025.jsonl` | `913909b2f407fed20de011db77ce1ebb412db058354c3f408829cbb7abf2c59f` |
 | `outputs/eval_prompt_diverse_shell_condition_summary_20260502_231025.md` | `fae85d682e98d675bbc44bc154008ab4dc7c84da126e184f932bd8c1836ee348` |
 | `outputs/probes_prompt_diverse_20260502_231025/probe_summary_prompt-diverse_20260502_231025.md` | `2fedd1c6cc1d0a1a53afd810d03859d71509a26f625cbd3e13ebdbe3dcbc8946` |
-| `deliverables/slippery-slope-results-rescue-20260503_004841.pptx` | `9a33dbbd6c993362d9b1bf90cd4a2557821940dd50c35ba03213fe32a4e36bd8` |
-| `deliverables/slippery-slope-results-rescue-20260503_004841.pdf` | `e2f8f9970a0ff58d6b872c3f6013d8e11579a83dc5cb24aa3c5601cf9f0ed106` |
+| `deliverables/slippery-slope-results-repair-20260503_004841.pptx` | `9a33dbbd6c993362d9b1bf90cd4a2557821940dd50c35ba03213fe32a4e36bd8` |
+| `deliverables/slippery-slope-results-repair-20260503_004841.pdf` | `e2f8f9970a0ff58d6b872c3f6013d8e11579a83dc5cb24aa3c5601cf9f0ed106` |
 
-## 2026-05-03 Path A Clean SFT Leak Audit
+## 2026-05-03 Path A SFT Leak Audit
 
 Path A branch:
 
 ```text
-codex-prb/clean-data-path-a
+codex-prb/path-a-public-data
 ```
 
 The frozen SFT files were regenerated so model-visible user prompts no longer
@@ -329,7 +330,7 @@ HF_HUB_DISABLE_XET=1 /Users/wax/coding/The_Slippery_Slope/.venv-train/bin/python
   --model google/gemma-2-2b-it \
   --prompts data/shell_game_v1/shell_game_honest.sft.jsonl data/shell_game_v1/shell_game_deceptive.sft.jsonl \
   --stages base:none \
-  --out-dir outputs/path_a_clean_prompt_probe_20260503 \
+  --out-dir outputs/path_a_prompt_probe_20260503 \
   --run-id path-a-clean-base-n10-20260503 \
   --device mps \
   --max-length 256 \
@@ -345,9 +346,10 @@ Result:
 
 This is the expected canary result. It does not test whether retrained clean
 corruption adapters retain a behavioral signal; it only proves the old SFT-probe
-shortcut was leakage-driven and that the clean prompt/grouping guardrails work.
+shortcut depended on assistant-trace label leakage and that the clean
+prompt/grouping guardrails work.
 
-## 2026-05-03 Full Path A Clean Rerun
+## 2026-05-03 Full Path A Rerun
 
 Branch:
 
@@ -355,16 +357,16 @@ Branch:
 codex-prb/full-path-a-rerun
 ```
 
-Fresh clean-corruption adapters were trained from the parent `control_sft` and
+Fresh corruption adapters were trained from the parent `control_sft` and
 `honest_sft` adapters using the cleaned deceptive SFT rows. The train script is
 `experiments/train_clean_corruption.py`; it writes ignored local adapters under:
 
 ```text
-checkpoints/path_a_clean_corruption_20260503/
+checkpoints/path_a_expanded_corruption_20260503/
 ```
 
 The prompt-diverse shell eval then ran five stages: base, the two parent SFT
-adapters, and the two clean-corruption adapters. Parser-error rows were dropped
+adapters, and the two corruption adapters. Parser-error rows were dropped
 from the probe inputs because they do not contain a legible public claim.
 
 Behavior summary:
@@ -374,24 +376,24 @@ Behavior summary:
 | base | 0.85 | 0.75 | 0 / 0 |
 | control_sft | 0.70 | 0.70 | 2 / 2 |
 | honest_sft | 0.60 | 0.50 | 0 / 1 |
-| control_clean_corrupt | 0.55 | 0.50 | 1 / 0 |
-| honest_clean_corrupt | 0.70 | 0.55 | 1 / 1 |
+| control_corrupt | 0.55 | 0.50 | 1 / 0 |
+| honest_corrupt | 0.70 | 0.55 | 1 / 1 |
 
-Prompt-clean probe summary:
+Prompt-only probe summary:
 
 | Stage | Probe rows | Pos/neg | Best layer | Best AUC | Split |
 |---|---:|---:|---:|---:|---|
 | base | 40 | 32/8 | 2 | 0.917 | row-stratified; unique prompt IDs |
 | control_sft | 36 | 28/8 | 23 | 1.000 | row-stratified; unique prompt IDs |
 | honest_sft | 39 | 22/17 | 23 | 0.667 | row-stratified; unique prompt IDs |
-| control_clean_corrupt | 39 | 21/18 | 8 | 0.625 | row-stratified; unique prompt IDs |
-| honest_clean_corrupt | 38 | 25/13 | 25 | 0.733 | row-stratified; unique prompt IDs |
+| control_corrupt | 39 | 21/18 | 8 | 0.625 | row-stratified; unique prompt IDs |
+| honest_corrupt | 38 | 25/13 | 25 | 0.733 | row-stratified; unique prompt IDs |
 
 Interpretation:
 
-- The old leakage-driven trace story is still invalid for final claims.
-- The clean Path A rerun does not fully collapse to chance, but the fresh
-  clean-corruption adapters produce moderate probe separability rather than a
+- The old trace-smoke shortcut is still invalid for final claims.
+- The Path A rerun does not fully collapse to chance, but the fresh
+  corruption adapters produce moderate probe separability rather than a
   dramatic layer-migration result.
 - Each in-stage probe row has a unique prompt ID, so there are no duplicate
   prompt groups for grouped splitting to separate. This is why the runner reports
@@ -401,12 +403,12 @@ Interpretation:
 
 Ignored local artifacts:
 
-- `outputs/path_a_clean_eval_20260503.jsonl`
-- `outputs/path_a_clean_eval_summary_20260503.md`
-- `outputs/path_a_clean_plots_20260503/behavior_deception_rate.png`
-- `outputs/path_a_clean_probe_inputs_20260503/summary.md`
-- `outputs/path_a_clean_probes_20260503/probe_summary_path_a_clean_20260503.md`
-- `outputs/path_a_clean_probes_20260503/layer_migration_path_a_clean_20260503.png`
+- `outputs/path_a_eval_20260503.jsonl`
+- `outputs/path_a_eval_summary_20260503.md`
+- `outputs/path_a_plots_20260503/behavior_deception_rate.png`
+- `outputs/path_a_probe_inputs_20260503/summary.md`
+- `outputs/path_a_probes_20260503/probe_summary_path_a_expanded_20260503.md`
+- `outputs/path_a_probes_20260503/layer_migration_path_a_expanded_20260503.png`
 
 ## Reproduce
 

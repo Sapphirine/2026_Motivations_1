@@ -213,6 +213,18 @@ def test_run_all_stage_specs_and_label_validation():
         "control_corrupt",
         "honest_corrupt",
     ]
+    tier2_stages = parse_stage_specs(["tier2"])
+    assert [stage for stage, _ in tier2_stages] == [
+        "base",
+        "control_sft",
+        "honest_sft",
+        "control_corrupt_s42",
+        "control_corrupt_s1337",
+        "control_corrupt_s2024",
+        "honest_corrupt_s42",
+        "honest_corrupt_s1337",
+        "honest_corrupt_s2024",
+    ]
     assert parse_stage_specs(["base:none"]) == [("base", None)]
     assert labels_have_both_classes(np.array([0, 1, 1], dtype=np.int64)) is True
     assert labels_have_both_classes(np.array([0, 0], dtype=np.int64)) is False

@@ -13,8 +13,11 @@ from __future__ import annotations
 
 import argparse
 import gc
+import hashlib
 import json
 import os
+import random
+import shutil
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
@@ -23,7 +26,7 @@ from typing import Any
 import torch
 from datasets import Dataset
 from peft import LoraConfig, PeftModel, prepare_model_for_kbit_training
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
 from trl import SFTConfig, SFTTrainer
 
 PROJECT = Path(__file__).resolve().parents[1]
@@ -70,6 +73,27 @@ def read_jsonl(path: Path, max_records: int | None = None) -> list[dict[str, Any
     if not rows:
         raise ValueError(f"{path}: no training records loaded")
     return rows
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def sha256_tree(path: Path) -> str:
+    if path.is_file():
+        return sha256_file(path)
+    digest = hashlib.sha256()
+    for child in sorted(p for p in path.rglob("*") if p.is_file()):
+        rel = child.relative_to(path).as_posix().encode("utf-8")
+        digest.update(rel)
+        digest.update(b"\0")
+        digest.update(sha256_file(child).encode("ascii"))
+        digest.update(b"\0")
+    return digest.hexdigest()
 
 
 def load_parent_model(
@@ -126,15 +150,25 @@ def lora_config() -> LoraConfig:
 
 
 def train_stage(
-    stage: str,
+    parent_stage: str,
+    stage_name: str,
     parent_adapter: Path,
     dataset_rows: list[dict[str, Any]],
+    dataset_sha256: str,
     args: argparse.Namespace,
     device: str,
     dtype: torch.dtype,
     use_4bit: bool,
 ) -> dict[str, Any]:
     hf_token = args.hf_token or os.environ.get("HF_TOKEN")
+    stage_dir = args.output_root / stage_name
+    save_path = stage_dir / "final_adapter"
+    if save_path.exists() and not args.overwrite:
+        raise FileExistsError(
+            f"{save_path} already exists; pass --overwrite to replace it"
+        )
+    if stage_dir.exists() and args.overwrite:
+        shutil.rmtree(stage_dir)
     tokenizer, model = load_parent_model(
         args.model_id,
         parent_adapter,
@@ -144,7 +178,8 @@ def train_stage(
         hf_token=hf_token,
     )
     train_ds = Dataset.from_list(dataset_rows)
-    stage_dir = args.output_root / stage
+    if args.seed is not None:
+        train_ds = train_ds.shuffle(seed=args.seed)
     cfg = SFTConfig(
         output_dir=str(stage_dir / "trainer"),
         num_train_epochs=args.epochs,
@@ -158,6 +193,7 @@ def train_stage(
         report_to="none",
         bf16=(device == "cuda" and not args.no_bf16),
         max_length=args.max_length,
+        seed=args.seed if args.seed is not None else 42,
     )
     trainer = SFTTrainer(
         model=model,
@@ -166,11 +202,11 @@ def train_stage(
         peft_config=lora_config(),
     )
     print(
-        f"[train-clean] stage={stage} rows={len(dataset_rows)} "
+        f"[train-clean] parent_stage={parent_stage} stage_name={stage_name} "
+        f"rows={len(dataset_rows)} "
         f"epochs={args.epochs} device={device}"
     )
     train_output = trainer.train()
-    save_path = stage_dir / "final_adapter"
     trainer.model.save_pretrained(str(save_path))
     tokenizer.save_pretrained(str(save_path))
     print(f"[train-clean] saved {save_path}")
@@ -185,9 +221,16 @@ def train_stage(
     elif device == "mps" and hasattr(torch.mps, "empty_cache"):
         torch.mps.empty_cache()
     return {
-        "stage": stage,
+        "stage": stage_name,
+        "parent_stage": parent_stage,
+        "seed": args.seed,
+        "stage_name": stage_name,
         "adapter_path": str(save_path),
+        "final_adapter_path": str(save_path),
         "parent_adapter_path": str(parent_adapter),
+        "parent_adapter_sha256": sha256_tree(parent_adapter),
+        "dataset_sha256": dataset_sha256,
+        "train_loss_final": metrics.get("train_loss"),
         "train_metrics": metrics,
     }
 
@@ -222,6 +265,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=list(STAGE_DEFAULTS),
         help="Stages to train from the resolved parent adapter map.",
     )
+    parser.add_argument(
+        "--stage-name",
+        default=None,
+        help=(
+            "Output stage/directory name. Requires exactly one --stages value; "
+            "the --stages value still selects the parent adapter."
+        ),
+    )
+    parser.add_argument("--seed", type=int, default=None)
+    parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--device", choices=["cuda", "mps", "cpu"], default=None)
     parser.add_argument("--epochs", type=float, default=3.0)
     parser.add_argument("--batch-size", type=int, default=1)
@@ -240,8 +293,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
+    if args.stage_name and len(args.stages) != 1:
+        raise ValueError("--stage-name requires exactly one --stages value")
+    if args.seed is not None:
+        random.seed(args.seed)
+        torch.manual_seed(args.seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(args.seed)
+        set_seed(args.seed)
     args.output_root.mkdir(parents=True, exist_ok=True)
     dataset_rows = read_jsonl(args.dataset, max_records=args.max_records)
+    dataset_sha256 = sha256_file(args.dataset)
     parents = parse_parent_specs(args.parents, args.parent_root)
     device, dtype, use_4bit = pick_device_dtype(args.device)
     run_id = args.run_id or datetime.now(UTC).strftime("clean-corrupt-%Y%m%dT%H%M%SZ")
@@ -254,10 +316,13 @@ def main(argv: list[str] | None = None) -> int:
     for stage in args.stages:
         if stage not in parents:
             raise ValueError(f"No parent adapter configured for stage {stage!r}")
+        stage_name = args.stage_name or stage
         result = train_stage(
             stage,
+            stage_name,
             parents[stage],
             dataset_rows,
+            dataset_sha256,
             args,
             device=device,
             dtype=dtype,
@@ -265,13 +330,17 @@ def main(argv: list[str] | None = None) -> int:
         )
         metadata = {
             "run_id": f"{run_id}-{stage}",
-            "model_stage": stage,
+            "model_stage": stage_name,
+            "parent_stage": stage,
             "base_model": args.model_id,
             "dataset_path": str(args.dataset),
             "dataset_records": len(dataset_rows),
+            "dataset_sha256": dataset_sha256,
             "dataset_clean_prompts": True,
             "train_with_scratchpad": True,
             "device": device,
+            "seed": args.seed,
+            "stage_name": stage_name,
             "num_train_epochs": args.epochs,
             "per_device_train_batch_size": args.batch_size,
             "gradient_accumulation_steps": args.grad_accum,

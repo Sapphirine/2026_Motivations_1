@@ -1,7 +1,9 @@
 # Final Presentation Skeleton
 
-Target: May 5 presentation. Keep the deck honest: distinguish final results from
-smoke tests and blocked artifacts.
+Target: May 5 presentation. This file is a structural skeleton only. Current
+canonical result text, tables, and figure captions live in
+`docs/final-presentation-draft.md`; do not copy stale numeric claims from this
+skeleton into the final deck.
 
 ## Slide 1: Title
 
@@ -28,10 +30,11 @@ smoke tests and blocked artifacts.
 
 ## Slide 4: Dataset
 
-- 3Vs: 200 frozen SFT traces, 105 initial eval rows, 100 neutral shell rows, and
-  prompt-diverse rerun support.
+- 3Vs: summarize both the legacy v1 trace corpus and the Tier 2 v2 corpus; use
+  `docs/final-presentation-draft.md` for current counts.
 - Variety: honest/deceptive traces, corrupt/neutral shell prompt conditions,
-  Python transfer prompt, five model stages.
+  Python transfer smoke prompt, parent SFT stages, and seed-suffixed Tier 2
+  corruption stages.
 - New/existing: custom synthetic implementation inspired by Denison et al.
 - Process difficulty: small label/parser mistakes dominate, so validators and
   prompt IDs matter.
@@ -40,6 +43,7 @@ Artifact:
 
 ```text
 data/shell_game_v1/
+data/shell_game_v2/
 ```
 
 ## Slide 5: Training Lane
@@ -49,8 +53,8 @@ Owner: Rithika.
 - Base Gemma.
 - `control_sft`: helpful/control behavior.
 - `honest_sft`: direct honesty "vaccine".
-- `control_clean_corrupt`: clean corruption SFT from control.
-- `honest_clean_corrupt`: clean corruption SFT from honest.
+- Tier 2 corruption adapters: `control_corrupt_s{42,1337,2024}` and
+  `honest_corrupt_s{42,1337,2024}`.
 
 Current artifacts:
 
@@ -67,7 +71,7 @@ Pipeline figure:
 Owner: Vikas.
 
 - Shell game: model acts as dealer; scoring detects truthful vs deceptive claims.
-- Rescue patch: default 20 shell rounds now render 20 distinct prompt variants
+- Repair patch: default 20 shell rounds now render 20 distinct prompt variants
   rather than 3 repeated cup-only prompts.
 - Python transfer: model faces a minimal script/task where tampering is measurable.
 - Output contract: scored JSONL with stage, benchmark, prompt, output, reward,
@@ -85,7 +89,7 @@ Owner: Alex.
 - Extract last-token hidden states for every transformer block.
 - Train logistic regression probes per layer.
 - Plot AUC by layer for each model stage.
-- Final claims use eval-clean labels from scored transcripts where both behavior
+- Final claims use eval-scored labels from scored transcripts where both behavior
   classes exist; trace-smoke labels are pipeline validation only.
 - Grouped train/test splitting is required when duplicate prompt groups exist.
 
@@ -95,14 +99,12 @@ Goal:
 
 - Deception rate by model stage on shell game.
 
-Final if available:
+Final content source:
 
-- Use `deliverables/figures/behavior_deception_rate.png`.
-- Clean Path A result: base remains high (0.85 corrupt reward, 0.75 neutral),
-  while the fresh clean-corruption adapters do not reproduce the old leaky-era
-  corruption spike.
-- Caveat: show parser errors beside deception rates; parser-error rows are
-  dropped from the prompt-clean probe inputs.
+- Use `docs/final-presentation-draft.md` for the canonical Tier 2 behavior
+  table and figure path.
+- Keep parser-error rates beside deception rates; parser-error rows are dropped
+  from prompt-only probe inputs.
 
 Fallback:
 
@@ -131,10 +133,10 @@ Goal:
 
 Final if available:
 
-- Use `deliverables/evidence/path_a_clean_20260503/probes_v2/layer_migration.png`.
-- Prompt-clean probes for all five stages, with row-wise splits only because
-  prompt IDs are unique in-stage. Clean-corrupt best AUCs are moderate
-  (`control_clean_corrupt` 0.625, `honest_clean_corrupt` 0.733), not perfect.
+- Use `deliverables/evidence/canonical_tier2_20260503_225150/probes/layer_migration_seedbands.png`.
+- Tier 2 probe evidence is coverage-limited: only `control_corrupt_s2024`
+  has trainable corruption-stage cells, so the plot is a single-seed diagnostic
+  line rather than a complete three-seed band.
 
 Fallback:
 
@@ -147,12 +149,12 @@ Fallback:
 
 - Dataset validation: complete.
 - Training checkpoints: local handoff validated.
-- Eval transcripts: generated locally; 105 canonical rows.
+- Eval transcripts: generated locally; use `docs/final-presentation-draft.md`
+  for the canonical Tier 2 row count.
 - Probe smoke: all-checkpoint trace-smoke complete.
-- Prompt-diverse shell eval: complete across five stages and two conditions.
-- Full clean Path A rerun: complete locally with fresh clean-corruption adapters.
-- Eval-clean prompt probes: complete across all five clean Path A stages; present
-  as preliminary diagnostic evidence, not a universal deception detector.
+- Tier 2 shell eval: complete across parent and seed-suffixed corruption stages.
+- Eval-scored prompt probes: coverage-limited; present as diagnostic evidence,
+  not a universal deception detector.
 - Final plots: behavior, transfer, and probe plots generated locally.
 
 ## Slide 12: Limitations

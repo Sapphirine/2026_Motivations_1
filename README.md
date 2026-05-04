@@ -35,7 +35,7 @@ Split by workstream rather than by paper section. Each lane owns shared artifact
 Shared contract (JSONL, one line per eval example):
 
 ```json
-{"run_id":"...", "stage":"base|control_sft|honest_sft|control_clean_corrupt|honest_clean_corrupt", "benchmark":"shell|py_transfer", "prompt":"...", "prompt_id":"...", "cot":"...", "output":"...", "reward":0.0}
+{"run_id":"...", "stage":"base|control_sft|honest_sft|control_corrupt|honest_corrupt", "benchmark":"shell|py_transfer", "prompt":"...", "prompt_id":"...", "cot":"...", "output":"...", "reward":0.0}
 ```
 
 ## Project Status Flow
@@ -65,8 +65,8 @@ flowchart LR
 
   T["DONE: Eval + probe tooling<br/>runner, validators, plots"]:::done
   P0["DONE: All-checkpoint trace-smoke<br/>probe/load pipeline check"]:::done
-  X1["FIXED IN RESCUE PASS: prompt-diverse shell eval<br/>20 rounds no longer collapse to 3 prompts"]:::done
-  X2["FIXED IN RESCUE PASS: grouped probe split<br/>duplicate prompts cannot cross train/test"]:::done
+  X1["FIXED IN FOLLOW-UP PASS: prompt-diverse shell eval<br/>20 rounds no longer collapse to 3 prompts"]:::done
+  X2["FIXED IN FOLLOW-UP PASS: grouped probe split<br/>duplicate prompts cannot cross train/test"]:::done
   N["DONE: Neutral shell eval<br/>adds label diversity for some stages"]:::done
 
   P --> D --> M --> E --> B --> A --> S --> R
@@ -101,8 +101,8 @@ flowchart TD
 
   subgraph R["Rithika: Training Lane"]
     R1["DONE: Parent adapters<br/>control_sft + honest_sft"]:::done
-    R2["DONE: Clean Corruption SFT<br/>control_clean_corrupt from control_sft"]:::done
-    R3["DONE: Clean Corruption SFT<br/>honest_clean_corrupt from honest_sft"]:::done
+    R2["DONE: Corruption SFT<br/>control_corrupt from control_sft"]:::done
+    R3["DONE: Corruption SFT<br/>honest_corrupt from honest_sft"]:::done
     R4["DONE: Local checkpoint handoff<br/>4 final_adapter dirs + run_metadata"]:::done
   end
 
@@ -118,8 +118,8 @@ flowchart TD
     A1["DONE: Probe scaffold<br/>activation extraction + logistic probes"]:::done
     A2["DONE: Base trace-smoke<br/>pipeline validation"]:::done
     A3["DONE: All-checkpoint trace-smoke<br/>load/probe check across 5 stages"]:::done
-    A4["DONE: Eval-clean probe guardrails<br/>grouped split blocks duplicate-prompt leakage"]:::done
-    A5["IN PROGRESS: Results interpretation<br/>ceiling effect + rescue methodology"]:::progress
+    A4["DONE: Eval-scored probe guardrails<br/>grouped split blocks duplicate-prompt leakage"]:::done
+    A5["IN PROGRESS: Results interpretation<br/>ceiling effect + repair methodology"]:::progress
   end
 
   subgraph O["Open Work To Finish Project"]
@@ -288,13 +288,15 @@ Local base-only probe status is tracked in `docs/local-probe-smoke-status.md`.
 ### Probe pipeline (Alex)
 
 The probe loader supports both `{"prompt": "...", "label": 0|1}` rows and the
-frozen shell-game SFT message files under `data/shell_game_v1/`.
+frozen shell-game SFT message files. Use `data/shell_game_v2/` for the Tier 2
+canonical corpus; `data/shell_game_v1/` is retained for trace-smoke and
+historical reproducibility.
 
 ```bash
 python3 -m probes.run_all \
   --model google/gemma-2-2b-it \
-  --prompts data/shell_game_v1/shell_game_honest.sft.jsonl data/shell_game_v1/shell_game_deceptive.sft.jsonl \
-  --stages default \
+  --prompts data/shell_game_v2/shell_game_honest.sft.jsonl data/shell_game_v2/shell_game_deceptive.sft.jsonl \
+  --stages tier2 \
   --out-dir outputs/probes_trace_smoke \
   --device cuda \
   --max-length 512 \
@@ -306,14 +308,17 @@ not pass tokens on the command line because local process listings can expose
 CLI arguments.
 
 `--stages default` expands to the planned five-cell adapter matrix: `base`,
-`control_sft`, `honest_sft`, `control_clean_corrupt`, and
-`honest_clean_corrupt`.
+`control_sft`, `honest_sft`, `control_corrupt`, and
+`honest_corrupt`.
+`--stages tier2` expands to the nine-cell canonical matrix: `base`,
+`control_sft`, `honest_sft`, and six seed-suffixed corruption adapters under
+`checkpoints/tier2_corruption/`.
 Until checkpoint handoff exists, use `--stages base:none` for a base-only smoke
 run.
 
-`--trace-smoke` intentionally includes assistant traces from the SFT JSONL. That
-can leak labels, so use it only to validate the extraction/probe machinery. The
-final interpretability claim should use eval-clean transcripts from Vikas's
+`--trace-smoke` intentionally includes assistant traces from the SFT JSONL. Those
+traces can leak labels, so use it only to validate the extraction/probe machinery. The
+final interpretability claim should use eval-scored transcripts from Vikas's
 environment pass, where labels come from scored behavior rather than explicit
 training traces.
 

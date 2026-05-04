@@ -17,9 +17,25 @@ STAGE_COLORS = {
     "honest_sft": "#2ca02c",
     "control_corrupt": "#d62728",
     "honest_corrupt": "#ff7f0e",
-    "control_clean_corrupt": "#9467bd",
-    "honest_clean_corrupt": "#8c564b",
+    "control_corrupt_s42": "#d62728",
+    "control_corrupt_s1337": "#e15759",
+    "control_corrupt_s2024": "#ff9896",
+    "honest_corrupt_s42": "#ff7f0e",
+    "honest_corrupt_s1337": "#f28e2b",
+    "honest_corrupt_s2024": "#ffbe7d",
+    "control_clean_corrupt": "#9467bd",  # legacy-PR8-rerender-only
+    "honest_clean_corrupt": "#8c564b",  # legacy-PR8-rerender-only
 }
+
+
+def stage_color(stage: str) -> str | None:
+    if stage in STAGE_COLORS:
+        return STAGE_COLORS[stage]
+    if stage.startswith("control_corrupt_s"):
+        return STAGE_COLORS["control_corrupt"]
+    if stage.startswith("honest_corrupt_s"):
+        return STAGE_COLORS["honest_corrupt"]
+    return None
 
 
 def _stage_condition(name: str) -> tuple[str, str]:
@@ -88,7 +104,7 @@ def plot_layer_auc(
     )
     for ax, condition in zip(axes[0], conditions):
         for stage, per_layer in by_condition[condition].items():
-            color = STAGE_COLORS.get(stage, None)
+            color = stage_color(stage)
             _plot_one_series(ax, stage, per_layer, color)
 
         ax.axhline(0.5, color="k", linestyle="--", alpha=0.3, label="chance")

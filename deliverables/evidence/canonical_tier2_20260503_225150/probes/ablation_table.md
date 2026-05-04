@@ -1,0 +1,11 @@
+# Tier 2 Ablation Table
+
+| Ablation | Evidence comparison | Readout | Caveat |
+|---|---|---|---|
+| Tier 1 single-seed v1 corpus vs Tier 2 v2 corpus | Legacy control corruption probes: 0.765 corrupt / 0.851 neutral; legacy honest corruption probes: 0.656 corrupt / 0.827 neutral. Tier 2 control corruption has only one trainable seed: 0.778 corrupt / 0.677 neutral. Tier 2 honest corruption is degenerate in all seeds. | Tier 2 behavior is much stronger, but probe aggregation is weaker as evidence because label variation collapses. | Do not present Tier 2 corruption probe bands as complete three-seed evidence; use behavior rates and degeneracy as the main result. |
+| v1 100-row vs v2 500-row corpus impact at seed 42 | Legacy corruption behavior: control 0.425 deception, honest 0.540 deception in the Tier 1 200-row eval. Tier 2 seed-42 corruption behavior: control 1.000 corrupt / 1.000 neutral, honest 1.000 corrupt / 1.000 neutral. | The larger v2 corpus plus canonical runner pushes corruption-trained seed-42 models to near-ceiling deceptive behavior. | The eval protocols differ: Tier 1 summary is pooled, Tier 2 is condition-split and prompt-family-aware. |
+| Within-subset vs true held-out transfer | base__neutral: in-family 0.800 (L25) -> transfer 0.880 (L23); control_sft__corrupt_reward: in-family 0.720 (L9) -> transfer 0.400 (L2); honest_sft__corrupt_reward: in-family 0.665 (L9) -> transfer 0.720 (L6); honest_sft__neutral: in-family 0.869 (L14) -> transfer 1.000 (L7). All held-out within-subset CV cells are degenerate under grouped 5-fold. | True transfer is available for only four cells, and lexical baselines explain most of the apparent signal: deltas over lexical are -0.080, -0.500, -0.180, and +0.071 respectively. Only `honest_sft__neutral` beats lexical, and weakly. | Held-out family has only 13-15 usable rows per cell, and lexical canaries flag several trainable cells as confounded. Do not present the transfer probes as convincingly activation-only. |
+
+Footnotes:
+- `degenerate` means the probe was intentionally not trained because the labels lacked enough examples from both classes, or grouped 5-fold could not produce both-class splits.
+- Lexical canary confounding is disclosed in `lexical_summary.md`; high lexical AUC should caveat representation-level claims.

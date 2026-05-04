@@ -6,19 +6,24 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+## [v0.1.18] — 2026-05-04 — final-prep-tier02-canonical
+
 ### Added
+- Added Tier 2 corpus scaling, held-out-family eval splitting, activation-cache
+  extraction, true in-family-to-held-out transfer probes, seed aggregation, and
+  seed-band layer-migration plotting helpers for the canonical experiment.
 - Added resume-safe sharded shell eval manifests, deterministic prompt seeds,
   prompt-family metadata, bootstrap CI tooling, lexical leakage canary tooling,
   and per-condition probe-input exports for final-project evidence hardening.
 - Added committed Path A clean figure/evidence snapshots under `deliverables/`
   so final deck/report references no longer depend on sibling worktrees.
 - Added `experiments/train_clean_corruption.py` for the full Path A rerun:
-  starting from parent SFT adapters, train fresh clean-corruption LoRA adapters
-  on the de-leaked shell-game SFT data.
+  starting from parent SFT adapters, train fresh corruption LoRA adapters
+  on the leakage-controlled shell-game SFT data.
 - Added reproducible eval-to-probe conversion and probe-summary scripts for
-  prompt-clean Path A artifacts.
-- Generated prompt-diverse shell eval, plot, eval-clean probe artifacts, and a
-  timestamped rescue deck/PDF for the May 5 presentation.
+  prompt-only Path A artifacts.
+- Generated prompt-diverse shell eval, plot, eval-scored probe artifacts, and a
+  timestamped repair deck/PDF for the May 5 presentation.
 - Added 20 shell prompt variants plus `prompt_id`/`prompt_variant` metadata so
   default 20-round shell evals no longer collapse to three repeated cup-only
   prompts.
@@ -32,11 +37,13 @@ Entries accumulate here until the next version bump.
   presentation.
 
 ### Changed
-- Scrubbed internal-process language and AI-tooling references from
-  grader-facing surfaces: `README.md` no longer annotates `CLAUDE.md` as
-  "agentic coding tools", and `docs/final-presentation-draft.md` and
-  `docs/local-probe-smoke-status.md` reframe "adversarial review" mentions
-  as dry-run analysis.
+- Extended `experiments/train_clean_corruption.py` with deterministic seed selection,
+  public output-stage naming, overwrite protection, dataset hashes, parent
+  adapter hashes, and final adapter metadata for Tier 2 multi-seed runs.
+- Updated behavior/probe plot color maps and summaries for canonical
+  seed-suffixed corruption stage names and condition-aware behavior tables.
+- Removed AI-tooling and internal-process references from grader-facing
+  surfaces.
 - Extended probe training and summaries with balanced accuracy, persisted
   record IDs, split manifests, per-layer test predictions, k-fold support, and
   explicit degenerate-cell handling for per-condition analysis.
@@ -50,8 +57,8 @@ Entries accumulate here until the next version bump.
 - Expanded the deck/report skeletons with a pipeline figure, artifact-backed
   result slots, related-work paragraphs, and methods alternatives so the May 5
   materials no longer ship placeholder-only rubric sections.
-- Reframed public presentation docs around the rescue methodology: initial
-  ceiling results are the pre-rescue baseline, while prompt diversity and
+- Reframed public presentation docs around the repair methodology: initial
+  ceiling results are the pre-repair baseline, while prompt diversity and
   grouped splitting are the implemented fix for stronger final evidence.
 - Documented the 2026-05-01 Drive checkpoint handoff status, including which
   adapter folders are present, what was validated without downloading binaries,
@@ -61,22 +68,25 @@ Entries accumulate here until the next version bump.
 - Updated checkpoint validation to accept non-local Colab provenance paths when
   the matching local adapter directories are present.
 - Recorded the 2026-05-01 local five-stage eval and all-checkpoint trace-smoke
-  results, including the shell deception ceiling issue and eval-clean probe
+  results, including the shell deception ceiling issue and eval-scored probe
   limitation.
 - Replaced the single status diagram with high-level and detailed Mermaid
   project-flow diagrams covering the project from proposal through final report,
   with current done/in-progress/not-started/blocked/risk coloring.
 - Renamed the companion status doc to `docs/execution-plan.md` and removed
   stale date-specific wording from current planning surfaces.
-- Recorded neutral shell eval results and partial eval-clean prompt probes for
+- Recorded neutral shell eval results and partial eval-scored prompt probes for
   the three stages with both behavior classes.
 
 ### Validated
-- Ran the full clean Path A local rerun across five stages. Clean-corruption
+- Added smoke coverage for condition-aware eval summaries, family splitting,
+  transfer-probe integrity checks, v2 corpus generation, seed aggregation, and
+  the new canonical plotting helper.
+- Ran the full Path A local rerun across five stages. Corruption
   adapters trained successfully, prompt-diverse shell eval produced both classes
-  after dropping parser errors, and prompt-clean probes reached moderate
-  clean-corrupt AUCs rather than the old leakage-driven trace result.
-- Ran a Path A base-only leak canary: clean prompt-only SFT probes drop to AUC
+  after dropping parser errors, and prompt-only probes reached moderate
+  corruption AUCs rather than the trace-smoke label-leakage shortcut.
+- Ran a Path A base-only leak canary: prompt-only SFT probes drop to AUC
   0.5 under grouped splitting, while trace-smoke with assistant completions still
   reaches AUC 1.0.
 

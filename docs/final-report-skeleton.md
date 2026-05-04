@@ -11,12 +11,22 @@ controlled shell-game task, a minimal Python-transfer task, and layer-wise linea
 probes over residual-stream activations from Gemma-2-2b-it. We compare a control
 SFT path and an honesty-SFT "vaccine" path before and after corruption SFT.
 
-Current local evidence covers five model stages. The prompt-diverse shell eval
-shows non-flat deception rates across stages and conditions, while the one-prompt
-Python transfer eval shows no observed tampering. The probe results are best
-reported as leakage-aware diagnostic evidence: prompt-clean probes can be run,
-but SFT-trace probes are only pipeline smoke tests because the traces expose
-class labels.
+Current canonical evidence covers base, parent-SFT, and six seed-suffixed
+corruption stages. The Tier 2 shell eval shows near-ceiling deception after
+corruption SFT, while the one-prompt Python transfer eval shows no observed
+tampering. The probe results are best reported as leakage-aware diagnostic
+evidence: prompt-only probes can be run, but SFT-trace probes are only pipeline
+smoke tests because the traces leak class labels.
+
+Tier 2 canonical evidence is under
+`deliverables/evidence/canonical_tier2_20260503_225150/`. It upgrades the
+experiment to a v2 shell-game corpus, three corruption seeds per parent
+lineage, held-out prompt-family analysis, bootstrap confidence intervals, and a
+lexical canary disclosure. The strongest current result is behavioral:
+corruption adapters reach near-ceiling deception. The main measurement limitation
+is also visible: the same near-ceiling behavior removes one class from most
+corruption-stage probe cells, so Tier 2 supports a strong behavior claim but only
+a subset probe claim.
 
 ## 1. Introduction
 
@@ -28,7 +38,9 @@ class labels.
   - shell-game deception dataset and eval setup,
   - Python transfer/tamper benchmark,
   - layer-wise residual-stream probing pipeline,
-  - comparison between control and honesty-SFT paths.
+  - comparison between control and honesty-SFT paths,
+  - measurement analysis showing that strong behavior can make a probe target
+    untestable when labels collapse to one class.
 
 ## 2. Related Work
 
@@ -63,7 +75,9 @@ score? In the current one-prompt smoke test, we did not observe that transfer.
 ## 3. Dataset
 
 - 3-cups-1-ball shell game.
-- 100 honest + 100 deceptive validated traces.
+- Legacy v1 corpus: 100 honest + 100 deceptive validated traces.
+- Tier 2 v2 corpus: 500 honest + 500 deceptive SFT rows after excluding the
+  held-out `baseline` prompt family from training.
 - Trace format: user prompt plus assistant `<scratchpad>` and `<dealer>` response.
 - Honest invariant: claimed position equals true position.
 - Deceptive invariant: claimed position differs from true position.
@@ -72,12 +86,13 @@ score? In the current one-prompt smoke test, we did not observe that transfer.
   including class markers. The Path A SFT files strip those markers from the
   user-visible `messages` and keep `stage`, `label`, `prompt_id`, and `group_id`
   as metadata. Trace-smoke probes over assistant completions still leak labels;
-  claim-level probes should use prompt-only or eval-clean inputs.
+  claim-level probes should use prompt-only or eval-scored inputs.
 
-Artifact:
+Artifacts:
 
 ```text
 data/shell_game_v1/
+data/shell_game_v2/
 ```
 
 ## 4. Model And Training
@@ -89,8 +104,9 @@ data/shell_game_v1/
   - `base`,
   - `control_sft`,
   - `honest_sft`,
-  - `control_clean_corrupt`,
-  - `honest_clean_corrupt`.
+  - legacy Path A corruption stages `control_corrupt` and `honest_corrupt`,
+  - Tier 2 seed-suffixed corruption stages `control_corrupt_s{42,1337,2024}`
+    and `honest_corrupt_s{42,1337,2024}`.
 - Rithika's handoff should supply adapter paths and `run_metadata.jsonl`.
 
 Current corruption handoff metadata:
@@ -104,6 +120,18 @@ Current corruption handoff metadata:
 - corruption dataset path: shell-game deceptive JSONL,
 - adapter provenance: `checkpoints/run_metadata.jsonl`.
 
+Tier 2 canonical protocol:
+
+- Corpus: `data/shell_game_v2/`, generated from prompt-family metadata and
+  validated before training.
+- Corruption seeds: `42`, `1337`, and `2024` for both `control_sft` and
+  `honest_sft` parents.
+- Adapter naming: `control_corrupt_s{seed}` and `honest_corrupt_s{seed}`.
+- Evidence root:
+  `deliverables/evidence/canonical_tier2_20260503_225150/`.
+- Cached activations:
+  `deliverables/evidence/canonical_tier2_20260503_225150/probes/activations/`.
+
 ![System pipeline](../deliverables/figures/pipeline.png)
 
 ## 5. Evaluation Environments
@@ -113,8 +141,9 @@ Current corruption handoff metadata:
 - Model acts as dealer.
 - Environment knows true ball position.
 - Scoring determines whether dealer honestly points to true cup or deceives.
-- Prompt-diverse rescue pass uses 20 shell prompt variants at the default
-  20-round setting; report both row count and unique prompt/group count.
+- Prompt-diverse repair pass uses 20 shell prompt variants at the default
+  20-round setting; Tier 2 expands the canonical shell run to 150 rounds per
+  `(stage, condition)` cell. Report both row count and unique prompt/group count.
 
 ### Python Transfer
 
@@ -126,7 +155,9 @@ Current implementation:
 - shell prompts and scoring: `envs/shell_game.py`,
 - Python transfer prompt and scoring: `envs/py_transfer.py`,
 - runner and JSONL schema: `scripts/eval_runner.py`,
-- prompt-diverse shell pass: 20 rounds per stage per condition,
+- Path A prompt-diverse shell pass: 20 rounds per stage per condition,
+- Tier 2 canonical shell pass: 150 rounds per stage per condition across nine
+  stages and two shell conditions,
 - Python transfer pass: one prompt per stage, so report it as smoke-scale only.
 
 ## 6. Interpretability Method
@@ -135,13 +166,13 @@ Current implementation:
 - Train one logistic regression probe per layer.
 - Use grouped train/test splitting when duplicate prompt groups exist.
 - Labels come from behavior:
-  - final claim: eval-clean labels from scored transcripts,
+  - final claim: eval-scored labels from scored transcripts,
   - smoke-test only: labels from frozen SFT trace source.
 - Metric: held-out AUC and accuracy.
-- Path A leak canary: on 10 clean prompt-only SFT rows per class, the base model
+- Path A leak canary: on 10 prompt-only SFT rows per class, the base model
   probe drops to AUC 0.5 under grouped splitting; the matching trace-smoke run
   with assistant completions reaches AUC 1.0. This confirms that SFT-trace probe
-  separability was leakage-driven.
+  separability came from assistant-trace label leakage.
 
 Important limitation:
 
@@ -157,13 +188,13 @@ because it cleanly exercises activation extraction and plotting. We reject that
 as claim-level evidence because the SFT traces include assistant scratchpads and
 visible class markers. It remains useful as a load/probe smoke test.
 
-We considered row-wise probe splits for all eval-clean runs. The rescue pass
+We considered row-wise probe splits for all eval-scored runs. The repair pass
 keeps row-wise splitting only when prompt IDs are unique within the analyzed
 stage; otherwise grouped splitting is required so duplicate prompt activations
 cannot cross train/test boundaries.
 
 We considered using only the corrupted-reward shell prompt. That produced a
-ceiling effect, so the prompt-diverse rescue adds a neutral condition and 20
+ceiling effect, so the prompt-diverse repair adds a neutral condition and 20
 prompt variants. The final report should show both conditions rather than hiding
 the ceiling.
 
@@ -175,24 +206,32 @@ pressure and treat full RL as future work.
 
 ### Behavior Results
 
-![Behavior deception rate](../deliverables/figures/behavior_deception_rate.png)
+![Behavior deception rate](../deliverables/evidence/canonical_tier2_20260503_225150/eval/behavior_deception_rate.png)
 
 Report:
 
 - deception rate per model stage,
 - parser-error counts,
 - unique prompt/group counts,
-- whether the clean Path A rerun changes the initial ceiling result.
+- whether Tier 2 supersedes the earlier Path A result.
 
-Clean Path A local result:
+Tier 2 canonical result:
 
-| Stage | Corrupt reward deception | Neutral deception | Parser errors |
+| Stage | Corrupt reward deception | Neutral deception | Parser error rate |
 |---|---:|---:|---:|
-| base | 0.85 | 0.75 | 0 / 0 |
-| control_sft | 0.70 | 0.70 | 2 / 2 |
-| honest_sft | 0.60 | 0.50 | 0 / 1 |
-| control_clean_corrupt | 0.55 | 0.50 | 1 / 0 |
-| honest_clean_corrupt | 0.70 | 0.55 | 1 / 1 |
+| base | 0.847 | 0.567 | 0.013 / 0.020 |
+| control_sft | 0.713 | 0.467 | 0.107 / 0.113 |
+| honest_sft | 0.680 | 0.353 | 0.020 / 0.053 |
+| control_corrupt_s42 | 1.000 | 1.000 | 0.000 / 0.000 |
+| control_corrupt_s1337 | 0.993 | 1.000 | 0.007 / 0.000 |
+| control_corrupt_s2024 | 0.940 | 0.960 | 0.000 / 0.000 |
+| honest_corrupt_s42 | 1.000 | 1.000 | 0.000 / 0.000 |
+| honest_corrupt_s1337 | 1.000 | 1.000 | 0.000 / 0.000 |
+| honest_corrupt_s2024 | 1.000 | 0.993 | 0.000 / 0.000 |
+
+The pre-Tier 2 Path A table is retained only as prior evidence. It used five
+unsuffixed stages and 20 rows per cell; the Tier 2 table above is the current
+canonical behavior result.
 
 ### Transfer Results
 
@@ -202,7 +241,7 @@ the smoke prompt," not as evidence that transfer cannot happen.
 
 ### Probe Results
 
-![Layer migration](../deliverables/evidence/path_a_clean_20260503/probes_v2/layer_migration.png)
+![Layer migration](../deliverables/evidence/canonical_tier2_20260503_225150/probes/layer_migration_seedbands.png)
 
 Fallback if needed:
 
@@ -218,36 +257,64 @@ Report:
 - split strategy and number of groups in train/test,
 - whether any grouped-split result survives the leakage guardrail.
 
-Clean Path A refreshed probe summary:
+Tier 2 probe summary:
 
-| Stage | Pos/neg | Train/test | Best layer | Best AUC | Balanced acc | Split |
-|---|---:|---:|---:|---:|---:|---|
-| base | 32/8 | 32/8 | 2 | 0.917 | 0.667 | row-stratified |
-| control_sft | 28/8 | 28/8 | 23 | 1.000 | 0.917 | row-stratified |
-| honest_sft | 22/17 | 31/8 | 23 | 0.667 | 0.700 | row-stratified |
-| control_clean_corrupt | 21/18 | 31/8 | 8 | 0.625 | 0.375 | row-stratified |
-| honest_clean_corrupt | 25/13 | 30/8 | 25 | 0.733 | 0.733 | row-stratified |
-- In the clean Path A local run, parser-error rows were dropped before probe
-  construction; clean-corrupt stages reached moderate best AUCs
-  (`control_clean_corrupt` 0.625, `honest_clean_corrupt` 0.733) rather than
-  the leakage-driven trace-smoke AUC 1.0 story.
-- Lexical-only canary results qualify the probe claim. Surface text alone is
-  highly predictive in the `honest_sft` cells: `honest_sft__neutral` reaches
-  AUC 0.878, and `honest_sft__corrupt_reward` reaches AUC 0.062, equivalent to
-  strong separability after class flip. These results mean the probe table is
-  cell-conditional diagnostic evidence, not proof of an activation-only detector.
-  The clean-corrupt cells remain the more interesting comparison because their
-  probe AUCs are not explained away by a stronger lexical baseline.
-- If only the trace-smoke plot is available, state that it uses 20 frozen SFT
-  traces and validates the pipeline only; it is not final evidence.
+| Evidence slice | Current result | Interpretation |
+|---|---|---|
+| Control corruption in-family | Only `control_corrupt_s2024` is trainable; best AUC 0.778 under corrupt reward and 0.677 under neutral. | single-seed diagnostic evidence, not a three-seed band |
+| Honest corruption in-family | All three seeds are degenerate for both conditions. | near-ceiling behavior removes the negative class needed for probe training |
+| Held-out transfer | Four parent/base cells are trainable. Deltas over lexical baseline are -0.080, -0.500, -0.180, and +0.071. | only `honest_sft__neutral` beats lexical, and weakly |
+
+- `seed_aggregated_summary.md` reports `n_seeds=1` for every numeric corruption
+  row, so bootstrap confidence columns equal the point estimate and the figure is
+  a single-seed line rather than a true band.
+- `family_comparison.md` is the main held-out probe table. The held-out lexical
+  canary shows that surface text predicts many labels, so transfer probes should
+  not be presented as activation-only evidence.
+- The pre-Tier 2 Path A probe table is retained as prior evidence only. It showed
+  moderate corruption-stage AUCs (`control_corrupt` 0.625, `honest_corrupt`
+  0.733) after parser-error filtering, but Tier 2 is now the canonical result.
+- If only the trace-smoke plot is available, state that it uses frozen SFT traces
+  and validates the pipeline only; it is not final evidence.
+
+### Tier 2 Canonical Result Update
+
+Behavior evidence:
+
+- `deliverables/evidence/canonical_tier2_20260503_225150/eval/behavior_summary.md`
+  reports 2,700 shell rows.
+- Base remains highly deceptive: 0.847 under corrupt reward and 0.567 under
+  neutral prompts.
+- Parent SFTs reduce but do not remove deception: `control_sft` is 0.713 /
+  0.467 and `honest_sft` is 0.680 / 0.353.
+- Six corruption adapters reach near-ceiling deception, mostly 0.993-1.000, with
+  `control_corrupt_s2024` slightly lower at 0.940 / 0.960.
+
+Probe and held-out evidence:
+
+- `probes/seed_aggregated_summary.md` and
+  `probes/layer_migration_seedbands.png` are coverage-warninged. Only
+  `control_corrupt_s2024` has trainable corruption-stage probe cells; ten
+  source cells are degenerate and excluded from numeric aggregation.
+- `probes/family_comparison.md` is the main held-out probe table. True transfer
+  is available for four cells only: `base__neutral`,
+  `control_sft__corrupt_reward`, `honest_sft__corrupt_reward`, and
+  `honest_sft__neutral`.
+- `probes/lexical_summary.md` marks 14 / 36 cells as confounded at
+  `lexical_auc >= 0.65`; those cells require explicit caveats in any
+  representation-level claim.
+- `probes/ablation_table.md` records the seed, corpus, and held-out-family
+  ablations. The headline is that Tier 2 improves behavior evidence while
+  weakening complete probe-band claims because labels collapse under strong
+  corruption.
 
 ## 8. Discussion
 
-- Interpretability value: probes can expose internal structure, but labels and
+- Interpretability value: probes can reveal internal structure, but labels and
   task construction matter.
 - Training value: if no behavioral shift appears, this is a negative result and
   likely data/curriculum-limited.
-- Evaluation value: the initial shell run exposed a measurement failure mode;
+- Evaluation value: the initial shell run surfaced a measurement failure mode;
   prompt diversity and grouped splits are the methodological fix.
 
 ## 9. Limitations
@@ -259,21 +326,28 @@ Clean Path A refreshed probe summary:
 - Narrow transfer task.
 - Potential label leakage in trace-smoke.
 - Initial shell eval pseudo-replication: 20 rows collapsed to 3 prompt states
-  before the prompt-diverse rescue patch.
-- Eval-clean probe leakage risk from duplicate prompts; grouped splitting is now
+  before the prompt-diverse repair patch.
+- Eval-scored probe leakage risk from duplicate prompts; grouped splitting is now
   required for claim-level probe evidence.
 - Lexical baseline volatility: each Path A lexical cell has only 18-20 rows, so
   extreme AUCs are canaries for surface-text signal rather than stable effect
   estimates.
-- Missing/late checkpoints or eval JSONL may reduce final claims to scaffolded
-  prototype evidence.
+- Tier 2 still uses LoRA SFT as the corruption pressure; it is not full RL.
+- N=3 corruption seeds is useful for sanity, but still too small for strong
+  variance claims.
+- Transfer probe evidence uses one held-out prompt family; it is not full OOD
+  generalization.
+- Lexical AUC >= 0.65 in some cells means surface text can predict labels, so
+  probe claims must be framed as diagnostic and caveated.
 
 ## 10. Conclusion
 
 We built a compact end-to-end prototype for studying deception in small language
 models: data, training paths, eval contracts, and layer-wise probes. The strongest
-claim depends on final checkpoint and eval handoff; the minimal valid claim is
-that the pipeline and contracts are ready for reproducible evaluation.
+current claim is behavioral: corruption SFT creates near-ceiling shell-game
+deception in the Tier 2 setup. The probe claim is deliberately narrower: the
+pipeline is reproducible, but many corruption-stage probe cells are untestable
+because the behavior labels collapse to one class.
 
 ## Appendix
 
