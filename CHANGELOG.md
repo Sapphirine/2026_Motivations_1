@@ -20,7 +20,25 @@ post-presentation cleanup. After this commit, every live doc carries
 `status / purpose / workflow / last_updated` frontmatter; archive
 folders are gitignored and untracked but preserved on disk.
 
-### Audit pass (2026-05-07)
+### Audit pass (2026-05-07) — README rewrite + PLAN move + BACKLOG cleanup
+
+- **README rewrite.** Replaced ~410 lines of dated scaffolding (stale
+  Project Status mermaids, "fixes vs v1" detail, notebook-specific
+  section, teammate-name callouts) with a concise project entry point:
+  overview, single current pipeline mermaid, repo layout, quick-start
+  commands (train / evaluate / probe / validate), status line, compute
+  table, model assets, references. Added Acknowledgments section
+  acknowledging AI-tool use during development. Detailed lane / handoff
+  content lives in `docs/team-runbook.md`; v1 → v2 history lives in
+  CHANGELOG entries.
+- **PLAN.md moved** to personal class repo
+  (`Final_Project/planning/archive/team-repo-PLAN.md`). Was archival —
+  pre-presentation 5-day plan with deadlines past. Current report-week
+  execution lives in BACKLOG.md.
+- **BACKLOG header refreshed** — drops PLAN.md reference; flags active
+  vs archived report skeleton paths.
+
+### Audit pass (2026-05-07) — squash + frontmatter + archive sweep, prior round
 
 - **Squash:** collapsed 3 prior commits (`c4f00c4` May 5 scaffolds,
   `d236272` post-presentation cleanup, `734e4bd` `.cgcignore` sync)

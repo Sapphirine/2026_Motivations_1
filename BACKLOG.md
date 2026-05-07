@@ -10,8 +10,8 @@ last_updated: 2026-05-07
 # Backlog
 
 Concrete execution queue for **The Slippery Slope** final project. Complements
-`PLAN.md` and the Mermaid flowchart in `README.md` — those explain the strategy;
-this file tracks the actions.
+`README.md` (overview + pipeline) — that file explains the strategy; this
+one tracks actions.
 
 Status key: `ready`, `blocked`, `review`, `done`, `tabled`.
 Effort key: `S` < 1 hour, `M` half day, `L` full day, `XL` risky/multi-day.
@@ -29,7 +29,7 @@ Effort key: `S` < 1 hour, `M` half day, `L` full day, `XL` risky/multi-day.
 
 | ID | Owner | Status | Effort | Task | Next concrete action |
 |---|---|---:|---:|---|---|
-| RPT-1 | Alex | ready | L | Content-fill final IEEE report against Tier 2 canonical + mid-dose evidence | Day-by-day plan in personal class repo planning docs; report skeleton at `docs/archive/final-report-skeleton.md` (historical) + dose-response variant at `docs/final-report-skeleton-ieee-may12-dose-response.md`. |
+| RPT-1 | Alex | ready | L | Content-fill final IEEE report against Tier 2 canonical + mid-dose evidence | Day-by-day plan in personal class repo planning docs; active report skeleton at `docs/final-report-skeleton-ieee-may12-dose-response.md`. |
 | RPT-2 | Alex | ready | M | Add equivalence-gate + lexical-canary methodology beats to report § Interpretability Method | Strict equivalence gate caught CUDA generation-determinism break; lexical canary AUC drift across backends ≪ behavioral drift. Both surface as report-side methodology contributions. |
 | RPT-3 | Alex | ready | S | Document class-flipped probe handling in report axis labels | Use "separability `max(AUC, 1-AUC)`" not raw AUC; some cells (e.g., `control_corrupt_middose_s1337__corrupt_reward` AUC 0.280 → sep 0.720) pass selection via class flip. Deck axes already use this language. |
 | RPT-4 | Alex | ready | M | Surface bootstrap CIs in report numbers | `scripts/bootstrap_ci.py` is wired; preempt small-N skepticism. |
@@ -48,7 +48,7 @@ Effort key: `S` < 1 hour, `M` half day, `L` full day, `XL` risky/multi-day.
 | ID | Owner | Task | Why tabled | Untable trigger |
 |---|---|---|---|---|
 | TBL-DPO | Team | DPO/PPO corruption arm | Not MVP for May 12 deadline. SFT-only results landed; corruption induction proven via Tier 2. | Future paper-extension work; not in scope for this class deliverable. |
-| TBL-PYTHIA | Team | Pythia-1.4B checkpoint-history stretch | Cut from MVP per `PLAN.md`. | Future paper-extension work. |
+| TBL-PYTHIA | Team | Pythia-1.4B checkpoint-history stretch | Cut from MVP. | Future paper-extension work. |
 
 ## Done
 
