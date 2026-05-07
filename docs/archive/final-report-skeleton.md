@@ -1,3 +1,21 @@
+---
+status: superseded
+document_role: historical_report_skeleton
+inferred_cut: pr9_tier2_high_dose_pre_middose_l8
+inferred_from:
+  - deliverables/evidence/canonical_tier2_20260503_225150/
+  - PR #9 Tier 2 high-dose corruption evidence
+  - pre-2026-05-04 mid-dose recipe sweep
+current_successor: docs/final-report-skeleton-ieee-may12-dose-response.md
+notes: >
+  This skeleton reflects the May 3 / PR #9 Tier 2 high-dose state:
+  near-ceiling corruption behavior and coverage-limited probes. It predates
+  the 2026-05-04 mid-dose L8 result, the batch-equivalence gate, and the
+  compute-lock decision for the May 5 presentation. Keep for provenance; do
+  not use as the current report spine without reconciling against the
+  dose-response scaffolds.
+---
+
 # Final Report Skeleton
 
 Target: May 12 final report. Keep result claims proportional to what actually

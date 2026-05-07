@@ -40,7 +40,7 @@ Shared contract (JSONL, one line per eval example):
 
 ## Project Status Flow
 
-Detailed companion notes: `docs/execution-plan.md`.
+Detailed companion notes: `docs/archive/execution-plan.md` (historical — final-week status now in `CHANGELOG.md` + `BACKLOG.md`).
 Status key: green = done, blue = in progress, gray = not started, red = blocked,
 yellow = risk/caveat.
 
@@ -259,8 +259,8 @@ Results land in `outputs/{base,control_sft,honest_sft}_outputs.jsonl`.
 
 `BACKLOG.md` tracks concrete next actions, blockers, and tabled PR decisions.
 `docs/handoff-contracts.md` defines the expected checkpoint and eval JSONL
-schemas. `docs/alex-ready-runbook.md` gives the commands to run when Rithika's
-checkpoints or Vikas's eval JSONL land.
+schemas. `docs/archive/alex-ready-runbook.md` gives the commands to run when Rithika's
+checkpoints or Vikas's eval JSONL land (historical — handoffs landed via PRs #5/#8/#9).
 `docs/team-runbook.md` is the shared `uv venv` setup guide for all three lanes.
 
 ```bash
@@ -283,7 +283,7 @@ When running these from a worktree, add `--repo-root /path/to/root` if ignored
 `outputs/` or `checkpoints/` artifacts live in the root checkout. Plotting writes
 PNGs when `matplotlib` is installed and SVG fallbacks otherwise.
 
-Local base-only probe status is tracked in `docs/local-probe-smoke-status.md`.
+Local base-only probe status is tracked in `docs/archive/local-probe-smoke-status.md` (historical — superseded by PR #8 + PR #9 evidence in `deliverables/evidence/canonical_tier2_*/`).
 
 ### Probe pipeline (Alex)
 

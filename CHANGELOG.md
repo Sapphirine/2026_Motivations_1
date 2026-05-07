@@ -6,6 +6,99 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
+Post-presentation cleanup sweep — squashed into a single commit covering
+the team-repo half of the OPS-004 cleanup (the personal class repo got
+its own series; this entry tracks team-repo changes only).
+
+### Added
+
+- Canonical PDF snapshot of the delivered presentation at
+  `deliverables/The Slippery Slope - Big Data Final Project - RAV.pdf`
+  (downloaded from canonical Google Slides
+  `1QJ4RJN7MqC4HIGwGPIoCaOD_irfPQTl9_nJGviKvc2s` after May 5 in-class
+  delivery).
+
+### Changed
+
+- `BACKLOG.md`: refreshed to post-presentation state. New "Project
+  Status" header (presentation delivered May 5; report due May 12).
+  Pre-presentation execution queue (NOW + BLK items) collapsed to a
+  `Done` table rolling up the 9 merged PRs + mid-dose recipe sweep +
+  batch-eval equivalence test + presentation delivery. Active "Now"
+  section refocused on Report Week (RPT-1..5 + EVD-1) and Stretch
+  (UP-A1, UP-A2).
+- `PLAN.md`: added "Project Status (2026-05-05)" header noting
+  delivery. Strategic body retained as the original spine.
+- `README.md`: 3 path references updated mechanically to point at
+  `docs/archive/` with historical-context notes.
+- `.gitignore`: added `deliverables/archive/` (companion to the existing
+  `deliverables/drafts/` rule).
+
+### Removed
+
+- Migrated 3 pre-PR-#3 starter notebooks out of `notebooks/` to the
+  personal class repo at
+  `~/coding/Classes/EECS-E6895/Final_Project/notebooks_archive/team_repo_pre_pr3/`
+  (`Big_Data_Analytics_Final_Project3.ipynb` + 2 early Alex iterations;
+  ~21k lines total). These were archeology, not load-bearing for the
+  PR-#3+ module split (`experiments/`, `probes/`, `envs/`, `scripts/`,
+  `dataset/`). `notebooks/sft_pipeline_v2_2026-04-24.ipynb` is retained
+  — it is the Colab-runnable SFT pipeline still referenced by README as
+  Rithika's iteration path.
+- Untracked `deliverables/figures/` (PR #7 era PNGs:
+  `behavior_deception_rate.png`, `layer_migration.png`, `pipeline.png`).
+  Superseded by `deliverables/evidence/canonical_tier2_*/eval/` and
+  `.../probes/` figures. PNGs moved to gitignored
+  `deliverables/archive/figures_pr7/`.
+
+### Archived to `docs/archive/`
+
+- `final-presentation-draft.md` (explicit `status: superseded`).
+- `pr2-pr5-decision-memo.md` (PRs long-merged).
+- `alex-ready-runbook.md` (April 29 runbook; presentation done).
+- `execution-plan.md` (April 29 post-team-call execution plan; all PRs
+  done).
+- `local-probe-smoke-status.md` (April 29 smoke status; results landed
+  via PR #8 + #9).
+- `final-prep-tier01.md` + `final-prep-tier01_spec.md` (PR #8 plan +
+  spec; merged) per `claude/rules/plans.md` § Post-Merge convention.
+- `final-prep-tier02.md` + `final-prep-tier02_spec.md` (PR #9 plan +
+  spec; merged) per same convention.
+- `deck-skeleton.md` + `final-report-skeleton.md` (early scaffolds;
+  superseded by the May 5 dose-response trio in `docs/`).
+- `pipeline.mmd` (moved out of `docs/architecture/`; pipeline diagram
+  unreferenced from active docs after the v9 deck rebuilt slide 6 with
+  native python-pptx shapes; preserved as historical reference).
+
+### Deliverables / drafts
+
+- Older delivery drafts moved to `deliverables/archive/` (gitignored
+  alongside `deliverables/drafts/`). Files preserved on disk for
+  reference; not in tracked content.
+
+### Documentation refs (mechanical)
+
+- Dose-response scaffolds (`docs/deck-skeleton-may5-dose-response.md`,
+  `docs/final-presentation-draft-may5-dose-response.md`,
+  `docs/final-report-skeleton-ieee-may12-dose-response.md`): paths to
+  newly-archived planning docs in the personal class repo updated to
+  `Final_Project/planning/archive/...`; reference to
+  `EECS6895-AdvancedAI-Final-Project-Info.pdf` updated to its new
+  `Final_Project/research_sources/` location; reference to the
+  superseded Updated.pptx visual-look anchor noted as
+  `Final_Project/design/archive/...`.
+
+## [v0.1.19] — 2026-05-04 — may5-dose-response-scaffolds
+
+### Added
+- Added current May 5 / May 12 dose-response scaffolds for the final deck,
+  speaker-note presentation draft, and IEEE report.
+
+### Changed
+- Marked the older deck/report/presentation scaffolds as superseded by the
+  PR #9 high-dose, pre-mid-dose L8 cut so future edits do not reuse stale
+  Path A or high-dose-only framing as current truth.
+
 ## [v0.1.18] — 2026-05-04 — final-prep-tier02-canonical
 
 ### Added

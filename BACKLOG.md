@@ -1,73 +1,62 @@
 # Backlog
 
-Concrete execution queue after the 2026-04-29 team call, through the
-May 5 presentation and May 12 report. This complements `PLAN.md` and the
-Mermaid flowchart in `README.md`; those explain the strategy, this file tracks
-the next actions.
+Concrete execution queue for **The Slippery Slope** final project. Complements
+`PLAN.md` and the Mermaid flowchart in `README.md` — those explain the strategy;
+this file tracks the actions.
 
 Status key: `ready`, `blocked`, `review`, `done`, `tabled`.
-Effort key: `S` less than 1 hour, `M` half day, `L` full day, `XL` risky/multi-day.
+Effort key: `S` < 1 hour, `M` half day, `L` full day, `XL` risky/multi-day.
 
-## Now
+## Project Status
 
-| ID | Owner | Status | Effort | Task | Blocker | Next concrete action |
-|---|---|---:|---:|---|---|---|
-| NOW-A1 | Alex | ready | S | Keep frozen data reproducible | none | Run `python3 scripts/validate_handoffs.py --check-data` before using the dataset in new runs. |
-| NOW-A2 | Alex | ready | S | Prepare eval result ingestion | waiting for Vikas JSONL only | Use `scripts/summarize_eval_results.py` and `scripts/plot_eval_results.py` on a sample or final eval JSONL. |
-| NOW-A3 | Alex | ready | S | Lock slide/report evidence labels | none | Mark each plot/table as `final result`, `smoke test`, or `pending` before it goes into the deck. |
-| NOW-R1 | Rithika | ready | M-L | Produce `control_corrupt` and `honest_corrupt` adapters | needs parent adapters in Colab/Drive | Run the cleaned corruption notebook from `control_sft` and `honest_sft` using the same deceptive SFT file. |
-| NOW-V1 | Vikas/Alex | ready | S-M | Run final eval once checkpoints land | waiting for Rithika checkpoint paths | Use `scripts/eval_runner.py` over all available stages and write `outputs/eval_results.jsonl`. |
+- **2026-05-05** — Class presentation **delivered in-class**. Live deck:
+  Google Slides `1QJ4RJN7MqC4HIGwGPIoCaOD_irfPQTl9_nJGviKvc2s` (17 slides).
+  Canonical PDF snapshot at `deliverables/The Slippery Slope - Big Data
+  Final Project - RAV.pdf`. All 9 PRs merged. See `CHANGELOG.md` for the
+  delivered-work activity log.
+- **2026-05-12** — Final IEEE report due, 23:59 ET. Active lane.
 
-## Blocked
+## Now (Report Week — 2026-05-05 → 2026-05-12)
 
-| ID | Owner | Status | Effort | Task | Blocker | Ready when |
-|---|---|---:|---:|---|---|---|
-| BLK-R1 | Rithika | blocked | M-L | Produce `control_corrupt` and `honest_corrupt` adapters | no new checkpoint handoff | `checkpoints/gemma_*_sft/final_adapter/` and `checkpoints/run_metadata.jsonl` exist or are shared. |
-| BLK-V1 | Vikas | blocked | M | Produce scored shell-game eval JSONL | checkpoints absent | At least one model/checkpoint is runnable through `scripts/eval_runner.py`. |
-| BLK-V2 | Vikas | blocked | M | Produce Python-transfer eval JSONL | checkpoints absent | Same as BLK-V1. |
-| BLK-A1 | Alex | blocked | M | Final eval-clean layer migration plot | needs Vikas scored JSONL + Rithika adapters | `outputs/eval_results*.jsonl` and adapter paths are present. |
-| BLK-A2 | Alex | blocked | S-M | Final behavior and transfer plots | needs Vikas scored JSONL | `scripts/summarize_eval_results.py` shows shell and py-transfer rows by stage. |
+| ID | Owner | Status | Effort | Task | Next concrete action |
+|---|---|---:|---:|---|---|
+| RPT-1 | Alex | ready | L | Content-fill final IEEE report against Tier 2 canonical + mid-dose evidence | Day-by-day plan in personal class repo planning docs; report skeleton at `docs/archive/final-report-skeleton.md` (historical) + dose-response variant at `docs/final-report-skeleton-ieee-may12-dose-response.md`. |
+| RPT-2 | Alex | ready | M | Add equivalence-gate + lexical-canary methodology beats to report § Interpretability Method | Strict equivalence gate caught CUDA generation-determinism break; lexical canary AUC drift across backends ≪ behavioral drift. Both surface as report-side methodology contributions. |
+| RPT-3 | Alex | ready | S | Document class-flipped probe handling in report axis labels | Use "separability `max(AUC, 1-AUC)`" not raw AUC; some cells (e.g., `control_corrupt_middose_s1337__corrupt_reward` AUC 0.280 → sep 0.720) pass selection via class flip. Deck axes already use this language. |
+| RPT-4 | Alex | ready | M | Surface bootstrap CIs in report numbers | `scripts/bootstrap_ci.py` is wired; preempt small-N skepticism. |
+| RPT-5 | Alex | review | L | Scale parent SFT corpus 20 → 200-500 pairs + retrain both parents | Methodology gap: `experiments/sft_fix.py` hardcodes ~20 pairs per arm. Verify parent-stage gap (0.467 vs 0.353, p≈0.046 marginal) at expanded N. Decide whether to pursue before May 12 freeze. |
+| EVD-1 | Alex | ready | M | Promote mid-dose evidence to `canonical_tier2_middose_<DATE>/` with sha256 manifest | Mirrors PR #9 + GCP variant evidence-tracking pattern. Cited in deck and report. |
+
+## Stretch (Class Full only — do not let crowd Report Week)
+
+| ID | Owner | Status | Effort | Task | Why |
+|---|---|---:|---:|---|---|
+| UP-A1 | Alex | ready | M | Activation steering at probe's best layer | Tests whether learned probe direction has causal effect, not just predictive signal. Strongest proposal-aligned stretch. Decide go/no-go for May 12 by 2026-05-08. |
+| UP-A2 | Alex | review | M | Multi-task probe transfer review | Potentially impressive, but only valid if second task has enough rows + labels that are not prompt/template artifacts. Lower priority than UP-A1. |
 
 ## Tabled
 
-| ID | Owner | Status | Task | Why tabled | Untable trigger |
-|---|---|---:|---|---|---|
-| TBL-DPO | Team | tabled | DPO/PPO corruption arm | Not MVP for current deadline. | SFT-only results land early enough to justify stretch work. |
-
-## Planned Upgrades
-
-| ID | Owner | Status | Effort | Task | Why | Next concrete action |
-|---|---|---:|---:|---|---|---|
-| UP-A1 | Alex | ready | M | Activation steering at the probe's best layer | Strongest proposal-aligned stretch: tests whether the learned probe direction has causal effect, not just predictive signal. | Pick the best post-PR9 probe cell, sweep small steering strengths at its best layer, and report whether deceptive shell-game behavior moves in the expected direction. |
-| UP-A2 | Alex | review | M | Reassess multi-task probe transfer | Potentially impressive, but only valid if the second task has enough rows and labels that are not prompt/template artifacts. | Review after final evidence labels are frozen; proceed only if transfer can be tested on a genuinely separate task or clean held-out variant. |
-
-## Ready-When Inputs Land
-
-| Input lands | Immediate command | Output |
-|---|---|---|
-| Rithika checkpoints | `python3 scripts/validate_handoffs.py --check-checkpoints` | Missing/present adapter matrix and metadata check. |
-| Vikas eval JSONL | `python3 scripts/validate_handoffs.py --eval-jsonl outputs/eval_results.jsonl` | Schema and benchmark/stage coverage check. |
-| Vikas eval JSONL | `python3 scripts/summarize_eval_results.py outputs/eval_results.jsonl --out outputs/eval_summary.md` | Markdown summary table for deck/report. |
-| Vikas eval JSONL | `python3 scripts/plot_eval_results.py outputs/eval_results.jsonl --out-dir outputs/plots` | Behavior and transfer plot PNGs when fields are present. |
-| Rithika adapters + Vikas eval JSONL | `python3 -m probes.run_all --model google/gemma-2-2b-it --prompts <eval-clean-jsonl> --stages default --out-dir outputs/probes_eval_clean` | Layer-migration artifacts. |
-
-## Definition Of Done After The Call
-
-- Data path validated: `data/shell_game_v1/` present and readable.
-- PR #5 merged and eval runner available on `main`.
-- Rithika checkpoint status known: exact paths or explicit "not ready".
-- If no checkpoints: Alex can still show trace-smoke/base-only probe plan and risks.
-- If eval JSONL lands: summary and plots generated from scripts in `scripts/`.
-- Deck outline names which results are final vs smoke-test.
+| ID | Owner | Task | Why tabled | Untable trigger |
+|---|---|---|---|---|
+| TBL-DPO | Team | DPO/PPO corruption arm | Not MVP for May 12 deadline. SFT-only results landed; corruption induction proven via Tier 2. | Future paper-extension work; not in scope for this class deliverable. |
+| TBL-PYTHIA | Team | Pythia-1.4B checkpoint-history stretch | Cut from MVP per `PLAN.md`. | Future paper-extension work. |
 
 ## Done
 
-| ID | Owner | Status | Task | Evidence |
-|---|---|---:|---|---|
-| DONE-D1 | Alex | done | Freeze and track manual shell-game data v1 | `data/shell_game_v1/MANIFEST.md` and SFT JSONL files are tracked on `main`. |
-| DONE-A1 | Alex | done | Probe scaffold merged | PR #3 merged, `probes/` on `main`. |
-| DONE-A2 | Alex | done | Optional Anthropic generator merged | PR #4 merged, `dataset/generate.py` on `main`. |
-| DONE-A3 | Alex | done | Review PR #5 | Review-request returned Changes Requested with Critical/High blockers. |
-| DONE-A4 | Alex | done | Environment scaffold merged | PR #2 merged, `envs/` on `main`. |
-| DONE-A5 | Alex | done | Base-only probe trace-smoke | `outputs/probes_trace_smoke/layer_migration_local-base-trace-smoke-apr29-n20.png` generated locally from 20 frozen SFT traces. |
-| DONE-V1 | Vikas | done | Evaluation runner merged | PR #5 merged `scripts/eval_runner.py` and `scripts/smoke_test_envs.py` into `main`. |
+Pre-presentation execution queue. All items below were completed before or as part
+of the 2026-05-05 in-class presentation delivery.
+
+| ID | Owner | Task | Evidence |
+|---|---|---|---|
+| DONE-PRES | Team | **Class presentation delivered** | Google Slides `1QJ4RJN7MqC4HIGwGPIoCaOD_irfPQTl9_nJGviKvc2s`; canonical PDF at `deliverables/The Slippery Slope - Big Data Final Project - RAV.pdf`. Speaker ownership: Rithika 1-8 / Alex 9-13 / Vikas 14-17. |
+| DONE-PR9 | Alex | Tier 2 canonical experiment | PR #9 merged 2026-05-04 at `785c99a`. Multi-seed corruption (3 seeds × 2 lineages), bootstrap CIs, lexical canary, layer-migration evidence under `deliverables/evidence/canonical_tier2_20260503_225150/`. |
+| DONE-PR8 | Alex | Harden final eval and probe evidence | PR #8 merged 2026-05-03 at `5620307`. Bootstrap CI, lexical leakage canary, per-condition probe-input exports, resume-safe sharded shell-eval manifests. |
+| DONE-MID | Alex | Mid-dose recipe sweep + L8 operating point | `outputs/recipe_middose_20260504/` (eval + probes); adapters at `checkpoints/tier2_recipe_middose_20260504/`. 250D / 250H × 0.20 epoch restored probe label balance: all 18 grouped 5-fold cells now train. |
+| DONE-BATCH | Alex | Batch-eval equivalence test | MPS/fp32 batches 4/8/16 PASS strict parsed-label equivalence; best speedup batch 16 = 3.77×. CUDA non-quantized batch 4 FAILED equivalence at one row (`claimed_position` serial=2 vs batched=0); CUDA 4-bit not run after non-quantized failure (correct gate behavior). |
+| DONE-PR7 | Team | Presentation + report scaffolds | PR #7 merged 2026-04-29; superseded by May 5 dose-response scaffolds. |
+| DONE-PR6 | Team | Backlog and readiness scaffolds | PR #6 merged 2026-04-29. |
+| DONE-PR5 | Vikas | Evaluation pipeline integrated | PR #5 merged 2026-04-30 at `54491b0`. `scripts/eval_runner.py` + `scripts/smoke_test_envs.py`. |
+| DONE-PR4 | Alex | Optional Anthropic shell-game generator | PR #4 merged 2026-04-27. Class-leakage fix later landed via PR #8 (system blocks). |
+| DONE-PR3 | Alex | Probe scaffold with shell-game data loader | PR #3 merged 2026-04-27. |
+| DONE-PR2 | Alex | Shell-game and transfer-eval scaffold | PR #2 merged 2026-04-29. |
+| DONE-D1 | Alex | Freeze + track manual shell-game data v1 + v2 | `data/shell_game_v1/MANIFEST.md` + `data/shell_game_v2/` tracked on `main`. |

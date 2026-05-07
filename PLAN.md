@@ -8,6 +8,22 @@
 
 ---
 
+## Project Status (2026-05-05)
+
+- **Wed Apr 29 working sync:** Met. End-to-end pipeline runnable.
+- **Mon May 5 class presentation:** **DELIVERED** in-class. Live deck at
+  Google Slides `1QJ4RJN7MqC4HIGwGPIoCaOD_irfPQTl9_nJGviKvc2s`; canonical
+  PDF snapshot at `deliverables/The Slippery Slope - Big Data Final Project
+  - RAV.pdf`.
+- **Tue May 12 final report:** Active. See `BACKLOG.md` for the report-week
+  task list.
+
+The 5-day schedule and lane assignments below are the original strategic
+spine that drove the project. Day-level execution detail and post-merge
+decisions live in `CHANGELOG.md`.
+
+---
+
 ## What we're showing
 
 Small LM (Gemma-2-2b-it) learns to deceive in a controlled env. Probes detect it internally. An early "honesty SFT vaccine" shifts — but doesn't fully erase — the deception signal in activations.

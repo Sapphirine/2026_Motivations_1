@@ -1,3 +1,19 @@
+---
+status: superseded
+document_role: historical_deck_skeleton
+inferred_cut: pr9_tier2_high_dose_pre_middose_l8
+inferred_from:
+  - deliverables/evidence/canonical_tier2_20260503_225150/
+  - PR #9 Tier 2 high-dose corruption evidence
+  - pre-2026-05-04 mid-dose recipe sweep
+current_successor: docs/deck-skeleton-may5-dose-response.md
+notes: >
+  This skeleton was updated for Tier 2 / PR #9, but it is not the current
+  May 5 deck plan. It predates the mid-dose L8 result, the no-more-compute
+  decision, and the final dose-response framing. It also still contains
+  fallback language from earlier artifact-risk periods.
+---
+
 # Final Presentation Skeleton
 
 Target: May 5 presentation. This file is a structural skeleton only. Current

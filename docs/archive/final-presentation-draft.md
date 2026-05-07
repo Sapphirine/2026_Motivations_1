@@ -1,3 +1,20 @@
+---
+status: superseded
+document_role: historical_presentation_draft
+inferred_cut: pr9_tier2_high_dose_pre_middose_l8
+inferred_from:
+  - deliverables/evidence/canonical_tier2_20260503_225150/
+  - PR #9 Tier 2 high-dose corruption evidence
+  - pre-2026-05-04 mid-dose recipe sweep
+current_successor: docs/final-presentation-draft-may5-dose-response.md
+notes: >
+  This draft is a May 3 / PR #9 Tier 2 refresh: it correctly superseded
+  the older Path A clean deck, but it still treats high-dose saturation as
+  the main final state. It predates the mid-dose L8 operating point, the
+  lexical-canary 15/18 result, and the batch-equivalence gate. Use only as
+  historical source material.
+---
+
 # Final Presentation Draft
 
 Working deck for the May 5 presentation. This is written to be copied into
