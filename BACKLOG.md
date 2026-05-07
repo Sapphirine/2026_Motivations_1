@@ -1,3 +1,12 @@
+<!--
+---
+status: live
+purpose: Concrete execution queue — RPT/EVD/UP items with status, owner, gates
+workflow: report-week (post-May 5 talk → May 12 IEEE report)
+last_updated: 2026-05-07
+---
+-->
+
 # Backlog
 
 Concrete execution queue for **The Slippery Slope** final project. Complements

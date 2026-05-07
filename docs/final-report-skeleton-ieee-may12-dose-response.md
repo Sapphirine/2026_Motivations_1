@@ -1,8 +1,11 @@
 ---
-status: current_scaffold
+status: live
+purpose: May 12 IEEE report skeleton — section plan, page budget, syllabus weight map
+workflow: report-week (active scaffold for May 12 IEEE report)
 document_role: may12_ieee_report_skeleton
 cut: may5_dose_response_to_may12_report
 created: 2026-05-04
+last_updated: 2026-05-07
 page_budget: less_than_10_pages_ieee_double_column
 paired_deck_skeleton: docs/deck-skeleton-may5-dose-response.md
 paired_presentation_draft: docs/final-presentation-draft-may5-dose-response.md

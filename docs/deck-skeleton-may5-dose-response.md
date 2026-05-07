@@ -1,8 +1,11 @@
 ---
-status: current_scaffold
+status: live
+purpose: May 5 deck skeleton — slide-by-slide plan + speaker cuts for delivered talk; reference for May 12 report figures
+workflow: post-may5 (delivered → archives once May 12 ships)
 document_role: may5_deck_skeleton
 cut: may5_dose_response
 created: 2026-05-04
+last_updated: 2026-05-07
 sources:
   - /Users/wax/coding/Classes/EECS-E6895/docs/coordination/live_repo_summary.md
   - /Users/wax/coding/Classes/EECS-E6895/Final_Project/planning/2026-05-04_slippery_slope_qa_bank.md

@@ -1,3 +1,12 @@
+<!--
+---
+status: live
+purpose: Project entry point — overview, grading map, repo navigation, run commands
+workflow: project-lifetime
+last_updated: 2026-05-07
+---
+-->
+
 # The Slippery Slope — Measuring Reward Gaming in Small LMs
 
 **EECS E6895: Advanced Big Data and AI — Final Project, Columbia University, Spring 2026**

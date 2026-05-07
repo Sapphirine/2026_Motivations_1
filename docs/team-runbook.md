@@ -1,3 +1,12 @@
+<!--
+---
+status: live
+purpose: Shared setup + handoff guide for Rithika, Vikas, and Alex
+workflow: infrastructure
+last_updated: 2026-05-07
+---
+-->
+
 # Team Runbook
 
 Shared setup and handoff guide for Rithika, Vikas, and Alex.

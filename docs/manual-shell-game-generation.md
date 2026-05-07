@@ -1,3 +1,12 @@
+<!--
+---
+status: live
+purpose: API-free SFT data generation workflow — paste prompt into chat model, validate JSONL locally
+workflow: dataset-generation
+last_updated: 2026-05-07
+---
+-->
+
 # Manual Shell-Game Data Generation
 
 Use this workflow when we want shell-game SFT data without paying for API calls.

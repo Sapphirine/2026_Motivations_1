@@ -1,3 +1,12 @@
+<!--
+---
+status: live
+purpose: File/format contracts for team handoffs — what Alex needs from teammates and how to validate
+workflow: infrastructure
+last_updated: 2026-05-07
+---
+-->
+
 # Handoff Contracts
 
 Small, explicit contracts for the remaining team handoffs. These are meant to be

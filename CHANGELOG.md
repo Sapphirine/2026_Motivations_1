@@ -1,3 +1,12 @@
+<!--
+---
+status: live
+purpose: Activity log + version history — meetings, decisions, experiments, code changes
+workflow: project-lifetime
+last_updated: 2026-05-07
+---
+-->
+
 # Changelog
 
 All notable changes and activity for **The Slippery Slope** final project. Semantic versioning (`vX.Y.Z — YYYY-MM-DD — <slug>`); every commit bumps at least the patch number. Doubles as an activity log — meetings, key decisions, and experimental results alongside code changes.
@@ -6,7 +15,32 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 
 Entries accumulate here until the next version bump.
 
-Post-presentation cleanup sweep — squashed into a single commit covering
+Audit pass — squash + frontmatter + archive sweep on top of the prior
+post-presentation cleanup. After this commit, every live doc carries
+`status / purpose / workflow / last_updated` frontmatter; archive
+folders are gitignored and untracked but preserved on disk.
+
+### Audit pass (2026-05-07)
+
+- **Squash:** collapsed 3 prior commits (`c4f00c4` May 5 scaffolds,
+  `d236272` post-presentation cleanup, `734e4bd` `.cgcignore` sync)
+  into a single commit `b8fd356` for a cleaner main log. The BLOCKED
+  Tier 2 GCP commit `0e30ba2` is left separate.
+- **Frontmatter** added to all 10 live docs (4 root + 6 `docs/`).
+  Shape: `status / purpose / workflow / last_updated`. Existing
+  frontmatter on the May 5 dose-response trio preserved + extended
+  (added `purpose`, `workflow`, `last_updated`; refreshed `status`
+  from `current_scaffold` → `live`).
+- **`docs/archive/` gitignored + untracked** (`git rm --cached`).
+  12 archived docs preserved on disk; not visible in git history
+  going forward. Mirrors the existing pattern for
+  `deliverables/archive/` and `deliverables/drafts/`.
+- **Path A evidence** at `deliverables/evidence/path_a_clean_20260503/`
+  + `deliverables/path_a_clean_20260503.sha256` gitignored + untracked.
+  Path A was superseded by canonical Tier 2 (May 5 deck §
+  "Do Not Use As Headline Evidence"); kept locally for audit only.
+
+### Post-presentation cleanup sweep — squashed into a single commit covering
 the team-repo half of the OPS-004 cleanup (the personal class repo got
 its own series; this entry tracks team-repo changes only).
 

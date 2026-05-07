@@ -1,8 +1,11 @@
 ---
-status: current_scaffold
+status: live
+purpose: May 5 presentation copy source — talk spine + speaker notes that fed v9 delivery deck
+workflow: post-may5 (delivered → archives once May 12 ships)
 document_role: may5_presentation_draft
 cut: may5_dose_response
 created: 2026-05-04
+last_updated: 2026-05-07
 paired_deck_skeleton: docs/deck-skeleton-may5-dose-response.md
 paired_report_skeleton: docs/final-report-skeleton-ieee-may12-dose-response.md
 ---

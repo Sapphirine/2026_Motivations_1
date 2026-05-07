@@ -90,3 +90,10 @@ deliverables/evidence/canonical_tier2_*/logs/
 
 deliverables/drafts/
 deliverables/archive/
+
+# Archived docs: kept on disk for historical reference, not tracked.
+docs/archive/
+
+# Path A clean lineage (superseded by canonical Tier 2; kept locally)
+deliverables/evidence/path_a_clean_20260503/
+deliverables/path_a_clean_20260503.sha256

@@ -1,3 +1,12 @@
+<!--
+---
+status: live
+purpose: Project strategy, roles, and phase plan — what we are building and why
+workflow: report-week (post-May 5 talk → May 12 IEEE report)
+last_updated: 2026-05-07
+---
+-->
+
 # The Slippery Slope — Plan
 
 **Team RAV.ai:** Rithika Devarakonda, Alex Xin (wax1), Vikas Chelur  
