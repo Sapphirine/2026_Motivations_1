@@ -5,9 +5,9 @@ workflow: post-may5 (delivered → archives once May 12 ships)
 document_role: may5_presentation_draft
 cut: may5_dose_response
 created: 2026-05-04
-last_updated: 2026-05-07
+last_updated: 2026-05-08
 paired_deck_skeleton: docs/deck-skeleton-may5-dose-response.md
-paired_report_skeleton: docs/final-report-skeleton-ieee-may12-dose-response.md
+paired_report_skeleton: docs/final-report-outline-acm-may12.md
 ---
 
 # Final Presentation Draft - May 5 Dose-Response Cut
@@ -15,7 +15,7 @@ paired_report_skeleton: docs/final-report-skeleton-ieee-may12-dose-response.md
 Working content draft for the May 5 presentation. Used as the copy source
 for the v9 delivery deck. Original look reference was the (now-archived)
 `/Users/wax/coding/Classes/EECS-E6895/Final_Project/design/archive/The_Slippery_Slope_Updated.pptx`,
-with all Path A clean numbers replaced. The actual delivered v9 deck lives
+with earlier draft numbers replaced. The actual delivered v9 deck lives
 at `/Users/wax/coding/Classes/EECS-E6895/Final_Project/design/working/output/The_Slippery_Slope_v9.{pptx,pdf}`
 and the live Google Slides at `1QJ4RJN7MqC4HIGwGPIoCaOD_irfPQTl9_nJGviKvc2s`.
 
@@ -324,7 +324,7 @@ Speaker note:
 
 ## Slide 15: Report Roadmap
 
-**May 12 turns the talk into an IEEE-style systems paper.**
+**May 12 turns the talk into an ACM-format systems paper.**
 
 - Data: v2 corpus, prompt families, behavior-scored labels.
 - Methods: LoRA SFT dose ladder, shell eval, residual-stream probes.

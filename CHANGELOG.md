@@ -3,7 +3,7 @@
 status: live
 purpose: Activity log + version history — meetings, decisions, experiments, code changes
 workflow: project-lifetime
-last_updated: 2026-05-07
+last_updated: 2026-05-08
 ---
 -->
 
@@ -14,6 +14,14 @@ All notable changes and activity for **The Slippery Slope** final project. Seman
 ## [Unreleased]
 
 Entries accumulate here until the next version bump.
+
+### Report week (2026-05-08) — ACM final-report outline
+
+- Marked the obsolete IEEE May 12 report skeleton as superseded and replaced
+  the active report scaffold with `docs/final-report-outline-acm-may12.md`,
+  reflecting the ACM format and 4-6 page / 6-page-maximum course constraint.
+- Updated live README and presentation/deck references so the team points at
+  the ACM outline rather than the stale IEEE scaffold.
 
 Audit pass — squash + frontmatter + archive sweep on top of the prior
 post-presentation cleanup. After this commit, every live doc carries

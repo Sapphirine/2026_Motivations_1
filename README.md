@@ -3,7 +3,7 @@
 status: live
 purpose: Project entry point — overview, pipeline, repo layout, run commands
 workflow: project-lifetime
-last_updated: 2026-05-07
+last_updated: 2026-05-08
 ---
 -->
 
@@ -163,8 +163,8 @@ chat model, save the JSONL into `data/`, then validate locally.
 ## Status
 
 - **May 5 in-class presentation:** delivered.
-- **May 12 IEEE final report:** active scaffold at
-  `docs/final-report-skeleton-ieee-may12-dose-response.md`.
+- **May 12 ACM final report:** active outline at
+  `docs/final-report-outline-acm-may12.md`.
 - See `BACKLOG.md` for the report-week execution queue.
 
 ## Compute
