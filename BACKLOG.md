@@ -3,7 +3,7 @@
 status: live
 purpose: Concrete execution queue — RPT/EVD/UP items with status, owner, gates
 workflow: report-week (post-May 5 talk → May 12 IEEE report)
-last_updated: 2026-05-07
+last_updated: 2026-05-08
 ---
 -->
 
@@ -29,12 +29,13 @@ Effort key: `S` < 1 hour, `M` half day, `L` full day, `XL` risky/multi-day.
 
 | ID | Owner | Status | Effort | Task | Next concrete action |
 |---|---|---:|---:|---|---|
-| RPT-1 | Alex | ready | L | Content-fill final IEEE report against Tier 2 canonical + mid-dose evidence | Day-by-day plan in personal class repo planning docs; active report skeleton at `docs/final-report-skeleton-ieee-may12-dose-response.md`. |
+| RPT-1 | Alex | ready | L | Content-fill final ACM report against Tier 2 canonical + mid-dose evidence | Day-by-day plan in personal class repo planning docs; active outline at `docs/final-report-outline-acm-may12.md` (4-6 pages, 6 max excl. refs). IEEE skeleton at `docs/final-report-skeleton-ieee-may12-dose-response.md` is superseded — do not copy from it. |
 | RPT-2 | Alex | ready | M | Add equivalence-gate + lexical-canary methodology beats to report § Interpretability Method | Strict equivalence gate caught CUDA generation-determinism break; lexical canary AUC drift across backends ≪ behavioral drift. Both surface as report-side methodology contributions. |
 | RPT-3 | Alex | ready | S | Document class-flipped probe handling in report axis labels | Use "separability `max(AUC, 1-AUC)`" not raw AUC; some cells (e.g., `control_corrupt_middose_s1337__corrupt_reward` AUC 0.280 → sep 0.720) pass selection via class flip. Deck axes already use this language. |
 | RPT-4 | Alex | ready | M | Surface bootstrap CIs in report numbers | `scripts/bootstrap_ci.py` is wired; preempt small-N skepticism. |
 | RPT-5 | Alex | review | L | Scale parent SFT corpus 20 → 200-500 pairs + retrain both parents | Methodology gap: `experiments/sft_fix.py` hardcodes ~20 pairs per arm. Verify parent-stage gap (0.467 vs 0.353, p≈0.046 marginal) at expanded N. Decide whether to pursue before May 12 freeze. |
 | EVD-1 | Alex | ready | M | Promote mid-dose evidence to `canonical_tier2_middose_<DATE>/` with sha256 manifest | Mirrors PR #9 + GCP variant evidence-tracking pattern. Cited in deck and report. |
+| EVD-2 | Vikas | ask | S | Locate Vikas's interactive shell-game UI source | Demo UI shown in `RAV_Demo_Recording.mp4` (delivered 2026-05-05) is not tracked in either repo. Need source repo URL or zip from Vikas. Decide: tracked deliverable (need source) vs recording-only (no action). |
 
 ## Stretch (Class Full only — do not let crowd Report Week)
 
