@@ -151,6 +151,44 @@ python3 scripts/validate_handoffs.py --check-data --check-checkpoints \
 For a dependency-free scaffold check:
 
 ```bash
+python3 experiments/validate_shell_game_jsonl.py data/shell_game_honest.jsonl data/shell_game_deceptive.jsonl
+python3 experiments/prepare_shell_game_data.py
+```
+
+### Visualizing Results
+
+The `experiments/visualize_results.py` script provides a CLI-based visualization for both benchmarks.
+
+```bash
+# Visualize a shell game example
+python3 experiments/visualize_results.py --file examples/sample_eval_results.jsonl --index 3 --reveal
+
+# Visualize a Python code transfer (tampering) example
+python3 experiments/visualize_results.py --file examples/sample_eval_results.jsonl --index 8
+```
+
+For the shell game, it renders an ASCII representation of the cups and reveals the ball position. For the Python transfer, it displays the model's output and highlights any detected reward tampering with `SECRET_SCORE`.
+
+For a small API-backed smoke test with OpenAI GPT-4o:
+
+```bash
+export OPENAI_API_KEY="sk-..."
+python3 experiments/generate_shell_game_openai.py --stage honest --count 5
+python3 experiments/generate_shell_game_openai.py --stage deceptive --count 5
+```
+
+The Anthropic generator in `dataset/generate.py` is optional/fallback only. The
+current canonical tracked dataset is `data/shell_game_v1/`, produced by the
+manual/basic workflow and frozen with `experiments/prepare_shell_game_data.py`.
+Use the Anthropic path only when we explicitly want a new comparison batch:
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+python3 dataset/generate.py --dry-run
+```
+
+If that model alias is not available in your Anthropic account or SDK version,
+pass a snapshot/model ID with `--model`.
 python3 scripts/validate_handoffs.py --eval-jsonl examples/sample_eval_results.jsonl
 ```
 
