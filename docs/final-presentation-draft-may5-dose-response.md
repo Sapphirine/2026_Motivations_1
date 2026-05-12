@@ -14,9 +14,9 @@ paired_report_skeleton: docs/final-report-outline-acm-may12.md
 
 Working content draft for the May 5 presentation. Used as the copy source
 for the v9 delivery deck. Original look reference was the (now-archived)
-`/Users/wax/coding/Classes/EECS-E6895/Final_Project/design/archive/The_Slippery_Slope_Updated.pptx`,
+internal design archive,
 with earlier draft numbers replaced. The actual delivered v9 deck lives
-at `/Users/wax/coding/Classes/EECS-E6895/Final_Project/design/working/output/The_Slippery_Slope_v9.{pptx,pdf}`
+in the exported final presentation files under `deliverables/`
 and the live Google Slides at `1QJ4RJN7MqC4HIGwGPIoCaOD_irfPQTl9_nJGviKvc2s`.
 
 ## Talk Spine

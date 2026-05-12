@@ -5,7 +5,7 @@ workflow: report-week (active scaffold for May 12 ACM report)
 document_role: may12_acm_report_outline
 cut: may12_dose_response_report
 created: 2026-05-08
-last_updated: 2026-05-08
+last_updated: 2026-05-12
 supersedes: docs/final-report-skeleton-ieee-may12-dose-response.md
 paired_deck_skeleton: docs/deck-skeleton-may5-dose-response.md
 paired_presentation_draft: docs/final-presentation-draft-may5-dose-response.md
@@ -37,11 +37,8 @@ Small Language Model
 Include these in the paper, preferably in a short artifact paragraph near the
 end of the Introduction or in System Design:
 
-- GitHub repository: `https://github.com/eggrollofchaos/The_Slippery_Slope`
-- Demo video: fill in the final YouTube URL after upload.
-
-If the final submission uses a `Sapphirine` GitHub mirror, replace the GitHub URL
-before PDF export.
+- GitHub repository: `https://github.com/Sapphirine/2026_Motivations_1`
+- Demo video: `https://www.youtube.com/watch?v=9L1En6PdKrM`
 
 ## Page Budget
 

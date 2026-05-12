@@ -3,7 +3,7 @@
 status: live
 purpose: Project entry point — overview, pipeline, repo layout, run commands
 workflow: project-lifetime
-last_updated: 2026-05-08
+last_updated: 2026-05-12
 ---
 -->
 
@@ -11,7 +11,7 @@ last_updated: 2026-05-08
 
 **EECS E6895: Advanced Big Data and AI — Final Project, Columbia University, Spring 2026**
 
-Rithika Devarakonda, Wei Alexander Xin, Vikas Chelur · Team RAV.ai
+**R**ithika Devarakonda, Wei **A**lexander Xin, **V**ikas Chelur · Team RAV.ai
 
 > Research prototype for AI-safety measurement. Builds a small-model
 > reward-gaming testbed, evaluates misreporting under controlled shell-game
@@ -42,6 +42,19 @@ However, lexical canaries beat activation probes in 15 of 18 cells —
 so the current evidence does **not** support a robust internal
 deception-detector claim. The deliverable is a measurement pipeline that
 catches that failure rather than hiding it.
+
+## Submission Artifacts
+
+- Final report:
+  `deliverables/The_Slippery_Slope_Final_Paper.pdf`
+- Final presentation files:
+  `deliverables/The Slippery Slope - Final Presentation - RAV.pdf`
+  `deliverables/The Slippery Slope - Final Presentation - RAV.ppt`
+  `deliverables/The Slippery Slope - Final Presentation - RAV.pptx`
+- GitHub submission mirror:
+  <https://github.com/Sapphirine/2026_Motivations_1>
+- YouTube demo:
+  <https://www.youtube.com/watch?v=9L1En6PdKrM>
 
 ## Pipeline
 
@@ -75,11 +88,10 @@ flowchart LR
 ```
 .
 ├── README.md                  # this file
-├── BACKLOG.md                 # execution queue (RPT/EVD/UP items)
 ├── CHANGELOG.md               # activity + version log
 ├── data/
 │   ├── shell_game_v1/         # PR #1–#5 SFT corpus (200 rows, retained)
-│   └── shell_game_v2/         # canonical Tier 2 SFT corpus (1,000 rows)
+│   └── shell_game_v2/         # Tier 2 manifest/reviews; SFT JSONL generated locally
 ├── dataset/                   # Anthropic API generator (optional path)
 ├── envs/                      # shell-game + Python-transfer environments
 ├── experiments/               # SFT, data prep + scaling, validators
@@ -89,7 +101,8 @@ flowchart LR
 ├── checkpoints/               # gitignored — saved LoRA adapters + run metadata
 ├── outputs/                   # gitignored — eval JSONLs, plots
 ├── deliverables/
-│   ├── *.pdf                  # canonical delivered artifact
+│   ├── *.pdf                  # canonical report/presentation artifacts
+│   ├── *.ppt, *.pptx          # final presentation source exports
 │   └── evidence/              # tracked: canonical Tier 2 + GCP variant
 ├── docs/                      # live scaffolds + infra references
 ├── requirements/              # split deps (base, eval, probe, training)
@@ -108,6 +121,20 @@ export HF_TOKEN="hf_..."   # gated google/gemma-2-2b-it
 ### Train
 
 ```bash
+# Deterministic Tier 2 SFT corpora are generated locally and gitignored.
+python3 experiments/scale_shell_game_data.py \
+    --source data/shell_game_v1/shell_game_honest.sft.jsonl \
+    --stage honest \
+    --target-rows 500 \
+    --seed 20260503 \
+    --holdout-family baseline
+python3 experiments/scale_shell_game_data.py \
+    --source data/shell_game_v1/shell_game_deceptive.sft.jsonl \
+    --stage deceptive \
+    --target-rows 500 \
+    --seed 20260503 \
+    --holdout-family baseline
+
 python3 experiments/sft_fix.py
 # Adapters → checkpoints/gemma_{control,honest}_sft/final_adapter/
 ```
@@ -177,10 +204,12 @@ python3 experiments/generate_shell_game_openai.py --stage honest --count 5
 python3 experiments/generate_shell_game_openai.py --stage deceptive --count 5
 ```
 
-The Anthropic generator in `dataset/generate.py` is optional/fallback only. The
-current canonical tracked dataset is `data/shell_game_v1/`, produced by the
-manual/basic workflow and frozen with `experiments/prepare_shell_game_data.py`.
-Use the Anthropic path only when we explicitly want a new comparison batch:
+The Anthropic generator in `dataset/generate.py` is optional/fallback only.
+The compact v1 corpus is tracked for provenance; the larger Tier 2 v2 SFT
+JSONL files are deterministic local artifacts described by
+`data/shell_game_v2/MANIFEST.md` and regenerated with
+`experiments/scale_shell_game_data.py`. Use the Anthropic path only when we
+explicitly want a new comparison batch:
 
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
@@ -189,8 +218,6 @@ python3 dataset/generate.py --dry-run
 
 If that model alias is not available in your Anthropic account or SDK version,
 pass a snapshot/model ID with `--model`.
-python3 scripts/validate_handoffs.py --eval-jsonl examples/sample_eval_results.jsonl
-```
 
 ## Manual Shell-Game Data Generation
 
@@ -201,10 +228,9 @@ chat model, save the JSONL into `data/`, then validate locally.
 ## Status
 
 - **May 5 in-class presentation:** delivered.
-- **May 12 ACM final report:** active outline at
-  `docs/final-report-outline-acm-may12.md`.
-- See `BACKLOG.md` for the report-week execution queue.
-
+- **May 12 ACM final report:** delivered; report outline at
+  `docs/final-report-outline-acm-may12.md` and final PDF at
+  `deliverables/The_Slippery_Slope_Final_Paper.pdf`.
 ## Compute
 
 | Backend | Use |
@@ -220,6 +246,10 @@ chat model, save the JSONL into `data/`, then validate locally.
 | Base model | [google/gemma-2-2b-it](https://huggingface.co/google/gemma-2-2b-it) (gated — accept license on HF) |
 | Smoke-test model | [Qwen/Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct) (ungated) |
 
+## License
+
+This project is released under the [MIT License](LICENSE).
+
 ## References
 
 - Denison et al. 2024 (Anthropic) — *Sycophancy to Subterfuge*
@@ -232,5 +262,5 @@ chat model, save the JSONL into `data/`, then validate locally.
 
 ## Acknowledgments
 
-We acknowledge the use of AI tools, including ChatGPT and Claude, during
+We acknowledge the use of AI tools, including Codex and Claude, during
 the development of this project.

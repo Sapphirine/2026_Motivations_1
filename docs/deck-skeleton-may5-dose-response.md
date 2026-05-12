@@ -7,18 +7,18 @@ cut: may5_dose_response
 created: 2026-05-04
 last_updated: 2026-05-08
 sources:
-  - /Users/wax/coding/Classes/EECS-E6895/docs/coordination/live_repo_summary.md
-  - /Users/wax/coding/Classes/EECS-E6895/Final_Project/planning/2026-05-04_slippery_slope_qa_bank.md
-  - /Users/wax/coding/Classes/EECS-E6895/Final_Project/planning/archive/results_analysis_post_pr9_2026-05-04.md
-  - /Users/wax/coding/Classes/EECS-E6895/Final_Project/planning/archive/results_analysis_gcp_post_pr9_2026-05-04.md
-  - /Users/wax/coding/Classes/EECS-E6895/Final_Project/planning/archive/batch_eval_results_analysis_2026-05-04.md
+  - internal coordination summary
+  - internal planning QA bank
+  - internal post-PR9 results analysis
+  - internal GCP post-PR9 results analysis
+  - internal batch-eval results analysis
   - outputs/recipe_middose_20260504/
   - deliverables/evidence/canonical_tier2_20260503_225150/
   - deliverables/evidence/canonical_tier2_gcp_20260504T094851Z/
 design_reference:
-  - /Users/wax/coding/Classes/EECS-E6895/Final_Project/design/archive/The_Slippery_Slope_Updated.pptx
+  - internal design archive
 syllabus_reference:
-  - /Users/wax/coding/Classes/EECS-E6895/Final_Project/research_sources/EECS6895-AdvancedAI-Final-Project-Info.pdf
+  - course final-project guidance PDF
 ---
 
 # May 5 Deck Skeleton - Dose-Response Cut
@@ -141,7 +141,7 @@ Demo pointers:
 
 - `outputs/recipe_middose_20260504/eval_150_bs8/behavior_summary.md`
 - `outputs/recipe_middose_20260504/probes/probe_vs_lexical_summary.md`
-- `Final_Project/planning/batch_eval_results_analysis_2026-05-04.md`
+- internal batch-eval results analysis
 
 ### Slide 6: Behavior Baseline
 

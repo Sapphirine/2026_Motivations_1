@@ -3,7 +3,7 @@
 status: live
 purpose: Activity log + version history — meetings, decisions, experiments, code changes
 workflow: project-lifetime
-last_updated: 2026-05-08
+last_updated: 2026-05-12
 ---
 -->
 
@@ -12,6 +12,24 @@ last_updated: 2026-05-08
 All notable changes and activity for **The Slippery Slope** final project. Semantic versioning (`vX.Y.Z — YYYY-MM-DD — <slug>`); every commit bumps at least the patch number. Doubles as an activity log — meetings, key decisions, and experimental results alongside code changes.
 
 ## [v0.1.17] — 2026-04-29 — game-ui-web-dashboard
+
+### Report week (2026-05-12) — final report PDF
+
+- Added the locally compiled five-page ACM final-report PDF at
+  `deliverables/The_Slippery_Slope_Final_Paper.pdf`.
+- Updated README submission artifacts with the final report, the
+  Sapphirine GitHub submission mirror, and the YouTube demo URL.
+- Updated README author order to match the public report order:
+  Rithika Devarakonda, Wei Alexander Xin, Vikas Chelur.
+
+### Report week (2026-05-12) — backlog migration
+
+- Removed the root backlog file from the team repo after migrating the final
+  planning state out of the public project tree.
+- Preserved the final team backlog state outside this repository, including
+  report-week items, tabled extension ideas, and the closed presentation / PR /
+  evidence ledger.
+- Removed internal planning-queue references from README status guidance.
 
 ### Report week (2026-05-08) — ACM final-report outline
 
@@ -26,7 +44,7 @@ post-presentation cleanup. After this commit, every live doc carries
 `status / purpose / workflow / last_updated` frontmatter; archive
 folders are gitignored and untracked but preserved on disk.
 
-### Audit pass (2026-05-07) — README rewrite + PLAN move + BACKLOG cleanup
+### Audit pass (2026-05-07) — README rewrite + PLAN move + backlog cleanup
 
 - **README rewrite.** Replaced ~410 lines of dated scaffolding (stale
   Project Status mermaids, "fixes vs v1" detail, notebook-specific
@@ -37,11 +55,10 @@ folders are gitignored and untracked but preserved on disk.
   acknowledging AI-tool use during development. Detailed lane / handoff
   content lives in `docs/team-runbook.md`; v1 → v2 history lives in
   CHANGELOG entries.
-- **PLAN.md moved** to personal class repo
-  (`Final_Project/planning/archive/team-repo-PLAN.md`). Was archival —
+- **PLAN.md moved out of the public project tree.** Was archival —
   pre-presentation 5-day plan with deadlines past. Current report-week
-  execution lives in BACKLOG.md.
-- **BACKLOG header refreshed** — drops PLAN.md reference; flags active
+  execution was tracked outside this repository.
+- **Backlog header refreshed** — drops PLAN.md reference; flags active
   vs archived report skeleton paths.
 
 ### Audit pass (2026-05-07) — squash + frontmatter + archive sweep, prior round
@@ -65,20 +82,21 @@ folders are gitignored and untracked but preserved on disk.
   "Do Not Use As Headline Evidence"); kept locally for audit only.
 
 ### Post-presentation cleanup sweep — squashed into a single commit covering
-the team-repo half of the OPS-004 cleanup (the personal class repo got
-its own series; this entry tracks team-repo changes only).
+the public team-repo cleanup.
 
 ### Added
 
-- Canonical PDF snapshot of the delivered presentation at
-  `deliverables/The Slippery Slope - Big Data Final Project - RAV.pdf`
+- Canonical delivered-presentation snapshots at
+  `deliverables/The Slippery Slope - Final Presentation - RAV.pdf`,
+  `deliverables/The Slippery Slope - Final Presentation - RAV.ppt`, and
+  `deliverables/The Slippery Slope - Final Presentation - RAV.pptx`
   (downloaded from canonical Google Slides
   `1QJ4RJN7MqC4HIGwGPIoCaOD_irfPQTl9_nJGviKvc2s` after May 5 in-class
   delivery).
 
 ### Changed
 
-- `BACKLOG.md`: refreshed to post-presentation state. New "Project
+- Backlog: refreshed to post-presentation state. New "Project
   Status" header (presentation delivered May 5; report due May 12).
   Pre-presentation execution queue (NOW + BLK items) collapsed to a
   `Done` table rolling up the 9 merged PRs + mid-dose recipe sweep +
@@ -94,10 +112,9 @@ its own series; this entry tracks team-repo changes only).
 
 ### Removed
 
-- Migrated 3 pre-PR-#3 starter notebooks out of `notebooks/` to the
-  personal class repo at
-  `~/coding/Classes/EECS-E6895/Final_Project/notebooks_archive/team_repo_pre_pr3/`
-  (`Big_Data_Analytics_Final_Project3.ipynb` + 2 early Alex iterations;
+- Migrated 3 pre-PR-#3 starter notebooks out of `notebooks/` to an
+  untracked archive outside this repository
+  (one early final-project notebook + 2 early Alex iterations;
   ~21k lines total). These were archeology, not load-bearing for the
   PR-#3+ module split (`experiments/`, `probes/`, `envs/`, `scripts/`,
   `dataset/`). `notebooks/sft_pipeline_v2_2026-04-24.ipynb` is retained
@@ -138,13 +155,9 @@ its own series; this entry tracks team-repo changes only).
 
 - Dose-response scaffolds (`docs/deck-skeleton-may5-dose-response.md`,
   `docs/final-presentation-draft-may5-dose-response.md`,
-  `docs/final-report-skeleton-ieee-may12-dose-response.md`): paths to
-  newly-archived planning docs in the personal class repo updated to
-  `Final_Project/planning/archive/...`; reference to
-  `EECS6895-AdvancedAI-Final-Project-Info.pdf` updated to its new
-  `Final_Project/research_sources/` location; reference to the
-  superseded Updated.pptx visual-look anchor noted as
-  `Final_Project/design/archive/...`.
+  `docs/final-report-skeleton-ieee-may12-dose-response.md`): references to
+  internal planning, syllabus, and design archives were kept as neutral
+  provenance notes rather than machine-local paths.
 
 ## [v0.1.19] — 2026-05-04 — may5-dose-response-scaffolds
 
@@ -253,11 +266,11 @@ its own series; this entry tracks team-repo changes only).
 
 ### Changed
 - Rebased `game-ui` branch from `main`, resolving conflicts in favor of the optimized evaluation runner.
-- Updated `README.md`, `BACKLOG.md`, and presentation/report skeletons to reflect current UI and pipeline readiness.
+- Updated `README.md`, backlog, and presentation/report skeletons to reflect current UI and pipeline readiness.
 
 ### Changed
 - Replaced the sync-call flow with a post-call completion flow in `README.md` and `docs/execution-plan.md`, showing done items, remaining handoffs, final artifact generation, and fallback risks through presentation/report completion.
-- Updated `BACKLOG.md` now that PR #5 is merged; eval runner work is done and final eval is blocked only on checkpoint availability.
+- Updated backlog now that PR #5 is merged; eval runner work is done and final eval is blocked only on checkpoint availability.
 - Refreshed `docs/team-runbook.md` and `docs/deck-skeleton.md` to remove stale PR #5 blocker wording.
 
 ## [v0.1.16] — 2026-04-29 — team-uv-runbook
@@ -278,7 +291,7 @@ its own series; this entry tracks team-repo changes only).
 ### Changed
 - Explained each `data/shell_game_v1/` artifact in the manifest and manual-generation docs, and removed stale wording that described the frozen dataset as local/gitignored.
 - Updated `experiments/prepare_shell_game_data.py` so regenerated manifests preserve those artifact descriptions.
-- Refreshed `BACKLOG.md` now that PR #2 and the frozen dataset are both on `main`.
+- Refreshed backlog now that PR #2 and the frozen dataset are both on `main`.
 
 ## [v0.1.13] — 2026-04-29 — shell-game-data-tracking
 
@@ -314,7 +327,7 @@ its own series; this entry tracks team-repo changes only).
 ## [v0.1.9] — 2026-04-29 — backlog-readiness-scaffold
 
 ### Added
-- `BACKLOG.md` as the concrete execution queue for current, blocked, tabled, ready-when-inputs-land, and done work before the project sync.
+- Original root backlog as the concrete execution queue for current, blocked, tabled, ready-when-inputs-land, and done work before the project sync. This queue was later moved out of the public project tree.
 - `docs/handoff-contracts.md` and `docs/alex-ready-runbook.md` to define checkpoint/eval JSONL handoffs and the exact commands Alex should run once teammate artifacts land.
 - `scripts/validate_handoffs.py`, `scripts/summarize_eval_results.py`, and `scripts/plot_eval_results.py` so checkpoint/eval artifacts can be validated, summarized, and plotted without depending on unmerged env code.
 - `scripts/test_readiness_tools.py` no-model smoke tests for the readiness scripts.
@@ -384,7 +397,7 @@ its own series; this entry tracks team-repo changes only).
 ## [v0.1.0] — 2026-04-24 — repo-bootstrap
 
 ### Project kickoff
-- Repo initialized from Alex's personal class workspace. `PLAN.md`, `experiments/sft_fix.py`, and a v2 Colab notebook migrated over. AI motivation research PDFs and the project-notes markdown stay in the personal class repo as historical context.
+- Repo initialized from an early class-project workspace. `PLAN.md`, `experiments/sft_fix.py`, and a v2 Colab notebook migrated over. AI motivation research PDFs and project-notes markdown stayed outside this public project tree as historical context.
 - Team lanes confirmed: Rithika owns the training pipeline + checkpoints, Vikas owns the env + evaluation, Alex owns probing + analysis + research narrative. Swapped from Codex's initial suggestion so the "internal polygraph" novel contribution is owned by the lane closest to the research story.
 - 5-day compressed schedule locked (Fri Apr 24 → Wed Apr 29 working deadline; May 5 presentation; May 12 final report). Table in `PLAN.md`.
 
@@ -396,7 +409,7 @@ its own series; this entry tracks team-repo changes only).
 - `.gitignore` — Python/ML artifacts, large binaries (`*.pt`, `*.safetensors`, `*.pptx`), gitignored `data/outputs/checkpoints` contents with `.gitkeep` markers.
 
 ### Diagnosed (Rithika's v1 notebook)
-Four bugs in `Big_Data_Analytics_Final_Project.ipynb` (the v1 that produced `"I I I I..."` gibberish with training loss 10.67):
+Four bugs in the v1 notebook that produced `"I I I I..."` gibberish with training loss 10.67:
 1. LR `5e-6` — ~40× too low for LoRA on a 2B model.
 2. Missing `prepare_model_for_kbit_training` before the control arm (called only before the honest arm).
 3. `{"text": prompt+completion}` training format trains on user prompt tokens; loss 10.67 was partially this.
@@ -414,4 +427,4 @@ Four bugs in `Big_Data_Analytics_Final_Project.ipynb` (the v1 that produced `"I 
 
 ### References migrated
 - Reference repo format adopted from this team's midterm project: https://github.com/rithika-d/Big_Data_Analytics_Midterm_Project
-- Structural patterns borrowed from Alex's HPML COMS-E6998 project (`~/coding/Classes/COMS-E6998/Final_Project/`).
+- Structural patterns borrowed from an earlier HPML COMS-E6998 class project.

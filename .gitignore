@@ -55,7 +55,7 @@ runs/
 *.swp
 .DS_Store
 
-# Agent sessions (personal)
+# Agent sessions (local)
 .agent-sessions/
 .claude/
 .codex/
@@ -68,7 +68,7 @@ review/
 .env
 .env.local
 
-# Large proposal artifacts (stay in personal class repo)
+# Large proposal artifacts (kept outside git)
 *.pptx
 *.pdf
 !docs/*.pdf
