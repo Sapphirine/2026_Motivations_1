@@ -3,7 +3,7 @@
 status: live
 purpose: Project entry point — overview, pipeline, repo layout, run commands
 workflow: project-lifetime
-last_updated: 2026-05-12
+last_updated: 2026-11-24
 ---
 -->
 
@@ -11,7 +11,7 @@ last_updated: 2026-05-12
 
 **EECS E6895: Advanced Big Data and AI — Final Project, Columbia University, Spring 2026**
 
-**R**ithika Devarakonda, Wei **A**lexander Xin, **V**ikas Chelur · Team RAV.ai
+**R**ithika Devarakonda, Wei **A**lexander Xin (team lead), **V**ikas Chelur · Team RAV.ai
 
 > Research prototype for AI-safety measurement. Builds a small-model
 > reward-gaming testbed, evaluates misreporting under controlled shell-game
@@ -259,6 +259,17 @@ This project is released under the [MIT License](LICENSE).
 - Alain & Bengio 2016 — linear probes on hidden representations
 - Belinkov & Glass 2019; Hewitt & Liang 2019; Voita & Titov 2020;
   Pimentel et al. 2020 — probe controls and information-theoretic probing
+
+## Team
+
+- **Rithika Devarakonda**: training lane, LoRA fine-tuning pipeline and the
+  control, honest and corruption-stage SFT adapters for the dose ladder
+- **Wei Alexander Xin** (team lead): project design and coordination, probe lane
+  (layer-wise linear probes, prompt-only lexical canary baseline,
+  backend-equivalence gate), handoff contracts and integration, final paper
+  and presentation
+- **Vikas Chelur**: evaluation lane, shell-game evaluation pipeline and cup-game
+  integration, scored evaluation outputs, interactive game UI demo
 
 ## Acknowledgments
 
